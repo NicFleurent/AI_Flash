@@ -3,6 +3,8 @@ import { createStaticNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Intro from './pages/Intro';
+import LogIn from './pages/LogIn';
+import SignIn from './pages/SignIn';
 
 export default function App() {
   const RootStack = createNativeStackNavigator({
@@ -19,6 +21,18 @@ export default function App() {
     screens: {
       Intro: {
         screen: Intro,
+        options: {
+          headerShown: false,
+        },
+      },
+      LogIn:{
+        screen: LogIn,
+        options: {
+          headerShown: false,
+        },
+      },
+      SignIn:{
+        screen: SignIn,
         options: {
           headerShown: false,
         },
