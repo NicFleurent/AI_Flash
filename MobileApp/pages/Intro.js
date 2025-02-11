@@ -24,7 +24,7 @@ const Intro = () => {
           <Text style={styles.txtQuote}>Des flashcards pour une étude simplifiée</Text>
         </View>  
 
-        <View style={styles.containerBouton}>
+        <View style={styles.containerButtons}>
           <CustomButton
             type="green-full"
             label="Connexion"
@@ -59,7 +59,7 @@ const styles = {
     justifyContent:'center',
     alignItems:'center'
   },
-  containerBouton:{
+  containerButtons:{
     flex:2,
     width:'80%',
     justifyContent:'center',
