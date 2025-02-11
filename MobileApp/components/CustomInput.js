@@ -4,7 +4,7 @@ import { FloatingLabelInput } from 'react-native-floating-label-input'
 import ShowPasswordIcon from './ShowPasswordIcon';
 import HidePasswordIcon from './HidePasswordIcon';
 
-const CustomInput = ({label, value, onChangeText, isPassword, error, removeBottomMargin}) => {
+const CustomInput = ({label, value, onChangeText, keyboardType, isPassword, error, removeBottomMargin}) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -26,6 +26,7 @@ const CustomInput = ({label, value, onChangeText, isPassword, error, removeBotto
           isFocused={isFocused}
           customShowPasswordComponent={<ShowPasswordIcon/>}
           customHidePasswordComponent={<HidePasswordIcon/>}
+          keyboardType={keyboardType}
         />
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
