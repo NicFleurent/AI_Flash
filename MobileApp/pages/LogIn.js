@@ -18,6 +18,19 @@ const LogIn = () => {
       validateForm();
   }
 
+  const handleConnection = ()=>{
+    if(validateForm()){
+      navigation.navigate("Menu", {
+        screen:"Home",
+        params:{
+          test:'banane'
+        }
+      })
+    }
+    else
+      setIsError(true)
+  }
+
   const validateForm = () => {
     let tempErrors = [];
 
@@ -53,6 +66,7 @@ const LogIn = () => {
               onChangeText={(value)=>onChangeText(value, setEmail)}
               isPassword={false}
               error={errors.errorEmail}
+              keyboardType='email-address'
             />
             <CustomInput
               label='Mot de passe'
@@ -67,7 +81,7 @@ const LogIn = () => {
             <CustomButton
               type="green-full"
               label="Se connecter"
-              onPress={()=>validateForm()}
+              onPress={()=>handleConnection()}
               additionnalStyle={{marginBottom:20}}
             /> 
             <CustomButton
@@ -113,13 +127,9 @@ const styles = {
   },
   containerInputs:{
     width:'100%',
-    justifyContent:'center',
-    alignItems:'center',
   },
   containerButtons:{
     width:'90%',
-    justifyContent:'center',
-    alignItems:'center',
   }
 }
 
