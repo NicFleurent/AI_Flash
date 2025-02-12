@@ -1,12 +1,12 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 const Intro = () => {
   const navigation = useNavigation();
+  const test = process.env.EXPO_PUBLIC_TEST
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -16,9 +16,9 @@ const Intro = () => {
         locations={[0.10, 0.80]}
       >
         <View style={styles.containerLogo}>
-          <Text style={styles.txtTitle}>AI Flash</Text>
+          <Text style={styles.txtTitle}>AI Flash {test}</Text>
           <Image 
-            source={require('../assets/aiFlash_logo_white.png')}
+            source={require('../../assets/aiFlash_logo_white.png')}
             style={{height:"200", width:"200"}} 
           />
           <Text style={styles.txtQuote}>Des flashcards pour une étude simplifiée</Text>

@@ -1,8 +1,8 @@
 import { View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-import CustomInput from '../components/CustomInput';
+import CustomInput from '../../components/CustomInput';
 
 const LogIn = () => {
   const navigation = useNavigation();
