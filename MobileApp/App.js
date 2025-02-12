@@ -7,6 +7,8 @@ import LogIn from './pages/LogIn';
 import SignIn from './pages/SignIn';
 import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Explorez from "./pages/PagesPubliques/Explorez";
+
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
@@ -40,14 +42,14 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: 'Intro',
+    initialRouteName: "Explorez",
     screenOptions: {
       headerStyle: {
-        backgroundColor: '#171717',
+        backgroundColor: "#171717",
       },
-      headerTintColor: '#1DB954',
+      headerTintColor: "#1DB954",
       headerTitleStyle: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
       },
     },
     screens: {
@@ -57,18 +59,23 @@ export default function App() {
           headerShown: false,
         },
       },
-      LogIn:{
+      LogIn: {
         screen: LogIn,
         options: {
           headerShown: false,
         },
       },
-      SignIn:{
+      SignIn: {
         screen: SignIn,
         options: {
           headerShown: false,
         },
       },
+      Explorez: {
+        screen: Explorez,
+        options: {
+          headerShown: false,
+        },
       Menu: {
         screen: bottomTabs,
         options: {
@@ -77,19 +84,17 @@ export default function App() {
       },
     },
   });
-  
+
   const Navigation = createStaticNavigation(RootStack);
 
-  return (
-    <Navigation/>
-  );
+  return <Navigation />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
