@@ -17,7 +17,7 @@ const CardCollection = ({
       <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {nameMatiere}
       </Text>
-      {displayMode === "Public" ? (
+      {displayMode ? (
         <View style={styles.textIconeZone}>
           <View>
             <Text style={styles.numberFlashcard}>
