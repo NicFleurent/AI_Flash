@@ -2,14 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+  use HttpResponses;
 
-  public function login()
+  public function login(LoginRequest $request)
   {
-    
+    $request->validated($request->all());
+
+    if (!Auth::attempt($request->only('email', 'password'))) {
+      return $this->error('', 'Le courriel ou le mot de passe n\'est pas valide', 401);
+    }
+
+    $user = Auth::user();
+
+    return $this->success([
+      'user' => $user,
+      'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+    ]);
   }
 
   /**
