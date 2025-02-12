@@ -1,13 +1,46 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createStaticNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Intro from "./pages/Intro";
-import LogIn from "./pages/LogIn";
-import SignIn from "./pages/SignIn";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStaticNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import Intro from './pages/Intro';
+import LogIn from './pages/LogIn';
+import SignIn from './pages/SignIn';
+import Home from './pages/Home';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
 
+
 export default function App() {
+  const bottomTabs = createBottomTabNavigator({
+    screenOptions: ({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        if (route.name === "Home") {
+          iconName = focused ? "home" : "home-outline";
+        } else if (route.name === "Profil") {
+          iconName = focused ? "person" : "person-outline";
+        }
+        else{
+          iconName = focused ? "cloud-download" : "cloud-download-outline";
+        }
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: "green",
+      tabBarInactiveTintColor: "gray",
+      tabBarShowLabel: false,
+      tabBarActiveBackgroundColor: "black",
+      tabBarInactiveBackgroundColor: "black",
+      // tabBarInactiveBackgroundColor: "white",
+      tabBarLabelPosition: "beside-icon",
+      animation: "shift",
+    }),
+    screens: {
+      Home: {
+        screen: Home,
+      },
+    },
+  });
+
   const RootStack = createNativeStackNavigator({
     initialRouteName: "Explorez",
     screenOptions: {
@@ -40,6 +73,11 @@ export default function App() {
       },
       Explorez: {
         screen: Explorez,
+        options: {
+          headerShown: false,
+        },
+      Menu: {
+        screen: bottomTabs,
         options: {
           headerShown: false,
         },
