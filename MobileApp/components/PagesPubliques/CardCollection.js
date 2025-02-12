@@ -8,7 +8,7 @@ const CardCollection = ({
   numberFlashcard,
   nameAuthor,
   numberCollection,
-  displayMode,
+  isPublic,
 }) => {
   const { height } = useWindowDimensions();
 
@@ -17,7 +17,7 @@ const CardCollection = ({
       <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {nameMatiere}
       </Text>
-      {displayMode ? (
+      {isPublic ? (
         <View style={styles.textIconeZone}>
           <View>
             <Text style={styles.numberFlashcard}>

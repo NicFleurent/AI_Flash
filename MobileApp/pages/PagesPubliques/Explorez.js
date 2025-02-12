@@ -46,7 +46,7 @@ const Explorez = () => {
     return (
       <CardCollection
         nameMatiere={"Programation orientee objet"}
-        displayMode={true}
+        isPublic={true}
         numberFlashcard={25}
         nameAuthor={"Nicolas Fleurent"}
       />
