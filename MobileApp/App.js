@@ -40,7 +40,7 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Explorez",
+    initialRouteName: "Intro",
     screenOptions: {
       headerStyle: {
         backgroundColor: "#171717",
