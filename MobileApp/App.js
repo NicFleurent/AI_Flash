@@ -7,6 +7,7 @@ import LogIn from './pages/authentification/LogIn';
 import SignIn from './pages/authentification/SignIn';
 import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Explorez from "./pages/PagesPubliques/Explorez";
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
@@ -17,8 +18,7 @@ export default function App() {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Profil") {
           iconName = focused ? "person" : "person-outline";
-        }
-        else{
+        } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
         }
         return <Ionicons name={iconName} size={size} color={color} />;
@@ -40,14 +40,14 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: 'Intro',
+    initialRouteName: "Explorez",
     screenOptions: {
       headerStyle: {
-        backgroundColor: '#171717',
+        backgroundColor: "#171717",
       },
-      headerTintColor: '#1DB954',
+      headerTintColor: "#1DB954",
       headerTitleStyle: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
       },
     },
     screens: {
@@ -57,39 +57,43 @@ export default function App() {
           headerShown: false,
         },
       },
-      LogIn:{
+      LogIn: {
         screen: LogIn,
         options: {
           headerShown: false,
         },
       },
-      SignIn:{
+      SignIn: {
         screen: SignIn,
         options: {
           headerShown: false,
         },
       },
-      Menu: {
-        screen: bottomTabs,
+      Explorez: {
+        screen: Explorez,
         options: {
           headerShown: false,
+        },
+        Menu: {
+          screen: bottomTabs,
+          options: {
+            headerShown: false,
+          },
         },
       },
     },
   });
-  
+
   const Navigation = createStaticNavigation(RootStack);
 
-  return (
-    <Navigation/>
-  );
+  return <Navigation />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
