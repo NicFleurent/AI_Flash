@@ -20,7 +20,7 @@ const LogIn = () => {
       validateForm();
   }
 
-  const handleConnection = async ()=>{
+  const handleLogin = async ()=>{
     if(validateForm()){
       try {
         const response = await login(email, password);
@@ -99,7 +99,7 @@ const LogIn = () => {
             <CustomButton
               type="green-full"
               label="Se connecter"
-              onPress={async()=>handleConnection()}
+              onPress={async()=>handleLogin()}
               additionnalStyle={{marginBottom:20}}
             /> 
             <CustomButton
