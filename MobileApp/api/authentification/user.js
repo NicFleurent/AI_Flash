@@ -13,9 +13,14 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
     });
+    
     const data = await response.json();
 
-    return data;
+    if(response.status === 200)
+      return data;
+    else
+      throw new Error(data.message);
+
   } catch (error) {
     throw new Error(error.message);
   }

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
+import { login } from '../../api/authentification/user';
+import Toast from 'react-native-toast-message';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -18,14 +20,30 @@ const LogIn = () => {
       validateForm();
   }
 
-  const handleConnection = ()=>{
+  const handleConnection = async ()=>{
     if(validateForm()){
-      navigation.navigate("Menu", {
-        screen:"Home",
-        params:{
-          test:'banane'
-        }
-      })
+      try {
+        const response = await login(email, password);
+  
+        const userInfo = {
+          token: response.data.token,
+          id: response.data.user.id,
+          email: response.data.user.email,
+          firstname: response.data.user.firstname,
+          lastname: response.data.user.lastname,
+        };
+  
+        navigation.navigate("Menu", {
+          screen:"Home",
+        })
+
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: "Erreur",
+          text2: error.message,
+        });
+      }
     }
     else
       setIsError(true)
@@ -81,7 +99,7 @@ const LogIn = () => {
             <CustomButton
               type="green-full"
               label="Se connecter"
-              onPress={()=>handleConnection()}
+              onPress={async()=>handleConnection()}
               additionnalStyle={{marginBottom:20}}
             /> 
             <CustomButton
@@ -92,6 +110,7 @@ const LogIn = () => {
           </View>
         </View>
       </ScrollView>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }
