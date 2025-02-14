@@ -1,0 +1,31 @@
+{
+  "translation": {
+    "APP_NAME": "AI Flash",
+    "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
+    "ERROR":"Erreur",
+    "auth":{
+      "connection":"Connexion",
+      "login":"Se connecter",
+      "signin":"Inscription",
+      "register":"S'inscrire"
+    },
+    "button":{
+      "goBack":"Retour"
+    },
+    "input":{
+      "firstname":"Prénom",
+      "lastname":"Nom",
+      "email":"Adresse courriel",
+      "password":"Mot de passe",
+      "passwordConfirm":"Confirmer le mot de passe",
+      "error":{
+        "firstname_required":"Le prénom est requis",
+        "lastname_required":"Le nom est requis",
+        "email_required":"L'adresse courriel est requise",
+        "email_invalid":"L'adresse courriel n'est pas valide",
+        "password_required":"Le mot de passe est requis",
+        "passwordConfirm_required":"Les mots de passe ne correspondent pas"
+      }
+    }
+  }
+}

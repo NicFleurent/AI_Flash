@@ -4,9 +4,11 @@ import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
 const SignIn = () => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -42,7 +44,7 @@ const SignIn = () => {
       // } catch (error) {
       //   Toast.show({
       //     type: 'error',
-      //     text1: "Erreur",
+      //     text1: t('ERROR'),
       //     text2: error.message,
       //   });
       // }
@@ -57,19 +59,19 @@ const SignIn = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (firstname === "")
-      tempErrors.errorFirstname = "Veuillez votre prénom";
+      tempErrors.errorFirstname = t('input.error.firstname_required');
     if (lastname === "")
-      tempErrors.errorLastname = "Veuillez votre nom";
+      tempErrors.errorLastname = t('input.error.lastname_required');
 
-    if (email === "")
-      tempErrors.errorEmail = "Veuillez entrer le courriel";
-    else if (!emailRegex.test(email))
-      tempErrors.errorEmail = "Le courriel n'est pas valide";
+    if(email === "")
+      tempErrors.errorEmail = t('input.error.email_required');
+    else if(!emailRegex.test(email))
+      tempErrors.errorEmail = t('input.error.email_invalid');
 
-    if (password === "")
-      tempErrors.errorPassword = "Veuillez entrer le mot de passe"
+    if(password === "")
+      tempErrors.errorPassword = t('input.error.password_required');
     if (password != passwordConfirm)
-      tempErrors.errorPasswordConfirm = "Les mots de passe ne correspondent pas"
+      tempErrors.errorPasswordConfirm = t('input.error.passwordConfirm_required');
 
     setErrors(tempErrors);
     setIsError(!(Object.keys(tempErrors).length === 0))
@@ -82,27 +84,27 @@ const SignIn = () => {
 
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.containerTitle}>
-          <Text style={styles.txtTitle}>Inscription</Text>
+          <Text style={styles.txtTitle}>{t('auth.signin')}</Text>
         </View>
 
         <View style={styles.containerForm}>
           <View style={styles.containerInputs}>
             <CustomInput
-              label='Prénom'
+              label={t('input.firstname')}
               value={firstname}
               onChangeText={(value) => onChangeText(value, setFirstname)}
               isPassword={false}
               error={errors.errorFirstname}
             />
             <CustomInput
-              label='Nom'
+              label={t('input.lastname')}
               value={lastname}
               onChangeText={(value) => onChangeText(value, setLastname)}
               isPassword={false}
               error={errors.errorLastname}
             />
             <CustomInput
-              label='Adresse courriel'
+              label={t('input.email')}
               value={email}
               onChangeText={(value) => onChangeText(value, setEmail)}
               isPassword={false}
@@ -110,14 +112,14 @@ const SignIn = () => {
               keyboardType='email-address'
             />
             <CustomInput
-              label='Mot de passe'
+              label={t('input.password')}
               value={password}
               onChangeText={(value) => onChangeText(value, setPassword)}
               isPassword={true}
               error={errors.errorPassword}
             />
             <CustomInput
-              label='Confirmer le mot de passe'
+              label={t('input.passwordConfirm')}
               value={passwordConfirm}
               onChangeText={(value) => onChangeText(value, setPasswordConfirm)}
               isPassword={true}
@@ -128,13 +130,13 @@ const SignIn = () => {
           <View style={styles.containerButtons}>
             <CustomButton
               type="green-full"
-              label="S'incrire"
+              label={t('auth.register')}
               onPress={async () => handleSignin()}
               additionnalStyle={{ marginBottom: 20 }}
             />
             <CustomButton
               type="white-outline"
-              label="Retour"
+              label={t('button.goBack')}
               onPress={() => navigation.goBack()}
             />
           </View>
