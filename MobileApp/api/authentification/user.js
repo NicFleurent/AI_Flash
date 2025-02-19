@@ -41,7 +41,7 @@ export const signin = async (
         firstname:firstname,
         lastname:lastname,
         password: password,
-        password_confirm:passwordConfirm
+        password_confirmation:passwordConfirm
       }),
       headers: {
         Accept: "application/json",
