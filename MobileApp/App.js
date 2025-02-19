@@ -1,22 +1,24 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createStaticNavigation } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
-import Intro from "./pages/Intro";
-import LogIn from "./pages/LogIn";
-import SignIn from "./pages/SignIn";
-import Home from "./pages/Home";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStaticNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import Intro from './pages/authentification/Intro';
+import LogIn from './pages/authentification/LogIn';
+import SignIn from './pages/authentification/SignIn';
+import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
+import Account from './pages/account/Account';
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
+    initialRouteName: "Account",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         if (route.name === "Home") {
           iconName = focused ? "home" : "home-outline";
-        } else if (route.name === "Profil") {
+        } else if (route.name === "Account") {
           iconName = focused ? "person" : "person-outline";
         } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
@@ -28,28 +30,40 @@ export default function App() {
       tabBarShowLabel: false,
       tabBarActiveBackgroundColor: "black",
       tabBarInactiveBackgroundColor: "black",
-      // tabBarInactiveBackgroundColor: "white",
       tabBarLabelPosition: "beside-icon",
       animation: "shift",
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 24,
+        fontWeight: "bold",
+      },
+      tabBarStyle: {
+        borderTopWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
     }),
     screens: {
       Home: {
         screen: Home,
+        options: {
+          title: 'Accueil'
+        },
+      },
+      Account: {
+        screen: Account,
+        options: {
+          title: 'Votre compte'
+        },
       },
     },
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Explorez",
-    screenOptions: {
-      headerStyle: {
-        backgroundColor: "#171717",
-      },
-      headerTintColor: "#1DB954",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    },
+    initialRouteName: "Menu",
     screens: {
       Intro: {
         screen: Intro,
@@ -74,11 +88,11 @@ export default function App() {
         options: {
           headerShown: true,
         },
-        Menu: {
-          screen: bottomTabs,
-          options: {
-            headerShown: false,
-          },
+      },
+      Menu: {
+        screen: bottomTabs,
+        options: {
+          headerShown: false,
         },
       },
     },

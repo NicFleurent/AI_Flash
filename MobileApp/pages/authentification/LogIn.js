@@ -1,11 +1,15 @@
 import { View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-import CustomInput from '../components/CustomInput';
+import CustomInput from '../../components/CustomInput';
+import { login } from '../../api/authentification/user';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 
 const LogIn = () => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -18,14 +22,30 @@ const LogIn = () => {
       validateForm();
   }
 
-  const handleConnection = ()=>{
+  const handleLogin = async ()=>{
     if(validateForm()){
-      navigation.navigate("Menu", {
-        screen:"Home",
-        params:{
-          test:'banane'
-        }
-      })
+      try {
+        const response = await login(email, password);
+  
+        const userInfo = {
+          token: response.data.token,
+          id: response.data.user.id,
+          email: response.data.user.email,
+          firstname: response.data.user.firstname,
+          lastname: response.data.user.lastname,
+        };
+  
+        navigation.navigate("Menu", {
+          screen:"Home",
+        })
+
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: error.message,
+        });
+      }
     }
     else
       setIsError(true)
@@ -37,12 +57,12 @@ const LogIn = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if(email === "")
-      tempErrors.errorEmail = "Veuillez entrer le courriel";
+      tempErrors.errorEmail = t('input.error.email_required');
     else if(!emailRegex.test(email))
-      tempErrors.errorEmail = "Le courriel n'est pas valide";
+      tempErrors.errorEmail = t('input.error.email_invalid');
 
     if(password === "")
-      tempErrors.errorPassword = "Veuillez entrer le mot de passe"
+      tempErrors.errorPassword = t('input.error.password_required');
     
     setErrors(tempErrors);
     setIsError(!(Object.keys(tempErrors).length === 0))
@@ -55,13 +75,13 @@ const LogIn = () => {
 
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.containerTitle}>
-          <Text style={styles.txtTitle}>Connexion</Text>
+          <Text style={styles.txtTitle}>{t('auth.connection')}</Text>
         </View>
 
         <View style={styles.containerForm}>
           <View style={styles.containerInputs}>
             <CustomInput
-              label='Adresse courriel'
+              label={t('input.email')}
               value={email}
               onChangeText={(value)=>onChangeText(value, setEmail)}
               isPassword={false}
@@ -69,7 +89,7 @@ const LogIn = () => {
               keyboardType='email-address'
             />
             <CustomInput
-              label='Mot de passe'
+              label={t('input.password')}
               value={password}
               onChangeText={(value)=>onChangeText(value, setPassword)}
               isPassword={true}
@@ -80,18 +100,19 @@ const LogIn = () => {
           <View style={styles.containerButtons}>
             <CustomButton
               type="green-full"
-              label="Se connecter"
-              onPress={()=>handleConnection()}
+              label={t('auth.login')}
+              onPress={async()=>handleLogin()}
               additionnalStyle={{marginBottom:20}}
             /> 
             <CustomButton
               type="white-outline"
-              label="Retour"
+              label={t('button.goBack')}
               onPress={()=>navigation.goBack()}
             /> 
           </View>
         </View>
       </ScrollView>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }
