@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -24,6 +27,23 @@ class UsersController extends Controller
     return $this->success([
       'user' => $user,
       'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+    ]);
+  }
+
+  public function register(RegisterRequest $request){
+    $request->validated($request->all());
+
+    $user = User::create([
+        'email' => $request->email,
+        'firstname' => $request->firstname,
+        'lastname' => $request->lastname,
+        'password' => Hash::make($request->password),
+    ]);
+
+
+    return $this->success([
+        'user' => $user,
+        'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
     ]);
   }
 

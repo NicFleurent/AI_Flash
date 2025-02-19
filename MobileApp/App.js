@@ -74,11 +74,11 @@ export default function App() {
         options: {
           headerShown: false,
         },
-        Menu: {
-          screen: bottomTabs,
-          options: {
-            headerShown: false,
-          },
+      },
+      Menu: {
+        screen: bottomTabs,
+        options: {
+          headerShown: false,
         },
       },
     },
