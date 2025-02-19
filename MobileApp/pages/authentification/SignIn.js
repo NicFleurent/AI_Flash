@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton'
 import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import { signin } from '../../api/authentification/user'
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -26,28 +27,34 @@ const SignIn = () => {
 
   const handleSignin = async () => {
     if (validateForm()) {
-      // try {
-      //   const response = await login(email, password);
+      try {
+        const response = await signin(
+          email, 
+          firstname,
+          lastname,
+          password,
+          passwordConfirm
+        );
 
-      //   const userInfo = {
-      //     token: response.data.token,
-      //     id: response.data.user.id,
-      //     email: response.data.user.email,
-      //     firstname: response.data.user.firstname,
-      //     lastname: response.data.user.lastname,
-      //   };
+        const userInfo = {
+          token: response.data.token,
+          id: response.data.user.id,
+          email: response.data.user.email,
+          firstname: response.data.user.firstname,
+          lastname: response.data.user.lastname,
+        };
 
-      //   navigation.navigate("Menu", {
-      //     screen: "Home",
-      //   })
+        navigation.navigate("Menu", {
+          screen: "Home",
+        })
 
-      // } catch (error) {
-      //   Toast.show({
-      //     type: 'error',
-      //     text1: t('ERROR'),
-      //     text2: error.message,
-      //   });
-      // }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: error.message,
+        });
+      }
     }
     else
       setIsError(true)
@@ -163,7 +170,7 @@ const styles = {
     fontSize: 54,
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 30
+    marginVertical: 40
   },
   containerTitle: {
     justifyContent: 'center',
