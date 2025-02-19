@@ -7,10 +7,14 @@
       "connection":"Connexion",
       "login":"Se connecter",
       "signin":"Inscription",
-      "register":"S'inscrire"
+      "register":"S'inscrire",
+      "logout":"Déconnexion",
+      "deleteAccount":"Supprimer le compte",
+      "changePassword":"Modifier mot de passe"
     },
     "button":{
-      "goBack":"Retour"
+      "goBack":"Retour",
+      "save":"Enregistrer"
     },
     "input":{
       "firstname":"Prénom",

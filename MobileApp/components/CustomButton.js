@@ -1,28 +1,46 @@
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle}) => {
+  const [isLongText, setIsLongText] = useState(false);
+
+  useEffect(()=>{
+    if(label.length >= 15){
+      setIsLongText(true)
+    }
+  }, [label])
+
   return (
   <TouchableOpacity 
     style={[
       styles.container, 
       type == "green-full" && styles.greenFullContainer, 
-      type == "white-outline" && styles.whiteOutlineContainer,additionnalStyle
+      type == "white-outline" && styles.whiteOutlineContainer,
+      type == "red-full" && styles.redFullContainer,
+      additionnalStyle
     ]}
     onPress={onPress}
     onLongPress={onLongPress}
   >
     {icon && (
       <View>
-        <Ionicons name="add" size={30} color={type == "green-full" ? "#000000" : "#1DB954"} />
+        <FontAwesomeIcon icon={icon} size={30} color={type == "white-outline" ? "#1DB954" : "#000000"} />
       </View>
     )}
     <View style={[
       styles.txtContainer, 
       icon && styles.txtContainerPadding
     ]}>
-      <Text style={[styles.txtButton, type == "green-full" && styles.greenFullTxt, type == "white-outline" && styles.whiteOutlineTxt]}>{label}</Text>
+      <Text style={[
+        styles.txtButton, 
+        type == "green-full" && styles.greenFullTxt, 
+        type == "white-outline" && styles.whiteOutlineTxt,
+        isLongText && styles.txtButtonLongText
+      ]}
+      >
+        {label}
+      </Text>
     </View>
   </TouchableOpacity>
   )
@@ -49,8 +67,14 @@ const styles = {
     fontWeight:'bold',
     fontSize:20
   },
+  txtButtonLongText:{
+    fontSize:18
+  },
   greenFullContainer:{
     backgroundColor:'#1DB954',
+  },
+  redFullContainer:{
+    backgroundColor:'#FF0000',
   },
   greenFullTxt:{
     color:'black',
