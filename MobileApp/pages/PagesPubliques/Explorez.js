@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -6,10 +6,13 @@ import {
   Text,
   FlatList,
   View,
-  ScrollView,
 } from "react-native";
 import CardCollection from "../../components/PagesPubliques/CardCollection";
 import CustomInput from "../../components/CustomInput";
+import FirstModal from "../../components/PagesPubliques/Modals/FirstModal";
+import SecondModal from "../../components/PagesPubliques/Modals/SecondModal";
+import ThirdModal from "../../components/PagesPubliques/Modals/ThirdModal";
+import FourthModal from "../../components/PagesPubliques/Modals/FourthModal";
 
 const data = [
   { id: "1", text: "Item 1" },
@@ -25,61 +28,97 @@ const data = [
 
 const Explorez = () => {
   const [search, onChangeSearch] = useState("");
+  const [activeModal, setActiveModal] = useState(null);
+  const [matiere, setMatiere] = useState("");
 
-  const formData = (data, numColumns) => {
+  const toggleModal = useCallback((modalName) => {
+    setActiveModal((prev) => (prev === modalName ? null : modalName));
+  }, []);
+
+  const formattedData = useMemo(() => {
+    const numColumns = 2;
     const numberOfFullRows = Math.floor(data.length / numColumns);
     let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+    const dataCopy = [...data];
 
     if (numberOfElementsLastRow !== 0) {
       for (let i = numberOfElementsLastRow; i < numColumns; i++) {
-        data.push({ id: `blank-${i}`, empty: true });
+        dataCopy.push({ id: `blank-${i}`, empty: true });
       }
     }
 
-    return data;
-  };
+    return dataCopy;
+  }, [data]);
 
-  const renderItem = ({ item }) => {
-    if (item.empty) {
-      return <View style={styles.itemInvisible} />;
-    }
-    return (
-      <CardCollection
-        nameMatiere={"Programation orientee objet"}
-        isPublic={true}
-        numberFlashcard={25}
-        nameAuthor={"Nicolas Fleurent"}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({ item }) => {
+      if (item.empty) {
+        return <View style={styles.itemInvisible} />;
+      }
+      return (
+        <CardCollection
+          nameMatiere={"Programation orientee objet"}
+          isPublic={true}
+          numberFlashcard={25}
+          nameAuthor={"Nicolas Fleurent"}
+          onPress={() => toggleModal("FirstModal")}
+        />
+      );
+    },
+    [toggleModal]
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View>
-          <View style={styles.containerSecond}>
-            <Text style={styles.titre}>Explorez</Text>
+      <FirstModal
+        isVisible={activeModal === "FirstModal"}
+        onClose={() => toggleModal("FirstModal")}
+        onNext={() => toggleModal("SecondModal")}
+      />
 
-            <CustomInput
-              label="Rechercher"
-              value={search}
-              onChangeText={onChangeSearch}
-              isPassword={false}
-            />
-          </View>
+      <SecondModal
+        isVisible={activeModal === "SecondModal"}
+        onClose={() => toggleModal("SecondModal")}
+        onNext={() => toggleModal("ThirdModal")}
+      />
 
-          <FlatList
-            style={styles.flatList}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            data={formData(data, 2)}
-            numColumns={2}
-            contentContainerStyle={styles.flatListContent}
+      <ThirdModal
+        isVisible={activeModal === "ThirdModal"}
+        onClose={() => toggleModal("ThirdModal")}
+        onNext={() => toggleModal("FourthModal")}
+      />
+
+      <FourthModal
+        isVisible={activeModal === "FourthModal"}
+        onClose={() => toggleModal("FourthModal")}
+        matiere={matiere}
+        setMatiere={setMatiere}
+        onSubmit={() => toggleModal("FourthModal")}
+      />
+
+      <View>
+        <View style={styles.containerSecond}>
+          <Text style={styles.titre}>Explorez</Text>
+
+          <CustomInput
+            label="Rechercher"
+            value={search}
+            onChangeText={onChangeSearch}
+            isPassword={false}
           />
-
-          <StatusBar style="auto" />
         </View>
-      </ScrollView>
+
+        <FlatList
+          style={styles.flatList}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          data={formattedData}
+          numColumns={2}
+          contentContainerStyle={styles.flatListContent}
+        />
+
+        <StatusBar style="auto" />
+      </View>
     </SafeAreaView>
   );
 };

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,45 +15,48 @@ const CardCollection = ({
   nameAuthor,
   numberCollection,
   isPublic,
+  onPress,
 }) => {
   const { height } = useWindowDimensions();
 
   return (
-    <View style={[styles.container, { height: height / 6 }]}>
-      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-        {nameMatiere}
-      </Text>
-      {isPublic ? (
-        <View style={styles.textIconeZone}>
-          <View>
-            <Text style={styles.numberFlashcard}>
-              {numberFlashcard} Flashcards
-            </Text>
-            <Text style={styles.author}>{nameAuthor}</Text>
+    <TouchableOpacity onPress={onPress} style={{ flex: 1 }}>
+      <View style={[styles.container, { height: height / 6 }]}>
+        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          {nameMatiere}
+        </Text>
+        {isPublic ? (
+          <View style={styles.textIconeZone}>
+            <View>
+              <Text style={styles.numberFlashcard}>
+                {numberFlashcard} Flashcards
+              </Text>
+              <Text style={styles.author}>{nameAuthor}</Text>
+            </View>
+            <FontAwesomeIcon
+              style={{ marginRight: 20 }}
+              size={24}
+              color="#1DB954"
+              icon={faArrowRight}
+            />
           </View>
-          <FontAwesomeIcon
-            style={{ marginRight: 20 }}
-            size={24}
-            color="#1DB954"
-            icon={faArrowRight}
-          />
-        </View>
-      ) : (
-        <View style={styles.textIconeZoneMatiereDisplay}>
-          <View>
-            <Text style={styles.collection}>
-              {numberCollection} Collections
-            </Text>
+        ) : (
+          <View style={styles.textIconeZoneMatiereDisplay}>
+            <View>
+              <Text style={styles.collection}>
+                {numberCollection} Collections
+              </Text>
+            </View>
+            <FontAwesomeIcon
+              style={{ marginRight: 20 }}
+              size={24}
+              color="#1DB954"
+              icon={faArrowRight}
+            />
           </View>
-          <FontAwesomeIcon
-            style={{ marginRight: 20 }}
-            size={24}
-            color="#1DB954"
-            icon={faArrowRight}
-          />
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 
