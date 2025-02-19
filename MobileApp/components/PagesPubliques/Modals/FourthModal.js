@@ -7,12 +7,20 @@ import CustomButton from "../../CustomButton";
 import Modal from "react-native-modal";
 import { useWindowDimensions } from "react-native";
 
-const FourthModal = ({ isVisible, onClose, matiere, setMatiere, onSubmit }) => {
+const FourthModal = ({
+  isVisible,
+  onClose,
+  matiere,
+  setMatiere,
+  onSubmit,
+  onNext,
+}) => {
   const { width, height } = useWindowDimensions();
   return (
     <Modal
       isVisible={isVisible}
       onBackdropPress={onClose}
+      onDismiss={onNext}
       swipeDirection="down"
       style={styles.modal}
     >

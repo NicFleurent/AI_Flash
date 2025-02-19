@@ -72,7 +72,7 @@ export default function App() {
       Explorez: {
         screen: Explorez,
         options: {
-          headerShown: false,
+          headerShown: true,
         },
         Menu: {
           screen: bottomTabs,

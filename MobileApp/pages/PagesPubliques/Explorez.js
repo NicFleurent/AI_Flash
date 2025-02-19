@@ -13,6 +13,7 @@ import FirstModal from "../../components/PagesPubliques/Modals/FirstModal";
 import SecondModal from "../../components/PagesPubliques/Modals/SecondModal";
 import ThirdModal from "../../components/PagesPubliques/Modals/ThirdModal";
 import FourthModal from "../../components/PagesPubliques/Modals/FourthModal";
+import AlertModal from "../../components/PagesPubliques/Modals/AlertModal";
 
 const data = [
   { id: "1", text: "Item 1" },
@@ -69,7 +70,7 @@ const Explorez = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <FirstModal
         isVisible={activeModal === "FirstModal"}
         onClose={() => toggleModal("FirstModal")}
@@ -93,12 +94,17 @@ const Explorez = () => {
         onClose={() => toggleModal("FourthModal")}
         matiere={matiere}
         setMatiere={setMatiere}
-        onSubmit={() => toggleModal("FourthModal")}
+        onSubmit={() => toggleModal("AlertModal")}
       />
 
-      <View>
+      <AlertModal
+        isVisible={activeModal === "AlertModal"}
+        onClose={() => toggleModal("AlertModal")}
+      />
+
+      {/* <View> */}
         <View style={styles.containerSecond}>
-          <Text style={styles.titre}>Explorez</Text>
+          {/* <Text style={styles.titre}>Explorez</Text> */}
 
           <CustomInput
             label="Rechercher"
@@ -118,15 +124,14 @@ const Explorez = () => {
         />
 
         <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+      {/* </View> */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
-    flex: 1,
   },
   containerSecond: {
     paddingHorizontal: 10,
