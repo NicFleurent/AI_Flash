@@ -1,18 +1,18 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStaticNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import Intro from './pages/authentification/Intro';
-import LogIn from './pages/authentification/LogIn';
-import SignIn from './pages/authentification/SignIn';
-import Home from './pages/Home';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStaticNavigation } from "@react-navigation/native";
+import { StyleSheet, Text } from "react-native";
+import Intro from "./pages/authentification/Intro";
+import LogIn from "./pages/authentification/LogIn";
+import SignIn from "./pages/authentification/SignIn";
+import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
-import Account from './pages/account/Account';
+import Account from "./pages/account/Account";
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Account",
+    initialRouteName: "Explorez",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -50,13 +50,26 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: 'Accueil'
+          title: "Accueil",
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: 'Votre compte'
+          title: "Votre compte",
+        },
+      },
+      Explorez: {
+        screen: Explorez,
+        options: {
+          headerShown: true,
+          headerTitleAlign: "left",
+          headerTitleStyle: {
+            fontSize: 28,
+            marginLeft: 10,
+            color: "white",
+            fontWeight: "bold",
+          },
         },
       },
     },
@@ -81,12 +94,6 @@ export default function App() {
         screen: SignIn,
         options: {
           headerShown: false,
-        },
-      },
-      Explorez: {
-        screen: Explorez,
-        options: {
-          headerShown: true,
         },
       },
       Menu: {

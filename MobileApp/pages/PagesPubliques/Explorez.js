@@ -14,6 +14,7 @@ import SecondModal from "../../components/PagesPubliques/Modals/SecondModal";
 import ThirdModal from "../../components/PagesPubliques/Modals/ThirdModal";
 import FourthModal from "../../components/PagesPubliques/Modals/FourthModal";
 import AlertModal from "../../components/PagesPubliques/Modals/AlertModal";
+import { useWindowDimensions } from "react-native";
 
 const data = [
   { id: "1", text: "Item 1" },
@@ -31,6 +32,7 @@ const Explorez = () => {
   const [search, onChangeSearch] = useState("");
   const [activeModal, setActiveModal] = useState(null);
   const [matiere, setMatiere] = useState("");
+  const { width, height } = useWindowDimensions();
 
   const toggleModal = useCallback((modalName) => {
     setActiveModal((prev) => (prev === modalName ? null : modalName));
@@ -94,37 +96,36 @@ const Explorez = () => {
         onClose={() => toggleModal("FourthModal")}
         matiere={matiere}
         setMatiere={setMatiere}
-        onSubmit={() => toggleModal("AlertModal")}
+        onSubmit={() => toggleModal("FourthModal")}
+        onNext={() => toggleModal("AlertModal")}
       />
 
       <AlertModal
         isVisible={activeModal === "AlertModal"}
         onClose={() => toggleModal("AlertModal")}
+        title="Titre personnalisé"
+        description="Description personnalisée"
+        cancelButtonText="Fermer"
+        confirmButtonText="Accepter"
+        onCancel={() => console.log("Annuler cliqué")}
+        onConfirm={() => console.log("OK cliqué")}
       />
-
-      {/* <View> */}
-        <View style={styles.containerSecond}>
-          {/* <Text style={styles.titre}>Explorez</Text> */}
-
-          <CustomInput
-            label="Rechercher"
-            value={search}
-            onChangeText={onChangeSearch}
-            isPassword={false}
-          />
-        </View>
-
+      <CustomInput
+        label="Rechercher"
+        value={search}
+        onChangeText={onChangeSearch}
+        isPassword={false}
+      />
+      <View style={{ height: height * 0.7 }}>
         <FlatList
           style={styles.flatList}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           data={formattedData}
           numColumns={2}
-          contentContainerStyle={styles.flatListContent}
         />
-
-        <StatusBar style="auto" />
-      {/* </View> */}
+      </View>
+      <StatusBar style="auto" />
     </View>
   );
 };
@@ -132,19 +133,9 @@ const Explorez = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
-  },
-  containerSecond: {
     paddingHorizontal: 10,
   },
-  titre: {
-    fontSize: 48,
-    color: "white",
-    fontWeight: "bold",
-    marginBottom: 30,
-  },
-  flatListContent: {
-    paddingHorizontal: 10,
-  },
+
   itemInvisible: {
     flex: 1,
     margin: 5,
