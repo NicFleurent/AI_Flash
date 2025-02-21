@@ -63,7 +63,7 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Menu",
+    initialRouteName: "Intro",
     screens: {
       Intro: {
         screen: Intro,

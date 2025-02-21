@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { getLocalUser } from '../../api/secureStore';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -14,7 +15,18 @@ const Account = () => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false);``
+
+  useEffect(()=>{
+    getUser();
+  }, [])
+
+  const getUser = async () => {
+    const user = await getLocalUser();
+    setFirstname(user.firstname);
+    setLastname(user.lastname);
+    setEmail(user.email);
+  }
 
   const onChangeText = (value, setInput) => {
     setInput(value);

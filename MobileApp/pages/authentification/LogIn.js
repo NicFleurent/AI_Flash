@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
-import { login } from '../../api/authentification/user';
+import { login } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import { saveLocalUser } from '../../api/secureStore';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -27,13 +28,14 @@ const LogIn = () => {
       try {
         const response = await login(email, password);
   
-        const userInfo = {
+        const user = {
           token: response.data.token,
           id: response.data.user.id,
           email: response.data.user.email,
           firstname: response.data.user.firstname,
           lastname: response.data.user.lastname,
         };
+        saveLocalUser(user);
   
         navigation.navigate("Menu", {
           screen:"Home",
