@@ -13,7 +13,7 @@ import FirstModal from "../../components/PagesPubliques/Modals/FirstModal";
 import SecondModal from "../../components/PagesPubliques/Modals/SecondModal";
 import ThirdModal from "../../components/PagesPubliques/Modals/ThirdModal";
 import FourthModal from "../../components/PagesPubliques/Modals/FourthModal";
-import AlertModal from "../../components/PagesPubliques/Modals/AlertModal";
+import AlertModal from "../../components/AlertModal";
 import { useWindowDimensions } from "react-native";
 
 const data = [
