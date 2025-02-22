@@ -26,6 +26,14 @@
         "password_required":"Le mot de passe est requis",
         "passwordConfirm_required":"Les mots de passe ne correspondent pas"
       }
+    },
+    "home":{
+      "hello":"Bonjour",
+      "today":"Aujourd'hui",
+      "remaining_flashcards":"flashcards restantes",
+      "flash_study":"Étude rapide",
+      "detailed_studies":"Études détaillées",
+      "no_studies_today":"Aucune étude à faire aujourd'hui"
     }
   }
 }

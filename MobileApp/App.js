@@ -9,10 +9,11 @@ import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
 import Account from './pages/account/Account';
+import Study from './pages/Study';
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Account",
+    initialRouteName: "Home",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -64,6 +65,16 @@ export default function App() {
 
   const RootStack = createNativeStackNavigator({
     initialRouteName: "Menu",
+    screenOptions:{
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 24,
+        fontWeight: "bold",
+      },
+    },
     screens: {
       Intro: {
         screen: Intro,
@@ -95,6 +106,9 @@ export default function App() {
           headerShown: false,
         },
       },
+      Study:{
+        screen:Study
+      }
     },
   });
 
