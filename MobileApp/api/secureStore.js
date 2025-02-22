@@ -20,3 +20,11 @@ export const getLocalUser = async () => {
     console.error("Erreur lors de la récupération", e);
   }
 };
+
+export const deleteLocalUser = async () => {
+  try {
+    await SecureStore.deleteItemAsync("user");
+  } catch (e) {
+    console.error("Erreur lors de la suppression", e);
+  }
+}

@@ -7,7 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
-import { logout, updateUser } from '../../api/user';
+import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
 
 const Account = () => {
@@ -97,8 +97,19 @@ const Account = () => {
     }
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    try {
+      const response = await deleteUser();
 
+      navigation.navigate("Intro", {success:response.message})
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: error.message,
+      });
+    }
   }
 
   const handleChangePassword = () => {

@@ -1,4 +1,4 @@
-import { getLocalUser, saveLocalUser } from "./secureStore";
+import { deleteLocalUser, getLocalUser, saveLocalUser } from "./secureStore";
 
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -82,6 +82,7 @@ export const logout = async () => {
     const data = await response.json();
 
     if(response.status === 200){
+      deleteLocalUser();
       return data;
     }
     else
@@ -154,6 +155,32 @@ export const updateUser = async (
     throw new Error(error.message);
   }
 };
+
+export const deleteUser = async () => {
+  try {
+    const user = await getLocalUser();
+
+    const response = await fetch(`${baseUrl}user/delete`, {
+      method: 'DELETE',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+      
+    const data = await response.json();
+
+    if(response.status === 200){
+      deleteLocalUser();
+      return data;
+    }
+    else
+      throw new Error(data.message);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 
 const saveUser = (data)=>{
   const user = {

@@ -31,6 +31,13 @@
         "password_required":"Le mot de passe est requis",
         "passwordConfirm_required":"Les mots de passe ne correspondent pas"
       }
+    },
+    "secureStore":{
+      "error":{
+        "save":"Erreur lors de la sauvegarde",
+        "get":"Erreur lors de la récupération",
+        "delete":"Erreur lors de la suppression"
+      }
     }
   }
 }
