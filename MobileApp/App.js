@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { refreshToken } from './api/user';
 
 export default function App() {
-  const [landingPage, setLandingPage] = useState("Intro");
+  const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
     isUserLoggedIn();
@@ -25,9 +25,27 @@ export default function App() {
       setLandingPage("Menu")
     } catch (error) {
       console.log(error)
-      setLandingPage("Intro")
+      setLandingPage("Auth")
     }
   }
+
+  const authStack = createNativeStackNavigator({
+    initialRouteName:"Intro",
+    screenOptions:{
+      headerShown:false
+    },
+    screens:{
+      Intro: {
+        screen: Intro,
+      },
+      LogIn: {
+        screen: LogIn,
+      },
+      SignIn: {
+        screen: SignIn,
+      },
+    }
+  });
 
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Account",
@@ -82,24 +100,12 @@ export default function App() {
 
   const RootStack = createNativeStackNavigator({
     initialRouteName: landingPage,
+    screenOptions:{
+      headerShown:false
+    },
     screens: {
-      Intro: {
-        screen: Intro,
-        options: {
-          headerShown: false,
-        },
-      },
-      LogIn: {
-        screen: LogIn,
-        options: {
-          headerShown: false,
-        },
-      },
-      SignIn: {
-        screen: SignIn,
-        options: {
-          headerShown: false,
-        },
+      Auth:{
+        screen: authStack,
       },
       Explorez: {
         screen: Explorez,
@@ -109,9 +115,6 @@ export default function App() {
       },
       Menu: {
         screen: bottomTabs,
-        options: {
-          headerShown: false,
-        },
       },
     },
   });

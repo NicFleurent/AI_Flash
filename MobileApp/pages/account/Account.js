@@ -86,7 +86,19 @@ const Account = () => {
     try {
       const response = await logout();
 
-      navigation.navigate("Intro", {success:response.data.message})
+      navigation.navigate("Auth", {screen: "Intro", params:{success:response.data.message}})
+      navigation.reset({
+        index:0,
+        routes:[
+          {
+            name:'Auth',
+            params:{
+              screen:'Intro',
+              params:{success:response.data.message}
+            }
+          }
+        ]
+      })
 
     } catch (error) {
       Toast.show({

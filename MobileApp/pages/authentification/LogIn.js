@@ -28,8 +28,14 @@ const LogIn = () => {
       try {
         const response = await login(email, password);
   
-        navigation.navigate("Menu", {
-          screen:"Home",
+        navigation.reset({
+          index:0,
+          routes:[
+            {
+              name:'Menu',
+              params:{screen:'Home'}
+            }
+          ]
         })
 
       } catch (error) {
