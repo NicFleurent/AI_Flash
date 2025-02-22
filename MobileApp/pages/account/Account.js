@@ -7,6 +7,8 @@ import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
+import { logout, updateUser } from '../../api/user';
+import Toast from 'react-native-toast-message';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -37,28 +39,23 @@ const Account = () => {
 
   const handleSave = async () => {
     if (validateForm()) {
-      // try {
-      //   const response = await login(email, password);
+      try {
+        const response = await updateUser(email, firstname, lastname);
 
-      //   const userInfo = {
-      //     token: response.data.token,
-      //     id: response.data.user.id,
-      //     email: response.data.user.email,
-      //     firstname: response.data.user.firstname,
-      //     lastname: response.data.user.lastname,
-      //   };
+        if(response){
+          Toast.show({
+            type: 'success',
+            text1: response.data.message
+          });
+        }
 
-      //   navigation.navigate("Menu", {
-      //     screen: "Home",
-      //   })
-
-      // } catch (error) {
-      //   Toast.show({
-      //     type: 'error',
-      //     text1: t('ERROR'),
-      //     text2: error.message,
-      //   });
-      // }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: error.message,
+        });
+      }
     }
     else
       setIsError(true)
@@ -85,8 +82,19 @@ const Account = () => {
     return Object.keys(tempErrors).length === 0;
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      const response = await logout();
 
+      navigation.navigate("Intro", {success:response.data.message})
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: error.message,
+      });
+    }
   }
 
   const handleDelete = () => {
@@ -129,33 +137,34 @@ const Account = () => {
           <CustomButton
             type="white-outline"
             label={t('button.save')}
-            onPress={() => navigation.goBack()}
+            onPress={handleSave}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faSave}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
-            onPress={() => navigation.goBack()}
+            onPress={handleLogout}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faArrowRightFromBracket}
           />
           <CustomButton
             type="red-full"
             label={t('auth.deleteAccount')}
-            onPress={async () => handleSave()}
+            onPress={handleDelete}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faUserXmark}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.changePassword')}
-            onPress={() => navigation.goBack()}
+            onPress={handleChangePassword}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faPenToSquare}
           />
         </View>
       </View>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }

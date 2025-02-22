@@ -1,13 +1,26 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
-const Intro = () => {
+const Intro = ({route}) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+
+  useEffect(()=>{
+    if(route.params){
+      if(route.params.success){
+        Toast.show({
+          type: 'success',
+          text1: route.params.success
+        });
+      }
+    }
+  },[route])
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -39,6 +52,7 @@ const Intro = () => {
           /> 
         </View>  
       </LinearGradient>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }

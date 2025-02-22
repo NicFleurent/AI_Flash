@@ -3,6 +3,7 @@
     "APP_NAME": "AI Flash",
     "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
     "ERROR":"Erreur",
+    "SUCCESS":"Succès",
     "auth":{
       "connection":"Connexion",
       "login":"Se connecter",

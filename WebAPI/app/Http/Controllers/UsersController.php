@@ -29,7 +29,7 @@ class UsersController extends Controller
 
     return $this->success([
       'user' => $user,
-      'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
     ]);
   }
 
@@ -47,7 +47,7 @@ class UsersController extends Controller
 
     return $this->success([
       'user' => $user,
-      'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
     ]);
   }
 
@@ -58,6 +58,17 @@ class UsersController extends Controller
     return $this->success([
       'message' => __('auth.successful_logout')
     ]);
+  }
+
+  public function refreshToken()
+  {
+    $user = Auth::user();
+    $user->currentAccessToken()->delete();
+
+    return $this->success([
+      'user' => $user,
+      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
+    ]);    
   }
 
   public function update(UserUpdateRequest $request)
@@ -77,6 +88,7 @@ class UsersController extends Controller
     $user->save();
 
     return $this->success([
+      'user' => $user,
       'message' => __('auth.successful_update')
     ]);
   }

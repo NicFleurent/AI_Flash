@@ -37,15 +37,6 @@ const SignIn = () => {
           passwordConfirm
         );
 
-        const user = {
-          token: response.data.token,
-          id: response.data.user.id,
-          email: response.data.user.email,
-          firstname: response.data.user.firstname,
-          lastname: response.data.user.lastname,
-        };
-        saveLocalUser(user);
-
         navigation.navigate("Menu", {
           screen: "Home",
         })

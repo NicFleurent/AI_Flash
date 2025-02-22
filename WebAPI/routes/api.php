@@ -15,6 +15,7 @@ Route::post('register', [UsersController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('logout',[UsersController::class, 'logout']);
+  Route::post('refreshToken',[UsersController::class, 'refreshToken']);
 
   Route::put('user/update', [UsersController::class, 'update']);
   Route::put('user/updatePassword', [UsersController::class, 'updatePassword']);

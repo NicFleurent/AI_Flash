@@ -9,8 +9,26 @@ import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
 import Account from './pages/account/Account';
+import { useEffect, useState } from 'react';
+import { refreshToken } from './api/user';
 
 export default function App() {
+  const [landingPage, setLandingPage] = useState("Intro");
+
+  useEffect(()=>{
+    isUserLoggedIn();
+  },[])
+
+  const isUserLoggedIn = async ()=>{
+    try {
+      const response = await refreshToken();
+      setLandingPage("Menu")
+    } catch (error) {
+      console.log(error)
+      setLandingPage("Intro")
+    }
+  }
+
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Account",
     screenOptions: ({ route }) => ({
@@ -63,7 +81,7 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Intro",
+    initialRouteName: landingPage,
     screens: {
       Intro: {
         screen: Intro,
