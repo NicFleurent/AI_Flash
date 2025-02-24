@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +9,7 @@ const CardCollection = ({
   nameAuthor,
   numberCollection,
   isPublic,
+  onPress,
 }) => {
   const { height } = useWindowDimensions();
 
@@ -33,19 +34,21 @@ const CardCollection = ({
           />
         </View>
       ) : (
-        <View style={styles.textIconeZoneMatiereDisplay}>
-          <View>
-            <Text style={styles.collection}>
-              {numberCollection} Collections
-            </Text>
+        <Pressable onPress={onPress} >
+          <View style={styles.textIconeZoneMatiereDisplay}>
+            <View>
+              <Text style={styles.collection}>
+                {numberCollection} Collections
+              </Text>
+            </View>
+            <FontAwesomeIcon
+              style={{ marginRight: 20 }}
+              size={24}
+              color="#1DB954"
+              icon={faArrowRight}
+            />
           </View>
-          <FontAwesomeIcon
-            style={{ marginRight: 20 }}
-            size={24}
-            color="#1DB954"
-            icon={faArrowRight}
-          />
-        </View>
+        </Pressable>
       )}
     </View>
   );
