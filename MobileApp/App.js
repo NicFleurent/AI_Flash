@@ -8,7 +8,10 @@ import SignIn from './pages/authentification/SignIn';
 import Home from './pages/Home';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Explorez from "./pages/PagesPubliques/Explorez";
+import { Provider } from 'react-redux';
+import store from './stores/store';
 import Account from './pages/account/Account';
+
 
 export default function App() {
   const bottomTabs = createBottomTabNavigator({
@@ -100,7 +103,11 @@ export default function App() {
 
   const Navigation = createStaticNavigation(RootStack);
 
-  return <Navigation />;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({

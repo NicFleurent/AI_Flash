@@ -6,10 +6,13 @@ import CustomInput from '../../components/CustomInput';
 import { login } from '../../api/authentification/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 const LogIn = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -78,7 +81,7 @@ const LogIn = () => {
           <Text style={styles.txtTitle}>{t('auth.connection')}</Text>
         </View>
 
-        <View style={styles.containerForm}>
+        <View style={[styles.containerForm, isTablet && styles.containerFormTablet]}>
           <View style={styles.containerInputs}>
             <CustomInput
               label={t('input.email')}
@@ -145,6 +148,10 @@ const styles = {
     width:'100%',
     justifyContent:'start',
     alignItems:'center',
+  },
+  containerFormTablet:{
+    flex:3,
+    width:'75%'
   },
   containerInputs:{
     width:'100%',
