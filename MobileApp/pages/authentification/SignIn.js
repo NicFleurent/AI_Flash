@@ -6,10 +6,12 @@ import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { signin } from '../../api/authentification/user'
+import { useSelector } from 'react-redux'
 
 const SignIn = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -90,11 +92,11 @@ const SignIn = () => {
     <View style={styles.container}>
 
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.containerTitle}>
+        <View style={[styles.containerTitle, isTablet && styles.containerTitleTablet]}>
           <Text style={styles.txtTitle}>{t('auth.signin')}</Text>
         </View>
 
-        <View style={styles.containerForm}>
+        <View style={[styles.containerForm, isTablet && styles.containerFormTablet]}>
           <View style={styles.containerInputs}>
             <CustomInput
               label={t('input.firstname')}
@@ -176,10 +178,17 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  containerTitleTablet:{
+    marginVertical:50
+  },
   containerForm: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerFormTablet:{
+    marginVertical:50,
+    width:'75%'
   },
   containerInputs: {
     width: '100%',
