@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStaticNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next'
 import Intro from './pages/authentification/Intro';
 import LogIn from './pages/authentification/LogIn';
 import SignIn from './pages/authentification/SignIn';
@@ -11,11 +12,14 @@ import Explorez from "./pages/PagesPubliques/Explorez";
 import { Provider } from 'react-redux';
 import store from './stores/store';
 import Account from './pages/account/Account';
+import Subjects from './pages/matieres/Subjects';
+import Collections from './pages/matieres/Collections';
 
 
 export default function App() {
+  const { t } = useTranslation();
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Account",
+    initialRouteName: "Subjects",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -23,6 +27,8 @@ export default function App() {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Account") {
           iconName = focused ? "person" : "person-outline";
+        } else if (route.name === "Subjects") {
+          iconName = focused ? "library" : "library-outline";
         } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
         }
@@ -62,6 +68,12 @@ export default function App() {
           title: 'Votre compte'
         },
       },
+      Subjects: {
+        screen: Subjects,
+        options: {
+          title: t("subject.title")
+        },
+      },
     },
   });
 
@@ -91,6 +103,13 @@ export default function App() {
         options: {
           headerShown: false,
         },
+      },
+      Collections: {
+        screen: Collections,
+        options: ({route}) => ({
+          title: route.params?.name || "Collections",
+          headerShown: true,
+        }),
       },
       Menu: {
         screen: bottomTabs,
