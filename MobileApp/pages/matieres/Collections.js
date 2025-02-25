@@ -6,7 +6,6 @@ import CardCollection from "../../components/PagesPubliques/CardCollection";
 import { getCollections, editSubject } from "../../api/collection";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import CustomModal from '../../components/CustomModal'
 import Toast from 'react-native-toast-message';
 
 
@@ -131,7 +130,7 @@ const Collections = ({ route }) => {
         contentContainerStyle={styles.flatListContent}
       />
 
-      <CustomModal
+      {/* <CustomModal
         visible={visible}
         setVisible={setVisible}
         title={t("subject.collections.input.title_modal")}
@@ -141,7 +140,7 @@ const Collections = ({ route }) => {
         error={error}
         onPressEdit={editUserSubject}
         type_modal={type_modal}
-      />
+      /> */}
 
       <Button title="MODIFIER" onPress={() => [setTypeModal("Edit"), setVisible(true)]} />
       <StatusBar style="auto" />

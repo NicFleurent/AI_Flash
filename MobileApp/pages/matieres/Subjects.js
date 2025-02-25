@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { getSubjects, createSubject } from '../../api/subject';
 import CardCollection from '../../components/PagesPubliques/CardCollection';
-import CustomModal from '../../components/CustomModal'
 import Toast from 'react-native-toast-message';
 
 
@@ -116,7 +115,7 @@ const Subjects = ({route}) => {
                 numColumns={2}
                 contentContainerStyle={styles.flatListContent}
             />
-
+{/* 
             <CustomModal
                 visible={visible}
                 setVisible={setVisible}
@@ -127,7 +126,7 @@ const Subjects = ({route}) => {
                 error={error}
                 onPressCreate={createUserSubject}
                 type_modal={type_modal}
-            />
+            /> */}
 
             <Button title="AJOUTER" onPress={() => [setTypeModal("Add"), setVisible(true)]} />
             <StatusBar style="auto" />
