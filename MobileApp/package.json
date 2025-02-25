@@ -24,6 +24,7 @@
     "@types/react-native-extra-dimensions-android": "^1.2.3",
     "expo": "^52.0.35",
     "expo-blur": "~14.0.3",
+    "@reduxjs/toolkit": "^2.5.1",
     "expo-linear-gradient": "~14.0.2",
     "expo-status-bar": "~2.0.1",
     "i18next": "^24.2.2",
@@ -42,6 +43,7 @@
     "react-native-svg": "15.8.0",
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
+    "react-redux": "^9.2.0"
     "react-native-web": "~0.19.13"
   },
   "devDependencies": {

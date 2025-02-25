@@ -10,6 +10,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import { useTranslation } from "react-i18next";
+import Explorez from "./pages/PagesPubliques/Explorez";
+import { Provider } from 'react-redux';
+import store from './stores/store';
+
 
 export default function App() {
   const {t} = useTranslation();
@@ -109,7 +113,11 @@ export default function App() {
 
   const Navigation = createStaticNavigation(RootStack);
 
-  return <Navigation />;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
