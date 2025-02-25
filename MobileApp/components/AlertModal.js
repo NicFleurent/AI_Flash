@@ -1,5 +1,4 @@
 import React from "react";
-import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import {
   View,
@@ -7,6 +6,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { useWindowDimensions } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -26,58 +26,62 @@ const AlertModal = ({
   const { width, height } = useWindowDimensions();
 
   return (
-    <Modal isVisible={isVisible} onBackdropPress={onClose} style={styles.modal}>
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
+      style={styles.modal}
+    >
       <BlurView
         intensity={10}
         style={[styles.blurView, { width: width, height: height }]}
       >
         <View style={styles.bottomSheetContainer}>
           <View style={styles.bottomSheet}>
-            <ScrollView contentContainerStyle={styles.modalContent}>
-              <View style={styles.entete}>
-                <View style={styles.sousEntete}>
-                  <TouchableOpacity onPress={onClose}>
-                    <FontAwesomeIcon
-                      style={styles.icon}
-                      size={24}
-                      color="#1DB954"
-                      icon={faCircleCheck}
-                    />
-                  </TouchableOpacity>
-
-                  <Text style={styles.modalTitle}>{title}</Text>
-                </View>
-
+            <View style={styles.entete}>
+              <View style={styles.sousEntete}>
                 <TouchableOpacity onPress={onClose}>
                   <FontAwesomeIcon
                     style={styles.icon}
                     size={24}
                     color="#1DB954"
-                    icon={faXmark}
+                    icon={faCircleCheck}
                   />
                 </TouchableOpacity>
-              </View>
-              <Text style={styles.description}>{description}</Text>
-              <View style={styles.buttonContainer}>
-                {showCancelButton && (
-                  <TouchableOpacity onPress={onCancel || onClose}>
-                    <View style={styles.cancelButton}>
-                      <Text style={styles.cancelButtonText}>
-                        {cancelButtonText}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
 
-                <TouchableOpacity onPress={onConfirm || onClose}>
-                  <View style={styles.confirmButton}>
-                    <Text style={styles.confirmButtonText}>
-                      {confirmButtonText}
+                <Text style={styles.modalTitle}>{title}</Text>
+              </View>
+
+              <TouchableOpacity onPress={onClose}>
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  size={24}
+                  color="#1DB954"
+                  icon={faXmark}
+                />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.description}>{description}</Text>
+            <View style={styles.buttonContainer}>
+              {showCancelButton && (
+                <TouchableOpacity onPress={onCancel || onClose}>
+                  <View style={styles.cancelButton}>
+                    <Text style={styles.cancelButtonText}>
+                      {cancelButtonText}
                     </Text>
                   </View>
                 </TouchableOpacity>
-              </View>
-            </ScrollView>
+              )}
+
+              <TouchableOpacity onPress={onConfirm || onClose}>
+                <View style={styles.confirmButton}>
+                  <Text style={styles.confirmButtonText}>
+                    {confirmButtonText}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </BlurView>

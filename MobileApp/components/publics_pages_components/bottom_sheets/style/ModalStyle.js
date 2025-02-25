@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import ThirdModal from "../ThirdModal";
 
 const styles = StyleSheet.create({
   modal: {
@@ -7,14 +6,12 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   blurView: {
-    borderRadius: 8,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
   bottomSheetContainer: {
     flex: 1,
-    justifyContent: "flex-end",
     width: "100%",
   },
   bottomSheet: {
@@ -23,8 +20,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 20,
     width: "100%",
-    minHeight: "30%",
-    maxHeight: "80%",
+    height: "100%",
   },
   handle: {
     width: 40,
@@ -36,11 +32,12 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     flexGrow: 1,
+    paddingBottom: 20,
   },
   modalTitle: {
     fontSize: 20,
-    marginTop: 40,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 20,
     color: "white",
     fontWeight: "bold",
   },
@@ -66,7 +63,7 @@ const styles = StyleSheet.create({
   },
   selectList: {
     paddingVertical: 20,
-    marginBottom: 50,
+    marginBottom: 10,
     borderColor: "#1DB954",
     borderWidth: 2,
     borderRadius: 8,
@@ -78,6 +75,13 @@ const styles = StyleSheet.create({
   dropdownStyle: {
     backgroundColor: "white",
     color: "black",
+  },
+  absoluteFill: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 

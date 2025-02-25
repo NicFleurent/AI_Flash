@@ -7,10 +7,12 @@ import LogIn from "./pages/authentification/LogIn";
 import SignIn from "./pages/authentification/SignIn";
 import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Explorez from "./pages/PagesPubliques/Explorez";
 import Account from "./pages/account/Account";
+import Explore from "./pages/publics_pages/Explore";
+import { useTranslation } from "react-i18next";
 
 export default function App() {
+  const {t} = useTranslation();
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Explorez",
     screenOptions: ({ route }) => ({
@@ -60,13 +62,13 @@ export default function App() {
         },
       },
       Explorez: {
-        screen: Explorez,
+        screen: Explore,
         options: {
           headerShown: true,
           headerTitleAlign: "left",
+          title:t('explore.title'),
           headerTitleStyle: {
-            fontSize: 28,
-            marginLeft: 10,
+            fontSize: 38,
             color: "white",
             fontWeight: "bold",
           },
