@@ -5,10 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import CardCollection from '../components/publics_pages_components/CardCollection';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
+  
   const [refreshing, setRefreshing] = useState(false);
   const [firstname, setFirstname] = useState("Nicolas");
 
@@ -135,7 +138,7 @@ const Home = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatListContainer}
-        numColumns={2}
+        numColumns={isTablet ? 3 : 2}
         ListEmptyComponent={listeVide}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh}

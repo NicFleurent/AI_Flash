@@ -9,15 +9,18 @@ import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesom
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
+import { useSelector } from 'react-redux';
 
 const Account = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
+
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
-  const [isError, setIsError] = useState(false);``
+  const [isError, setIsError] = useState(false);
 
   useEffect(()=>{
     getUser();
@@ -130,8 +133,8 @@ const Account = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerForm}>
-        <View style={styles.containerInputs}>
+      <View style={[styles.containerForm, isTablet && styles.containerFormTablet]}>
+        <View style={[styles.containerInputs, isTablet && styles.containerInputsTablet]}>
           <CustomInput
             label={t('input.firstname')}
             value={firstname}
@@ -205,8 +208,15 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  containerFormTablet:{
+    width: '50%',
+    justifyContent: 'center',
+  },
   containerInputs: {
     width: '100%',
+  },
+  containerInputsTablet:{
+    marginBottom:50
   },
   containerButtons: {
     width: '90%',
