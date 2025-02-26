@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStaticNavigation } from "@react-navigation/native";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import Intro from "./pages/authentification/Intro";
 import LogIn from "./pages/authentification/LogIn";
 import SignIn from "./pages/authentification/SignIn";
@@ -12,7 +12,6 @@ import Explore from "./pages/publics_pages/Explore";
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import store from './stores/store';
-import Account from './pages/account/Account';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
 
