@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('back_face');
             $table->date('next_revision_date');
             $table->integer('forgetting_curve_stage');
+            $table->foreignId('collection_id')->constrained('collections')->onDelete('cascade');
             $table->timestamps();
         });
     }
