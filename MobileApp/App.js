@@ -82,7 +82,7 @@ export default function App() {
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 24,
+        fontSize: 38,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
@@ -108,14 +108,7 @@ export default function App() {
       Explore: {
         screen: Explore,
         options: {
-          headerShown: true,
-          headerTitleAlign: "left",
           title:t('explore.title'),
-          headerTitleStyle: {
-            fontSize: 38,
-            color: "white",
-            fontWeight: "bold",
-          },
         },
       },
       Subjects: {
@@ -130,13 +123,12 @@ export default function App() {
   const RootStack = createNativeStackNavigator({
     initialRouteName: landingPage,
     screenOptions:{
-      headerShown:false,
       headerStyle: {
         backgroundColor: "#000000",
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 24,
+        fontSize: 38,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
@@ -144,16 +136,21 @@ export default function App() {
     screens: {
       Auth:{
         screen: authStack,
+        options:{
+          headerShown:false
+        }
       },
       Collections: {
         screen: Collections,
         options: ({route}) => ({
           title: route.params?.name || "Collections",
-          headerShown: true,
         }),
       },
       Menu: {
         screen: bottomTabs,
+        options:{
+          headerShown:false
+        }
       },
       Study:{
         screen:Study

@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { saveLocalUser } from '../../api/secureStore'
-import { signin } from '../../api/authentification/user'
+import { signin } from '../../api/user'
 import { useSelector } from 'react-redux'
 
 const SignIn = () => {

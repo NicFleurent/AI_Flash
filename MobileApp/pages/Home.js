@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import CardCollection from '../components/PagesPubliques/CardCollection';
+import CardCollection from '../components/publics_pages_components/CardCollection';
 
 const Home = () => {
   const navigation = useNavigation();
