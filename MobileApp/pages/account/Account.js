@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -10,11 +10,15 @@ import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
+import AlertModal from '../../components/AlertModal';
+import AlertCustom from '../../components/AlertCustom';
 
 const Account = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
+
+  const [isModalLogoutVisible, setIsModalLogoutVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -85,6 +89,24 @@ const Account = () => {
     return Object.keys(tempErrors).length === 0;
   }
 
+  const ouvrirAlert = () => {
+    Alert.alert('Titre','Message à aficher',[
+      {
+        text:'Plus tard',
+        onPress:()=>setChoix("Plus tard")
+      },
+      {
+        text: 'Annuler',
+        onPress: () => setChoix('Annulation'),
+      },
+      {
+        text: 'OK',
+        onPress: () => setChoix('OK')
+      }
+      
+    ]);
+  }
+
   const handleLogout = async () => {
     try {
       const response = await logout();
@@ -130,6 +152,11 @@ const Account = () => {
   const handleChangePassword = () => {
 
   }
+  
+  const closeModalLogout = useCallback(() => {
+    console.log('Test')
+    setIsModalLogoutVisible(false);
+  },[]);
 
   return (
     <View style={styles.container}>
@@ -170,7 +197,7 @@ const Account = () => {
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
-            onPress={handleLogout}
+            onPress={()=>setIsModalLogoutVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faArrowRightFromBracket}
           />
@@ -190,6 +217,13 @@ const Account = () => {
           />
         </View>
       </View>
+
+      <AlertCustom
+        isVisible={isModalLogoutVisible}
+        title="Déconnexion"
+        onCancel={()=>setIsModalLogoutVisible(false)}
+      />
+      
       <Toast position='top' bottomOffset={20} />
     </View>
   )

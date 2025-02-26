@@ -31,7 +31,6 @@ const AlertModal = ({
       animationType="slide"
       onRequestClose={onClose}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
         <View style={[styles.blurView, { width: width, height: height, backgroundColor: "rgba(0, 0, 0, 0.5)" }]}>
           <View style={styles.bottomSheetContainer}>
             <View style={styles.bottomSheet}>
@@ -80,7 +79,6 @@ const AlertModal = ({
             </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>
     </Modal>
   );
 };
