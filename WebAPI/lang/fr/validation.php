@@ -190,6 +190,8 @@ return [
 
   'attributes' => [
     'email' => 'Adresse courriel',
+    'firstname' => 'Prénom',
+    'lastname' => 'Nom',
     'password' => 'Mot de passe',
     'password_confirmation' => 'Confirmer le mot de passe',
   ],

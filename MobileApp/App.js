@@ -1,17 +1,59 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStaticNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import Intro from './pages/authentification/Intro';
-import LogIn from './pages/authentification/LogIn';
-import SignIn from './pages/authentification/SignIn';
-import Home from './pages/Home';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStaticNavigation } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import Intro from "./pages/authentification/Intro";
+import LogIn from "./pages/authentification/LogIn";
+import SignIn from "./pages/authentification/SignIn";
+import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Explorez from "./pages/PagesPubliques/Explorez";
-import Account from './pages/account/Account';
+import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
+import { Provider } from 'react-redux';
+import { refreshToken } from './api/user';
+import Account from "./pages/account/Account";
+import Explore from "./pages/publics_pages/Explore";
+import store from './stores/store';
+import Subjects from './pages/matieres/Subjects';
+import Collections from './pages/matieres/Collections';
 import Study from './pages/Study';
 
 export default function App() {
+  const {t} = useTranslation();
+  const [landingPage, setLandingPage] = useState("Auth");
+
+  useEffect(()=>{
+    isUserLoggedIn();
+  },[])
+
+  const isUserLoggedIn = async ()=>{
+    try {
+      const response = await refreshToken();
+      setLandingPage("Menu")
+    } catch (error) {
+      console.log(error)
+      setLandingPage("Auth")
+    }
+  }
+
+  const authStack = createNativeStackNavigator({
+    initialRouteName:"Intro",
+    screenOptions:{
+      headerShown:false
+    },
+    screens:{
+      Intro: {
+        screen: Intro,
+      },
+      LogIn: {
+        screen: LogIn,
+      },
+      SignIn: {
+        screen: SignIn,
+      },
+    }
+  });
+
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Home",
     screenOptions: ({ route }) => ({
@@ -21,6 +63,8 @@ export default function App() {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Account") {
           iconName = focused ? "person" : "person-outline";
+        } else if (route.name === "Subjects") {
+          iconName = focused ? "library" : "library-outline";
         } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
         }
@@ -52,21 +96,41 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: 'Accueil'
+          title: "Accueil",
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: 'Votre compte'
+          title: "Votre compte",
+        },
+      },
+      Explore: {
+        screen: Explore,
+        options: {
+          headerShown: true,
+          headerTitleAlign: "left",
+          title:t('explore.title'),
+          headerTitleStyle: {
+            fontSize: 38,
+            color: "white",
+            fontWeight: "bold",
+          },
+        },
+      },
+      Subjects: {
+        screen: Subjects,
+        options: {
+          title: t("subject.title")
         },
       },
     },
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Menu",
+    initialRouteName: landingPage,
     screenOptions:{
+      headerShown:false,
       headerStyle: {
         backgroundColor: "#000000",
       },
@@ -78,35 +142,18 @@ export default function App() {
       headerTitleAlign: 'left',
     },
     screens: {
-      Intro: {
-        screen: Intro,
-        options: {
-          headerShown: false,
-        },
+      Auth:{
+        screen: authStack,
       },
-      LogIn: {
-        screen: LogIn,
-        options: {
-          headerShown: false,
-        },
-      },
-      SignIn: {
-        screen: SignIn,
-        options: {
-          headerShown: false,
-        },
-      },
-      Explorez: {
-        screen: Explorez,
-        options: {
-          headerShown: false,
-        },
+      Collections: {
+        screen: Collections,
+        options: ({route}) => ({
+          title: route.params?.name || "Collections",
+          headerShown: true,
+        }),
       },
       Menu: {
         screen: bottomTabs,
-        options: {
-          headerShown: false,
-        },
       },
       Study:{
         screen:Study
@@ -116,7 +163,11 @@ export default function App() {
 
   const Navigation = createStaticNavigation(RootStack);
 
-  return <Navigation />;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({

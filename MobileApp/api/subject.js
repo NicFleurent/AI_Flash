@@ -1,13 +1,9 @@
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export const login = async (email, password) => {
+export const getSubjects = async () => {
   try {
-    const response = await fetch(`${baseUrl}login`, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
+    const response = await fetch(`${baseUrl}getUserSubjects`, {
+      method: 'GET',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -15,7 +11,7 @@ export const login = async (email, password) => {
     });
     
     const data = await response.json();
-
+    
     if(response.status === 200)
       return data;
     else
@@ -26,23 +22,11 @@ export const login = async (email, password) => {
   }
 };
 
-export const signin = async (
-  email, 
-  firstname,
-  lastname,
-  password,
-  passwordConfirm
-) => {
+export const createSubject = async (name) => {
   try {
-    const response = await fetch(`${baseUrl}register`, {
+    const response = await fetch(`${baseUrl}createUserSubject`, {
       method: 'POST',
-      body: JSON.stringify({
-        email: email,
-        firstname:firstname,
-        lastname:lastname,
-        password: password,
-        password_confirm:passwordConfirm
-      }),
+      body: JSON.stringify({ subject_name: name }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -50,7 +34,7 @@ export const signin = async (
     });
     
     const data = await response.json();
-
+    
     if(response.status === 200)
       return data;
     else

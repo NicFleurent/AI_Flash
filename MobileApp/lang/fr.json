@@ -3,14 +3,21 @@
     "APP_NAME": "AI Flash",
     "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
     "ERROR":"Erreur",
+    "SUCCESS":"Succès",
+    "COLLECTIONS": "Collections",
+    "FLASHCARDS": "Flashcards",
     "auth":{
       "connection":"Connexion",
       "login":"Se connecter",
       "signin":"Inscription",
-      "register":"S'inscrire"
+      "register":"S'inscrire",
+      "logout":"Déconnexion",
+      "deleteAccount":"Supprimer le compte",
+      "changePassword":"Modifier mot de passe"
     },
     "button":{
-      "goBack":"Retour"
+      "goBack":"Retour",
+      "save":"Enregistrer"
     },
     "input":{
       "firstname":"Prénom",
@@ -34,6 +41,56 @@
       "flash_study":"Étude rapide",
       "detailed_studies":"Études détaillées",
       "no_studies_today":"Aucune étude à faire aujourd'hui"
-    }
+    },
+    "secureStore":{
+      "error":{
+        "save":"Erreur lors de la sauvegarde",
+        "get":"Erreur lors de la récupération",
+        "delete":"Erreur lors de la suppression"
+      }
+    },
+    "subject":{
+      "title":"Vos matières",
+      "description":"Description",
+      "input":{
+        "title_modal":"Ajouter une matière",
+        "title_input":"Nom de la matière"
+      },
+      "success":"Succès",
+      "error":{
+        "title_input_required":"Le nom de la matière est requis"
+      },
+      "button":{
+        "add":"Créer",
+        "cancel":"Annuler",
+        "save":"Enregistrer",
+        "yes":"Oui",
+        "delete":"Supprimer"
+      },
+      "collections": {
+        "title": "Vos collections pour cette matière",
+        "input":{
+          "title_modal":"Modifier une matière",
+          "title_input":"Nom de la matière"
+        }
+      }
+    },
+    "explore":{
+      "title": "Explorez",
+      "find": "Rechercher",
+      "bottom_sheet":{
+        "copy": "Copier",
+        "add": "Ajouter",
+        "copy_made": "Copie effectuée",
+        "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
+        "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
+        "add_to_existing_subject": "Ajouter à une matière existante",
+        "create_new_subject": "Créer une nouvelle matière",
+        "select_subject":"Sélectionner la matière",
+        "add_subject": "Nouvelle matière",
+        "subject_name": "Nom de la matière",
+        "author": "Créée par"
+      }
+    }    
   }
 }

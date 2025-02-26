@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
-import { login } from '../../api/authentification/user';
+import { login } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import { saveLocalUser } from '../../api/secureStore';
+import { useSelector } from 'react-redux';
 
 const LogIn = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -27,16 +30,14 @@ const LogIn = () => {
       try {
         const response = await login(email, password);
   
-        const userInfo = {
-          token: response.data.token,
-          id: response.data.user.id,
-          email: response.data.user.email,
-          firstname: response.data.user.firstname,
-          lastname: response.data.user.lastname,
-        };
-  
-        navigation.navigate("Menu", {
-          screen:"Home",
+        navigation.reset({
+          index:0,
+          routes:[
+            {
+              name:'Menu',
+              params:{screen:'Home'}
+            }
+          ]
         })
 
       } catch (error) {
@@ -78,7 +79,7 @@ const LogIn = () => {
           <Text style={styles.txtTitle}>{t('auth.connection')}</Text>
         </View>
 
-        <View style={styles.containerForm}>
+        <View style={[styles.containerForm, isTablet && styles.containerFormTablet]}>
           <View style={styles.containerInputs}>
             <CustomInput
               label={t('input.email')}
@@ -145,6 +146,10 @@ const styles = {
     width:'100%',
     justifyContent:'start',
     alignItems:'center',
+  },
+  containerFormTablet:{
+    flex:3,
+    width:'75%'
   },
   containerInputs:{
     width:'100%',
