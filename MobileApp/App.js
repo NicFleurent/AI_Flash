@@ -7,19 +7,54 @@ import LogIn from "./pages/authentification/LogIn";
 import SignIn from "./pages/authentification/SignIn";
 import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Account from "./pages/account/Account";
-import Explore from "./pages/publics_pages/Explore";
+import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
+import { refreshToken } from './api/user';
+import Account from "./pages/account/Account";
+import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
 
-
 export default function App() {
   const {t} = useTranslation();
+  const [landingPage, setLandingPage] = useState("Auth");
+
+  useEffect(()=>{
+    isUserLoggedIn();
+  },[])
+
+  const isUserLoggedIn = async ()=>{
+    try {
+      const response = await refreshToken();
+      setLandingPage("Menu")
+    } catch (error) {
+      console.log(error)
+      setLandingPage("Auth")
+    }
+  }
+
+  const authStack = createNativeStackNavigator({
+    initialRouteName:"Intro",
+    screenOptions:{
+      headerShown:false
+    },
+    screens:{
+      Intro: {
+        screen: Intro,
+      },
+      LogIn: {
+        screen: LogIn,
+      },
+      SignIn: {
+        screen: SignIn,
+      },
+    }
+  });
+
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Subjects",
+    initialRouteName: "Home",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -91,25 +126,13 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Menu",
+    initialRouteName: landingPage,
+    screenOptions:{
+      headerShown:false
+    },
     screens: {
-      Intro: {
-        screen: Intro,
-        options: {
-          headerShown: false,
-        },
-      },
-      LogIn: {
-        screen: LogIn,
-        options: {
-          headerShown: false,
-        },
-      },
-      SignIn: {
-        screen: SignIn,
-        options: {
-          headerShown: false,
-        },
+      Auth:{
+        screen: authStack,
       },
       Collections: {
         screen: Collections,
@@ -120,9 +143,6 @@ export default function App() {
       },
       Menu: {
         screen: bottomTabs,
-        options: {
-          headerShown: false,
-        },
       },
     },
   });

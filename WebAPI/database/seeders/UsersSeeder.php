@@ -21,6 +21,12 @@ class UsersSeeder extends Seeder
         'firstname' => 'Nicolas',
         'lastname' => 'Fleurent',
       ],
+      [
+        'email' => 'nic2@gmail.com',
+        'password' => Hash::make('Secret1234!'),
+        'firstname' => 'Nicolas',
+        'lastname' => 'Fleurent',
+      ],
     ]);
   }
 }

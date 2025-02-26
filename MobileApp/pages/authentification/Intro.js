@@ -1,13 +1,15 @@
+
 import { View, Text, Image, useWindowDimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { defineScreen } from '../../stores/sliceScreen';
 
-const Intro = () => {
+const Intro = ({route}) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
   const {height, width} = useWindowDimensions();
@@ -27,6 +29,17 @@ const Intro = () => {
 
     dispatch(defineScreen(screen));
   }
+  
+  useEffect(()=>{
+    if(route.params){
+      if(route.params.success){
+        Toast.show({
+          type: 'success',
+          text1: route.params.success
+        });
+      }
+    }
+  },[route])
 
   return (
     <View style={styles.container}>
@@ -59,6 +72,7 @@ const Intro = () => {
           /> 
         </View>  
       </LinearGradient>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }
