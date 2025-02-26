@@ -3,16 +3,21 @@
     "APP_NAME": "AI Flash",
     "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
     "ERROR":"Erreur",
+    "SUCCESS":"Succès",
     "COLLECTIONS": "Collections",
     "FLASHCARDS": "Flashcards",
     "auth":{
       "connection":"Connexion",
       "login":"Se connecter",
       "signin":"Inscription",
-      "register":"S'inscrire"
+      "register":"S'inscrire",
+      "logout":"Déconnexion",
+      "deleteAccount":"Supprimer le compte",
+      "changePassword":"Modifier mot de passe"
     },
     "button":{
-      "goBack":"Retour"
+      "goBack":"Retour",
+      "save":"Enregistrer"
     },
     "input":{
       "firstname":"Prénom",
@@ -27,6 +32,13 @@
         "email_invalid":"L'adresse courriel n'est pas valide",
         "password_required":"Le mot de passe est requis",
         "passwordConfirm_required":"Les mots de passe ne correspondent pas"
+      }
+    },
+    "secureStore":{
+      "error":{
+        "save":"Erreur lors de la sauvegarde",
+        "get":"Erreur lors de la récupération",
+        "delete":"Erreur lors de la suppression"
       }
     },
     "subject":{

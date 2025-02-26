@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton'
 import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import { saveLocalUser } from '../../api/secureStore'
 import { signin } from '../../api/authentification/user'
 import { useSelector } from 'react-redux'
 
@@ -37,14 +38,6 @@ const SignIn = () => {
           password,
           passwordConfirm
         );
-
-        const userInfo = {
-          token: response.data.token,
-          id: response.data.user.id,
-          email: response.data.user.email,
-          firstname: response.data.user.firstname,
-          lastname: response.data.user.lastname,
-        };
 
         navigation.navigate("Menu", {
           screen: "Home",

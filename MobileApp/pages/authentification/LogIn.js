@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import CustomInput from '../../components/CustomInput';
-import { login } from '../../api/authentification/user';
+import { login } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import { saveLocalUser } from '../../api/secureStore';
 import { useSelector } from 'react-redux';
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 const LogIn = () => {
   const navigation = useNavigation();
@@ -30,16 +30,14 @@ const LogIn = () => {
       try {
         const response = await login(email, password);
   
-        const userInfo = {
-          token: response.data.token,
-          id: response.data.user.id,
-          email: response.data.user.email,
-          firstname: response.data.user.firstname,
-          lastname: response.data.user.lastname,
-        };
-  
-        navigation.navigate("Menu", {
-          screen:"Home",
+        navigation.reset({
+          index:0,
+          routes:[
+            {
+              name:'Menu',
+              params:{screen:'Home'}
+            }
+          ]
         })
 
       } catch (error) {
