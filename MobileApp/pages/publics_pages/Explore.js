@@ -25,7 +25,6 @@ const data = [
 
 const Explore = () => {
   const [search, onChangeSearch] = useState("");
-  const { width, height } = useWindowDimensions();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const {t} = useTranslation();
   const listFlashcardRef = useRef(null);

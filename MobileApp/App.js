@@ -10,7 +10,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import { useTranslation } from "react-i18next";
-import Explorez from "./pages/PagesPubliques/Explorez";
 import { Provider } from 'react-redux';
 import store from './stores/store';
 
@@ -18,7 +17,7 @@ import store from './stores/store';
 export default function App() {
   const {t} = useTranslation();
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Explorez",
+    initialRouteName: "Explore",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -65,7 +64,7 @@ export default function App() {
           title: "Votre compte",
         },
       },
-      Explorez: {
+      Explore: {
         screen: Explore,
         options: {
           headerShown: true,

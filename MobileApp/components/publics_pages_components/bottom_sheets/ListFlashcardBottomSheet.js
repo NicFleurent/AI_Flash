@@ -1,13 +1,11 @@
 import React, { forwardRef } from "react";
 import {
   View,
-  ScrollView,
   Text,
   FlatList,
   useWindowDimensions,
 } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
 import FLashCard from "../FlashCard";
 import CustomButton from "../../CustomButton";
 import styles from "./style/ModalStyle";
@@ -37,8 +35,7 @@ const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet }, ref) => {
       enablePanDownToClose
       handleComponent={null}
       backgroundComponent={() => (
-        <BlurView
-          intensity={10}
+        <View
           style={[styles.absoluteFill, { width, height }]}
         />
       )}
@@ -46,7 +43,6 @@ const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet }, ref) => {
       <BottomSheetView style={styles.bottomSheetContainer}>
         <View style={styles.bottomSheet}>
           <View style={styles.handle} />
-
           <Text style={styles.modalTitle}>Programmation orientée objet</Text>
           <Text style={styles.modalSubTitle}>{t('explore.bottom_sheet.author')} Nicolas Fleurent</Text>
           <FlatList

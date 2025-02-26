@@ -1,7 +1,6 @@
 import React, { useState, forwardRef } from "react";
-import { View, ScrollView, Text, useWindowDimensions } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
 import CustomButton from "../../CustomButton";
 import { SelectList } from "react-native-dropdown-select-list";
 import styles from "./style/ModalStyle";
@@ -27,7 +26,7 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenOtherSheet }, ref) => {
       handleComponent={null}
       enablePanDownToClose
       backgroundComponent={() => (
-        <BlurView intensity={10} style={[styles.blurView, { width, height }]} />
+        <View style={[styles.blurView, { width, height }]} />
       )}
     >
       <BottomSheetView style={styles.bottomSheetContainer}>

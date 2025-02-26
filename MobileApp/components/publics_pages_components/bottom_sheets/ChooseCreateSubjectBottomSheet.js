@@ -1,12 +1,11 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { View, ScrollView, Text, useWindowDimensions } from "react-native";
+import { forwardRef } from "react";
+import { View, Text, useWindowDimensions } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
 import CustomButton from "../../CustomButton";
 import styles from "./style/ModalStyle";
 import { useTranslation } from "react-i18next";
 
-const ChooseCreateSubjectBottomSheet = React.forwardRef(
+const ChooseCreateSubjectBottomSheet = forwardRef(
   ({ onOpenOtherSheet }, ref) => {
     const { width, height } = useWindowDimensions();
     const {t} = useTranslation();
@@ -18,8 +17,7 @@ const ChooseCreateSubjectBottomSheet = React.forwardRef(
         enablePanDownToClose
         handleComponent={null}
         backgroundComponent={() => (
-          <BlurView
-            intensity={50}
+          <View
             style={[styles.blurView, { width, height }]}
           />
         )}

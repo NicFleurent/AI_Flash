@@ -1,7 +1,6 @@
-import React, { useRef, forwardRef } from "react";
-import { View, ScrollView, Text, useWindowDimensions } from "react-native";
+import { forwardRef, React } from "react";
+import { View, Text, useWindowDimensions } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
 import CustomInput from "../../CustomInput";
 import CustomButton from "../../CustomButton";
 import styles from "./style/ModalStyle";
@@ -20,8 +19,7 @@ const CreateSubjectBottomSheet = forwardRef(
         enablePanDownToClose
         handleComponent={null}
         backgroundComponent={() => (
-          <BlurView
-            intensity={10}
+          <View
             style={[styles.blurView, { width, height }]}
           />
         )}

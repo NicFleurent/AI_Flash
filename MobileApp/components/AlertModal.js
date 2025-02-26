@@ -1,14 +1,13 @@
 import React from "react";
-import { BlurView } from "expo-blur";
 import {
   View,
   StyleSheet,
-  ScrollView,
   Text,
   TouchableOpacity,
   Modal,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
 } from "react-native";
-import { useWindowDimensions } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faXmark, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -31,60 +30,57 @@ const AlertModal = ({
       transparent={true}
       animationType="slide"
       onRequestClose={onClose}
-      style={styles.modal}
     >
-      <BlurView
-        intensity={10}
-        style={[styles.blurView, { width: width, height: height }]}
-      >
-        <View style={styles.bottomSheetContainer}>
-          <View style={styles.bottomSheet}>
-            <View style={styles.entete}>
-              <View style={styles.sousEntete}>
+      <TouchableWithoutFeedback onPress={onClose}>
+        <View style={[styles.blurView, { width: width, height: height, backgroundColor: "rgba(0, 0, 0, 0.5)" }]}>
+          <View style={styles.bottomSheetContainer}>
+            <View style={styles.bottomSheet}>
+              <View style={styles.entete}>
+                <View style={styles.sousEntete}>
+                  <TouchableOpacity onPress={onClose}>
+                    <FontAwesomeIcon
+                      style={styles.icon}
+                      size={24}
+                      color="#1DB954"
+                      icon={faCircleCheck}
+                    />
+                  </TouchableOpacity>
+
+                  <Text style={styles.modalTitle}>{title}</Text>
+                </View>
+
                 <TouchableOpacity onPress={onClose}>
                   <FontAwesomeIcon
                     style={styles.icon}
                     size={24}
                     color="#1DB954"
-                    icon={faCircleCheck}
+                    icon={faXmark}
                   />
                 </TouchableOpacity>
-
-                <Text style={styles.modalTitle}>{title}</Text>
               </View>
-
-              <TouchableOpacity onPress={onClose}>
-                <FontAwesomeIcon
-                  style={styles.icon}
-                  size={24}
-                  color="#1DB954"
-                  icon={faXmark}
-                />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.description}>{description}</Text>
-            <View style={styles.buttonContainer}>
-              {showCancelButton && (
-                <TouchableOpacity onPress={onCancel || onClose}>
-                  <View style={styles.cancelButton}>
-                    <Text style={styles.cancelButtonText}>
-                      {cancelButtonText}
+              <Text style={styles.description}>{description}</Text>
+              <View style={styles.buttonContainer}>
+                {showCancelButton && (
+                  <TouchableOpacity onPress={onCancel}>
+                    <View style={styles.cancelButton}>
+                      <Text style={styles.cancelButtonText}>
+                        {cancelButtonText}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity onPress={onConfirm}>
+                  <View style={styles.confirmButton}>
+                    <Text style={styles.confirmButtonText}>
+                      {confirmButtonText}
                     </Text>
                   </View>
                 </TouchableOpacity>
-              )}
-
-              <TouchableOpacity onPress={onConfirm || onClose}>
-                <View style={styles.confirmButton}>
-                  <Text style={styles.confirmButtonText}>
-                    {confirmButtonText}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </BlurView>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -95,25 +91,20 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   blurView: {
-    overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
+    width: "100%",
   },
   bottomSheetContainer: {
-    flex: 1,
-    justifyContent: "center",
     width: "90%",
-  },
-  bottomSheet: {
+    maxWidth: 400,
     backgroundColor: "#000000",
     borderRadius: 32,
     padding: 20,
-    width: "100%",
-    minHeight: "20%",
-    maxHeight: "20%",
   },
-  modalContent: {
-    flexGrow: 1,
+  bottomSheet: {
+    width: "100%",
   },
   modalTitle: {
     fontSize: 15,
@@ -128,6 +119,8 @@ const styles = StyleSheet.create({
   entete: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
   },
   sousEntete: {
     flexDirection: "row",
@@ -139,13 +132,17 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    alignItems: "flex-end",
-    marginTop: 15,
+    alignItems: "center",
+    marginTop: 20,
+    zIndex: 1,
+    elevation: 10,
   },
   cancelButton: {
     borderColor: "white",
     borderWidth: 1,
     borderRadius: 30,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
   },
   cancelButtonText: {
     color: "white",
@@ -156,6 +153,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#1DB954",
     borderRadius: 30,
     marginLeft: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
   },
   confirmButtonText: {
     marginVertical: 8,
