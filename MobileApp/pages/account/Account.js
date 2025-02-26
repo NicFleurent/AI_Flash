@@ -11,7 +11,6 @@ import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
-import AlertCustom from '../../components/AlertCustom';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -19,6 +18,8 @@ const Account = () => {
   const isTablet = useSelector((state) => state.screen.isTablet);
 
   const [isModalLogoutVisible, setIsModalLogoutVisible] = useState(false);
+  const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
+  const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -44,28 +45,32 @@ const Account = () => {
       validateForm();
   }
 
-  const handleSave = async () => {
+  const openUpdateAlert = () => {
     if (validateForm()) {
-      try {
-        const response = await updateUser(email, firstname, lastname);
+      setIsModalUpdateVisible(true);
+    }
+  }
 
-        if(response){
-          Toast.show({
-            type: 'success',
-            text1: response.data.message
-          });
-        }
+  const handleSave = async () => {
+    try {
+      const response = await updateUser(email, firstname, lastname);
 
-      } catch (error) {
+      setIsModalUpdateVisible(false);
+
+      if(response){
         Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: error.message,
+          type: 'success',
+          text1: response.data.message
         });
       }
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: error.message,
+      });
     }
-    else
-      setIsError(true)
   }
 
   const validateForm = () => {
@@ -87,24 +92,6 @@ const Account = () => {
     setIsError(!(Object.keys(tempErrors).length === 0))
 
     return Object.keys(tempErrors).length === 0;
-  }
-
-  const ouvrirAlert = () => {
-    Alert.alert('Titre','Message à aficher',[
-      {
-        text:'Plus tard',
-        onPress:()=>setChoix("Plus tard")
-      },
-      {
-        text: 'Annuler',
-        onPress: () => setChoix('Annulation'),
-      },
-      {
-        text: 'OK',
-        onPress: () => setChoix('OK')
-      }
-      
-    ]);
   }
 
   const handleLogout = async () => {
@@ -152,11 +139,6 @@ const Account = () => {
   const handleChangePassword = () => {
 
   }
-  
-  const closeModalLogout = useCallback(() => {
-    console.log('Test')
-    setIsModalLogoutVisible(false);
-  },[]);
 
   return (
     <View style={styles.container}>
@@ -190,7 +172,7 @@ const Account = () => {
           <CustomButton
             type="white-outline"
             label={t('button.save')}
-            onPress={handleSave}
+            onPress={openUpdateAlert}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faSave}
           />
@@ -204,7 +186,7 @@ const Account = () => {
           <CustomButton
             type="red-full"
             label={t('auth.deleteAccount')}
-            onPress={handleDelete}
+            onPress={()=>setIsModalDeleteVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faUserXmark}
           />
@@ -218,10 +200,35 @@ const Account = () => {
         </View>
       </View>
 
-      <AlertCustom
+      <AlertModal
+        isVisible={isModalUpdateVisible}
+        title={t('account.update')}
+        description={t('account.update_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
+        onCancel={()=>setIsModalUpdateVisible(false)}
+        onClose={()=>setIsModalUpdateVisible(false)}
+        onConfirm={handleSave}
+      />
+      <AlertModal
         isVisible={isModalLogoutVisible}
-        title="Déconnexion"
+        title={t('auth.logout')}
+        description={t('account.logout_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
         onCancel={()=>setIsModalLogoutVisible(false)}
+        onClose={()=>setIsModalLogoutVisible(false)}
+        onConfirm={handleLogout}
+      />
+      <AlertModal
+        isVisible={isModalDeleteVisible}
+        title={t('auth.deleteAccount')}
+        description={t('account.delete_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
+        onCancel={()=>setIsModalDeleteVisible(false)}
+        onClose={()=>setIsModalDeleteVisible(false)}
+        onConfirm={handleDelete}
       />
       
       <Toast position='top' bottomOffset={20} />

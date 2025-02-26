@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  TouchableWithoutFeedback,
   useWindowDimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -25,12 +24,13 @@ const AlertModal = ({
   const { width, height } = useWindowDimensions();
 
   return (
-    <Modal
-      visible={isVisible}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <View>
+      <Modal
+        visible={isVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={onClose}
+      >
         <View style={[styles.blurView, { width: width, height: height, backgroundColor: "rgba(0, 0, 0, 0.5)" }]}>
           <View style={styles.bottomSheetContainer}>
             <View style={styles.bottomSheet}>
@@ -79,7 +79,8 @@ const AlertModal = ({
             </View>
           </View>
         </View>
-    </Modal>
+      </Modal>
+    </View>
   );
 };
 
