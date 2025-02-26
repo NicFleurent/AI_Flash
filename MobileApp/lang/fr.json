@@ -29,6 +29,32 @@
         "passwordConfirm_required":"Les mots de passe ne correspondent pas"
       }
     },
+    "subject":{
+      "title":"Vos matières",
+      "description":"Description",
+      "input":{
+        "title_modal":"Ajouter une matière",
+        "title_input":"Nom de la matière"
+      },
+      "success":"Succès",
+      "error":{
+        "title_input_required":"Le nom de la matière est requis"
+      },
+      "button":{
+        "add":"Créer",
+        "cancel":"Annuler",
+        "save":"Enregistrer",
+        "yes":"Oui",
+        "delete":"Supprimer"
+      },
+      "collections": {
+        "title": "Vos collections pour cette matière",
+        "input":{
+          "title_modal":"Modifier une matière",
+          "title_input":"Nom de la matière"
+        }
+      }
+    },
     "explore":{
       "title": "Explorez",
       "find": "Rechercher",
@@ -45,6 +71,6 @@
         "subject_name": "Nom de la matière",
         "author": "Créée par"
       }
-    }
+    }    
   }
 }

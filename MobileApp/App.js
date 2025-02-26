@@ -12,12 +12,15 @@ import Explore from "./pages/publics_pages/Explore";
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import store from './stores/store';
+import Account from './pages/account/Account';
+import Subjects from './pages/matieres/Subjects';
+import Collections from './pages/matieres/Collections';
 
 
 export default function App() {
   const {t} = useTranslation();
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Explore",
+    initialRouteName: "Subjects",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -25,6 +28,8 @@ export default function App() {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Account") {
           iconName = focused ? "person" : "person-outline";
+        } else if (route.name === "Subjects") {
+          iconName = focused ? "library" : "library-outline";
         } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
         }
@@ -77,6 +82,12 @@ export default function App() {
           },
         },
       },
+      Subjects: {
+        screen: Subjects,
+        options: {
+          title: t("subject.title")
+        },
+      },
     },
   });
 
@@ -100,6 +111,13 @@ export default function App() {
         options: {
           headerShown: false,
         },
+      },
+      Collections: {
+        screen: Collections,
+        options: ({route}) => ({
+          title: route.params?.name || "Collections",
+          headerShown: true,
+        }),
       },
       Menu: {
         screen: bottomTabs,
