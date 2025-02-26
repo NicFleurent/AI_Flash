@@ -16,6 +16,7 @@ import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
+import Study from './pages/Study';
 
 export default function App() {
   const {t} = useTranslation();
@@ -82,8 +83,9 @@ export default function App() {
       headerTintColor: "#ffffff",
       headerTitleStyle: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: "bold"
       },
+      headerTitleAlign: 'left',
       tabBarStyle: {
         borderTopWidth: 0,
         elevation: 0,
@@ -128,7 +130,16 @@ export default function App() {
   const RootStack = createNativeStackNavigator({
     initialRouteName: landingPage,
     screenOptions:{
-      headerShown:false
+      headerShown:false,
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 24,
+        fontWeight: "bold"
+      },
+      headerTitleAlign: 'left',
     },
     screens: {
       Auth:{
@@ -144,6 +155,9 @@ export default function App() {
       Menu: {
         screen: bottomTabs,
       },
+      Study:{
+        screen:Study
+      }
     },
   });
 
