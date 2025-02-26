@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { getSubjects, createSubject } from '../../api/subject';
-import CardCollection from '../../components/PagesPubliques/CardCollection';
+import CardCollection from '../../components/publics_pages_components/CardCollection';
 import Toast from 'react-native-toast-message';
 
 

@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, FlatList, StatusBar, Text, View, TouchableOpa
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
-import CardCollection from "../../components/PagesPubliques/CardCollection";
+import CardCollection from "../../components/publics_pages_components/CardCollection";
 import { getCollections, editSubject } from "../../api/collection";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";

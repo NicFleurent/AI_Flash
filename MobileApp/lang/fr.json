@@ -3,6 +3,8 @@
     "APP_NAME": "AI Flash",
     "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
     "ERROR":"Erreur",
+    "COLLECTIONS": "Collections",
+    "FLASHCARDS": "Flashcards",
     "auth":{
       "connection":"Connexion",
       "login":"Se connecter",
@@ -51,6 +53,23 @@
           "title_modal":"Modifier une matière",
           "title_input":"Nom de la matière"
         }
+      }
+    },
+    "explore":{
+      "title": "Explorez",
+      "find": "Rechercher",
+      "bottom_sheet":{
+        "copy": "Copier",
+        "add": "Ajouter",
+        "copy_made": "Copie effectuée",
+        "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
+        "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
+        "add_to_existing_subject": "Ajouter à une matière existante",
+        "create_new_subject": "Créer une nouvelle matière",
+        "select_subject":"Sélectionner la matière",
+        "add_subject": "Nouvelle matière",
+        "subject_name": "Nom de la matière",
+        "author": "Créée par"
       }
     }    
   }

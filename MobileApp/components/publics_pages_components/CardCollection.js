@@ -1,7 +1,14 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 const CardCollection = ({
   nameMatiere,
@@ -12,33 +19,34 @@ const CardCollection = ({
   onPress,
 }) => {
   const { height } = useWindowDimensions();
+  const {t} = useTranslation();
 
   return (
-    <View style={[styles.container, { height: height / 6 }]}>
-      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-        {nameMatiere}
-      </Text>
-      {isPublic ? (
-        <View style={styles.textIconeZone}>
-          <View>
-            <Text style={styles.numberFlashcard}>
-              {numberFlashcard} Flashcards
-            </Text>
-            <Text style={styles.author}>{nameAuthor}</Text>
+    <TouchableOpacity onPress={onPress} style={{ flex: 1 }}>
+      <View style={[styles.container]}>
+        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          {nameMatiere}
+        </Text>
+        {isPublic ? (
+          <View style={styles.textIconeZone}>
+            <View>
+              <Text style={styles.numberFlashcard}>
+                {numberFlashcard} {t('FLASHCARDS')}
+              </Text>
+              <Text style={styles.author}>{nameAuthor}</Text>
+            </View>
+            <FontAwesomeIcon
+              style={{ marginRight: 20 }}
+              size={24}
+              color="#1DB954"
+              icon={faArrowRight}
+            />
           </View>
-          <FontAwesomeIcon
-            style={{ marginRight: 20 }}
-            size={24}
-            color="#1DB954"
-            icon={faArrowRight}
-          />
-        </View>
-      ) : (
-        <Pressable onPress={onPress} >
+        ) : (
           <View style={styles.textIconeZoneMatiereDisplay}>
             <View>
               <Text style={styles.collection}>
-                {numberCollection} Collections
+                {numberCollection} {t('COLLECTIONS')}
               </Text>
             </View>
             <FontAwesomeIcon
@@ -48,9 +56,9 @@ const CardCollection = ({
               icon={faArrowRight}
             />
           </View>
-        </Pressable>
-      )}
-    </View>
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 15,
@@ -87,11 +95,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 20,
   },
   textIconeZoneMatiereDisplay: {
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
+    marginBottom: 20,
   },
 });
 

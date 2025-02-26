@@ -1,23 +1,23 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStaticNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next'
-import Intro from './pages/authentification/Intro';
-import LogIn from './pages/authentification/LogIn';
-import SignIn from './pages/authentification/SignIn';
-import Home from './pages/Home';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStaticNavigation } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import Intro from "./pages/authentification/Intro";
+import LogIn from "./pages/authentification/LogIn";
+import SignIn from "./pages/authentification/SignIn";
+import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Explorez from "./pages/PagesPubliques/Explorez";
+import Account from "./pages/account/Account";
+import Explore from "./pages/publics_pages/Explore";
+import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import store from './stores/store';
-import Account from './pages/account/Account';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
 
 
 export default function App() {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Subjects",
     screenOptions: ({ route }) => ({
@@ -59,13 +59,26 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: 'Accueil'
+          title: "Accueil",
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: 'Votre compte'
+          title: "Votre compte",
+        },
+      },
+      Explore: {
+        screen: Explore,
+        options: {
+          headerShown: true,
+          headerTitleAlign: "left",
+          title:t('explore.title'),
+          headerTitleStyle: {
+            fontSize: 38,
+            color: "white",
+            fontWeight: "bold",
+          },
         },
       },
       Subjects: {
@@ -94,12 +107,6 @@ export default function App() {
       },
       SignIn: {
         screen: SignIn,
-        options: {
-          headerShown: false,
-        },
-      },
-      Explorez: {
-        screen: Explorez,
         options: {
           headerShown: false,
         },
