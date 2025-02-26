@@ -39,8 +39,9 @@ export default function App() {
       headerTintColor: "#ffffff",
       headerTitleStyle: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: "bold"
       },
+      headerTitleAlign: 'left',
       tabBarStyle: {
         borderTopWidth: 0,
         elevation: 0,
@@ -72,8 +73,9 @@ export default function App() {
       headerTintColor: "#ffffff",
       headerTitleStyle: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: "bold"
       },
+      headerTitleAlign: 'left',
     },
     screens: {
       Intro: {
