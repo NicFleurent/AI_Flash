@@ -1,15 +1,35 @@
-import { View, Text, Image } from 'react-native'
-import React, { useEffect } from 'react'
+
+import { View, Text, Image, useWindowDimensions } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import { defineScreen } from '../../stores/sliceScreen';
 
 const Intro = ({route}) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const {height, width} = useWindowDimensions();
+  const dispatch = useDispatch();
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
+
+  useEffect(()=>{
+    setScreen(height, width);
+  }, [height, width])
+
+  const setScreen = (height, width)=>{
+    const screen = {
+      height:height,
+      width:width
+    }
+
+    dispatch(defineScreen(screen));
+  }
+  
   useEffect(()=>{
     if(route.params){
       if(route.params.success){
@@ -30,15 +50,15 @@ const Intro = ({route}) => {
         locations={[0.10, 0.80]}
       >
         <View style={styles.containerLogo}>
-          <Text style={styles.txtTitle}>{t('APP_NAME')}</Text>
+          <Text style={[styles.txtTitle, isTablet && styles.txtTitleTablet]}>{t('APP_NAME')}</Text>
           <Image 
             source={require('../../assets/aiFlash_logo_white.png')}
-            style={{height:"200", width:"200"}} 
+            style={isTablet ? {height:"400", width:"400"} : {height:"200", width:"200"}} 
           />
-          <Text style={styles.txtQuote}>{t('APP_CATCHPHRASE')}</Text>
+          <Text style={[styles.txtQuote, isTablet && styles.txtQuoteTablet]}>{t('APP_CATCHPHRASE')}</Text>
         </View>  
 
-        <View style={styles.containerButtons}>
+        <View style={[styles.containerButtons, isTablet && styles.containerButtonsTablet]}>
           <CustomButton
             type="green-full"
             label={t('auth.connection')}
@@ -80,10 +100,16 @@ const styles = {
     justifyContent:'center',
     alignItems:'center'
   },
+  containerButtonsTablet:{
+    width:'40%'
+  },
   txtTitle:{
     fontSize:54,
     color:'white',
     fontWeight:'bold'
+  },
+  txtTitleTablet:{
+    fontSize:84,
   },
   txtQuote:{
     fontSize:24,
@@ -91,6 +117,9 @@ const styles = {
     fontWeight:'bold',
     textAlign:'center',
     marginHorizontal:50
+  },
+  txtQuoteTablet:{
+    fontSize:32,
   }
 }
 

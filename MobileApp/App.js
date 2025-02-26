@@ -1,18 +1,24 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStaticNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import Intro from './pages/authentification/Intro';
-import LogIn from './pages/authentification/LogIn';
-import SignIn from './pages/authentification/SignIn';
-import Home from './pages/Home';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStaticNavigation } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import Intro from "./pages/authentification/Intro";
+import LogIn from "./pages/authentification/LogIn";
+import SignIn from "./pages/authentification/SignIn";
+import Home from "./pages/Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Explorez from "./pages/PagesPubliques/Explorez";
-import Account from './pages/account/Account';
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
+import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
+import Account from "./pages/account/Account";
+import Explore from "./pages/publics_pages/Explore";
+import store from './stores/store';
+import Subjects from './pages/matieres/Subjects';
+import Collections from './pages/matieres/Collections';
 
 export default function App() {
+  const {t} = useTranslation();
   const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
@@ -48,7 +54,7 @@ export default function App() {
   });
 
   const bottomTabs = createBottomTabNavigator({
-    initialRouteName: "Account",
+    initialRouteName: "Home",
     screenOptions: ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
@@ -56,6 +62,8 @@ export default function App() {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Account") {
           iconName = focused ? "person" : "person-outline";
+        } else if (route.name === "Subjects") {
+          iconName = focused ? "library" : "library-outline";
         } else {
           iconName = focused ? "cloud-download" : "cloud-download-outline";
         }
@@ -86,13 +94,32 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: 'Accueil'
+          title: "Accueil",
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: 'Votre compte'
+          title: "Votre compte",
+        },
+      },
+      Explore: {
+        screen: Explore,
+        options: {
+          headerShown: true,
+          headerTitleAlign: "left",
+          title:t('explore.title'),
+          headerTitleStyle: {
+            fontSize: 38,
+            color: "white",
+            fontWeight: "bold",
+          },
+        },
+      },
+      Subjects: {
+        screen: Subjects,
+        options: {
+          title: t("subject.title")
         },
       },
     },
@@ -107,11 +134,12 @@ export default function App() {
       Auth:{
         screen: authStack,
       },
-      Explorez: {
-        screen: Explorez,
-        options: {
-          headerShown: false,
-        },
+      Collections: {
+        screen: Collections,
+        options: ({route}) => ({
+          title: route.params?.name || "Collections",
+          headerShown: true,
+        }),
       },
       Menu: {
         screen: bottomTabs,
@@ -121,7 +149,11 @@ export default function App() {
 
   const Navigation = createStaticNavigation(RootStack);
 
-  return <Navigation />;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
