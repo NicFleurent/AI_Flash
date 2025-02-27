@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View,Platform, Text } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
@@ -141,8 +141,8 @@ const Account = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.containerForm, isTablet && styles.containerFormTablet]}>
+    <View style={[styles.container]}>
+      <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>
         <View style={[styles.containerInputs, isTablet && styles.containerInputsTablet]}>
           <CustomInput
             label={t('input.firstname')}
@@ -261,7 +261,8 @@ const styles = {
   },
   containerButtons: {
     width: '90%',
-  }
+  },
+  iosMargin:{ marginTop: Platform.OS === "ios" ? 20 : 0 }
 }
 
 export default Account
