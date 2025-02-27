@@ -4,6 +4,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FlashcardController;
+use App\Http\Controllers\PdfController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,3 +48,6 @@ Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->
 
 // Supprimer une flashcard
 Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
+
+// Convertir un pdf en texte
+Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
