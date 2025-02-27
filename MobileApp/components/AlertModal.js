@@ -8,11 +8,12 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faXmark, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faCircleCheck, faTriangleExclamation} from "@fortawesome/free-solid-svg-icons";
 
 const AlertModal = ({
   isVisible,
   onClose,
+  isWarnig,
   title,
   description,
   cancelButtonText,
@@ -36,14 +37,20 @@ const AlertModal = ({
             <View style={styles.bottomSheet}>
               <View style={styles.entete}>
                 <View style={styles.sousEntete}>
-                  <TouchableOpacity onPress={onClose}>
-                    <FontAwesomeIcon
-                      style={styles.icon}
-                      size={24}
-                      color="#1DB954"
-                      icon={faCircleCheck}
-                    />
-                  </TouchableOpacity>
+                    {isWarnig ?
+                      <FontAwesomeIcon
+                        style={styles.icon}
+                        size={24}
+                        color="#1DB954"
+                        icon={faTriangleExclamation}
+                      /> : 
+                      <FontAwesomeIcon
+                        style={styles.icon}
+                        size={24}
+                        color="#1DB954"
+                        icon={faCircleCheck}
+                      />
+                    }
 
                   <Text style={styles.modalTitle}>{title}</Text>
                 </View>
