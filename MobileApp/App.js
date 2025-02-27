@@ -121,7 +121,7 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: landingPage,
+    initialRouteName: "Auth",
     screenOptions:{
       headerStyle: {
         backgroundColor: "#000000",

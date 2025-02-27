@@ -5,15 +5,15 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  TouchableWithoutFeedback,
   useWindowDimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faXmark, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faCircleCheck, faTriangleExclamation} from "@fortawesome/free-solid-svg-icons";
 
 const AlertModal = ({
   isVisible,
   onClose,
+  isWarnig,
   title,
   description,
   cancelButtonText,
@@ -25,26 +25,32 @@ const AlertModal = ({
   const { width, height } = useWindowDimensions();
 
   return (
-    <Modal
-      visible={isVisible}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={onClose}
-    >
-      <TouchableWithoutFeedback onPress={onClose}>
+    <View>
+      <Modal
+        visible={isVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={onClose}
+      >
         <View style={[styles.blurView, { width: width, height: height, backgroundColor: "rgba(0, 0, 0, 0.5)" }]}>
           <View style={styles.bottomSheetContainer}>
             <View style={styles.bottomSheet}>
               <View style={styles.entete}>
                 <View style={styles.sousEntete}>
-                  <TouchableOpacity onPress={onClose}>
-                    <FontAwesomeIcon
-                      style={styles.icon}
-                      size={24}
-                      color="#1DB954"
-                      icon={faCircleCheck}
-                    />
-                  </TouchableOpacity>
+                    {isWarnig ?
+                      <FontAwesomeIcon
+                        style={styles.icon}
+                        size={24}
+                        color="#1DB954"
+                        icon={faTriangleExclamation}
+                      /> : 
+                      <FontAwesomeIcon
+                        style={styles.icon}
+                        size={24}
+                        color="#1DB954"
+                        icon={faCircleCheck}
+                      />
+                    }
 
                   <Text style={styles.modalTitle}>{title}</Text>
                 </View>
@@ -80,8 +86,8 @@ const AlertModal = ({
             </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+      </Modal>
+    </View>
   );
 };
 
