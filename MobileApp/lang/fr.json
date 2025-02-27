@@ -42,6 +42,10 @@
       "detailed_studies":"Études détaillées",
       "no_studies_today":"Aucune étude à faire aujourd'hui"
     },
+    "study":{
+      "remembered":"Je m'en souvenais",
+      "forgotten":"J'avais oublié"
+    },
     "secureStore":{
       "error":{
         "save":"Erreur lors de la sauvegarde",

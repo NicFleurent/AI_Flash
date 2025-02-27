@@ -82,7 +82,7 @@ export default function App() {
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 38,
+        fontSize: 32,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
@@ -121,14 +121,14 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: landingPage,
+    initialRouteName: "Menu",//landingPAge
     screenOptions:{
       headerStyle: {
         backgroundColor: "#000000",
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 38,
+        fontSize: 32,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
