@@ -17,7 +17,9 @@
     },
     "button":{
       "goBack":"Retour",
-      "save":"Enregistrer"
+      "save":"Enregistrer",
+      "next":"Suivant",
+      "finish":"Terminer"
     },
     "input":{
       "firstname":"Prénom",

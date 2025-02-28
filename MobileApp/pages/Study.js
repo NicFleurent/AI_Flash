@@ -10,6 +10,7 @@ const Study = ({route}) => {
   const {t} = useTranslation();
   const [progress, setProgress] = useState(0);
   const [displayButton, setDisplayButton] = useState(false);
+  const [displayNextButton, setDisplayNextButton] = useState(false);
   const [displayFinalButton, setDisplayFinalButton] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
@@ -43,27 +44,28 @@ const Study = ({route}) => {
   }
 
   const handleRemembered = () => {
-    switchCard();
+    displayTransitionButton();
   }
 
   const handleForgotten = () => {
-    switchCard();
+    displayTransitionButton();
+  }
+
+  const displayTransitionButton = () => {
+    setDisplayButton(false)
+    if(currentCard < mockUpDataFlashcard.length - 1){
+      setDisplayNextButton(true);
+    }
+    else{
+      setProgress(100)
+      setDisplayFinalButton(true)
+    }
   }
 
   const switchCard = () => {
     setFlipDuration(0);
-    
-    setTimeout(()=>{
-      if(currentCard < mockUpDataFlashcard.length - 1){
-        setCurrentCard(prev => prev += 1)
-      }
-      else{
-        setProgress(100)
-        setDisplayFinalButton(true)
-      }
-    }, 100)
-
-    setDisplayButton(false)
+    setTimeout(()=>setCurrentCard(prev => prev += 1), 100)
+    setDisplayNextButton(false)
   }
 
   const mockUpDataFlashcard = [
@@ -134,11 +136,21 @@ const Study = ({route}) => {
             />
           </>
         )}
+        {displayNextButton && (
+          <>
+            <CustomButton
+              type="green-full"
+              label={t('button.next')}
+              onPress={switchCard}
+              additionnalStyle={{ marginTop: 20 }}
+            />
+          </>
+        )}
         {displayFinalButton && (
           <>
             <CustomButton
               type="green-full"
-              label={t('button.goBack')}
+              label={t('button.finish')}
               onPress={()=>navigation.reset({
                 index:0,
                 routes:[
