@@ -22,6 +22,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('user/update', [UsersController::class, 'update']);
   Route::put('user/updatePassword', [UsersController::class, 'updatePassword']);
   Route::delete('user/delete', [UsersController::class, 'destroy']);
+
+  Route::get('flashcards/todayCount', [FlashcardController::class, 'getTodayFlashCardsCount']);
 });
 
 //Get User's Subjects

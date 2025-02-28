@@ -29,7 +29,7 @@ class SubjectsSeeder extends Seeder
         ],
         [
             'name' => 'Philosophie et éthique',
-            'user_id' => 1,
+            'user_id' => 2,
         ],
         [
             'name' => 'Programmation orientée objet',
