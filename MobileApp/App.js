@@ -121,7 +121,7 @@ export default function App() {
   });
 
   const RootStack = createNativeStackNavigator({
-    initialRouteName: "Menu",//landingPAge
+    initialRouteName: landingPAge,
     screenOptions:{
       headerStyle: {
         backgroundColor: "#000000",

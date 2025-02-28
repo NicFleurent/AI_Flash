@@ -6,20 +6,16 @@
     "SUCCESS":"Succès",
     "COLLECTIONS": "Collections",
     "FLASHCARDS": "Flashcards",
-    "auth":{
-      "connection":"Connexion",
-      "login":"Se connecter",
-      "signin":"Inscription",
-      "register":"S'inscrire",
-      "logout":"Déconnexion",
-      "deleteAccount":"Supprimer le compte",
-      "changePassword":"Modifier mot de passe"
-    },
     "button":{
       "goBack":"Retour",
       "save":"Enregistrer",
       "next":"Suivant",
       "finish":"Terminer"
+      "add":"Créer",
+      "cancel":"Annuler",
+      "yes":"Oui",
+      "delete":"Supprimer",
+      "confirm":"Confirmer"
     },
     "input":{
       "firstname":"Prénom",
@@ -36,6 +32,28 @@
         "passwordConfirm_required":"Les mots de passe ne correspondent pas"
       }
     },
+    "secureStore":{
+      "error":{
+        "save":"Erreur lors de la sauvegarde",
+        "get":"Erreur lors de la récupération",
+        "delete":"Erreur lors de la suppression"
+      }
+    },
+    "auth":{
+      "connection":"Connexion",
+      "login":"Se connecter",
+      "signin":"Inscription",
+      "register":"S'inscrire",
+      "logout":"Déconnexion",
+      "deleteAccount":"Supprimer le compte",
+      "changePassword":"Modifier mot de passe"
+    },
+    "account":{
+      "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
+      "update":"Enregistrer",
+      "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
+      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?"
+    },
     "home":{
       "hello":"Bonjour",
       "today":"Aujourd'hui",
@@ -47,13 +65,6 @@
     "study":{
       "remembered":"Je m'en souvenais",
       "forgotten":"J'avais oublié"
-    },
-    "secureStore":{
-      "error":{
-        "save":"Erreur lors de la sauvegarde",
-        "get":"Erreur lors de la récupération",
-        "delete":"Erreur lors de la suppression"
-      }
     },
     "subject":{
       "title":"Vos matières",

@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View,Platform, Text } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -9,15 +9,23 @@ import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesom
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
+import { useSelector } from 'react-redux';
+import AlertModal from '../../components/AlertModal';
 
 const Account = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
+
+  const [isModalLogoutVisible, setIsModalLogoutVisible] = useState(false);
+  const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
+  const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
+
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
-  const [isError, setIsError] = useState(false);``
+  const [isError, setIsError] = useState(false);
 
   useEffect(()=>{
     getUser();
@@ -37,28 +45,32 @@ const Account = () => {
       validateForm();
   }
 
-  const handleSave = async () => {
+  const openUpdateAlert = () => {
     if (validateForm()) {
-      try {
-        const response = await updateUser(email, firstname, lastname);
+      setIsModalUpdateVisible(true);
+    }
+  }
 
-        if(response){
-          Toast.show({
-            type: 'success',
-            text1: response.data.message
-          });
-        }
+  const handleSave = async () => {
+    try {
+      const response = await updateUser(email, firstname, lastname);
 
-      } catch (error) {
+      setIsModalUpdateVisible(false);
+
+      if(response){
         Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: error.message,
+          type: 'success',
+          text1: response.data.message
         });
       }
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: error.message,
+      });
     }
-    else
-      setIsError(true)
   }
 
   const validateForm = () => {
@@ -129,9 +141,9 @@ const Account = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerForm}>
-        <View style={styles.containerInputs}>
+    <View style={[styles.container]}>
+      <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>
+        <View style={[styles.containerInputs, isTablet && styles.containerInputsTablet]}>
           <CustomInput
             label={t('input.firstname')}
             value={firstname}
@@ -160,21 +172,21 @@ const Account = () => {
           <CustomButton
             type="white-outline"
             label={t('button.save')}
-            onPress={handleSave}
+            onPress={openUpdateAlert}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faSave}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
-            onPress={handleLogout}
+            onPress={()=>setIsModalLogoutVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faArrowRightFromBracket}
           />
           <CustomButton
             type="red-full"
             label={t('auth.deleteAccount')}
-            onPress={handleDelete}
+            onPress={()=>setIsModalDeleteVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faUserXmark}
           />
@@ -187,6 +199,38 @@ const Account = () => {
           />
         </View>
       </View>
+
+      <AlertModal
+        isVisible={isModalUpdateVisible}
+        title={t('account.update')}
+        description={t('account.update_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
+        onCancel={()=>setIsModalUpdateVisible(false)}
+        onClose={()=>setIsModalUpdateVisible(false)}
+        onConfirm={handleSave}
+      />
+      <AlertModal
+        isVisible={isModalLogoutVisible}
+        title={t('auth.logout')}
+        description={t('account.logout_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
+        onCancel={()=>setIsModalLogoutVisible(false)}
+        onClose={()=>setIsModalLogoutVisible(false)}
+        onConfirm={handleLogout}
+      />
+      <AlertModal
+        isVisible={isModalDeleteVisible}
+        title={t('auth.deleteAccount')}
+        description={t('account.delete_confirm')}
+        cancelButtonText={t('button.cancel')}
+        confirmButtonText={t('button.confirm')}
+        onCancel={()=>setIsModalDeleteVisible(false)}
+        onClose={()=>setIsModalDeleteVisible(false)}
+        onConfirm={handleDelete}
+      />
+      
       <Toast position='top' bottomOffset={20} />
     </View>
   )
@@ -205,12 +249,20 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  containerFormTablet:{
+    width: '50%',
+    justifyContent: 'center',
+  },
   containerInputs: {
     width: '100%',
   },
+  containerInputsTablet:{
+    marginBottom:50
+  },
   containerButtons: {
     width: '90%',
-  }
+  },
+  iosMargin:{ marginTop: Platform.OS === "ios" ? 20 : 0 }
 }
 
 export default Account
