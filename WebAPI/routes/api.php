@@ -23,6 +23,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('user/update', [UsersController::class, 'update']);
   Route::put('user/updatePassword', [UsersController::class, 'updatePassword']);
   Route::delete('user/delete', [UsersController::class, 'destroy']);
+
+  // Récupérer toutes les flashcards d'une collection
+  Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
+
+  // Créer une nouvelle flashcard
+  Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
+
+  // Mettre à jour une flashcard
+  Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
+
+  // Supprimer une flashcard
+  Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
+
+  // Convertir un pdf en texte
+  Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
 });
 
 //Get User's Subjects
@@ -36,18 +51,3 @@ Route::post('editUserSubject', [SubjectController::class, 'editUserSubject'])->n
 
 
 Route::get('getUserCollections/{subject_id}', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
-
-// Récupérer toutes les flashcards d'une collection
-Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
-
-// Créer une nouvelle flashcard
-Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
-
-// Mettre à jour une flashcard
-Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
-
-// Supprimer une flashcard
-Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
-
-// Convertir un pdf en texte
-Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
