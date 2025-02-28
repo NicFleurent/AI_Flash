@@ -13,6 +13,7 @@ const Study = ({route}) => {
   const [displayFinalButton, setDisplayFinalButton] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState(0);
+  const [flipDuration, setFlipDuration] = useState(0);
 
   useEffect(()=>{
     navigation.setOptions({
@@ -32,8 +33,9 @@ const Study = ({route}) => {
   },[currentCard])
   
   const handlePress = () => {
-    setIsFlipped(!isFlipped);
-    setTimeout(cardFlipped, 1000)
+    setFlipDuration(300)
+    setTimeout(()=>setIsFlipped(!isFlipped), 100)
+    setTimeout(cardFlipped, 500)
   };
 
   const cardFlipped = () => {
@@ -49,13 +51,17 @@ const Study = ({route}) => {
   }
 
   const switchCard = () => {
-    if(currentCard < mockUpDataFlashcard.length - 1){
-      setCurrentCard(prev => prev += 1)
-    }
-    else{
-      setProgress(100)
-      setDisplayFinalButton(true)
-    }
+    setFlipDuration(0);
+    
+    setTimeout(()=>{
+      if(currentCard < mockUpDataFlashcard.length - 1){
+        setCurrentCard(prev => prev += 1)
+      }
+      else{
+        setProgress(100)
+        setDisplayFinalButton(true)
+      }
+    }, 100)
 
     setDisplayButton(false)
   }
@@ -107,6 +113,7 @@ const Study = ({route}) => {
           faceContent={mockUpDataFlashcard[currentCard].front_face}
           backContent={mockUpDataFlashcard[currentCard].back_face}
           onPress={handlePress}
+          duration={flipDuration}
         />
       </View>
 

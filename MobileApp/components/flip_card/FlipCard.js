@@ -14,9 +14,9 @@ const FlipCard = ({
   isFlipped,
   faceContent,
   backContent,
-  onPress
+  onPress,
+  duration = 300
 }) => {
-  const duration = 300;
 
   const regularCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped), [0, 1], [0, 180]);
