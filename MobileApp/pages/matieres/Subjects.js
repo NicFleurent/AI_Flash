@@ -1,22 +1,28 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, FlatList, View, ScrollView, Button } from "react-native";
-import React, { useState, useEffect, useCallback } from 'react'
+import { SafeAreaView, StatusBar, StyleSheet, Text, FlatList, View, ScrollView, Button, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { getSubjects, createSubject } from '../../api/subject';
+import { useNavigation } from '@react-navigation/native'
+import { getSubjects, createSubject, editSubject, deleteSubject } from '../../api/subject';
 import CardCollection from '../../components/publics_pages_components/CardCollection';
 import Toast from 'react-native-toast-message';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import AlertModal from '../../components/AlertModal'
+import { getLocalUser } from '../../api/secureStore';
+import CustomModal from '../../components/CustomModal'
 
 
-const Subjects = ({route}) => {
+const Subjects = () => {
     const navigation = useNavigation();
     const { t } = useTranslation();
 
     const [subjects, setSubjects] = useState([]);
     const [visible, setVisible] = useState(false)
     const [input, setInput] = useState("")
+    const [id, setId] = useState("")
     const [type_modal, setTypeModal] = useState("")
     const [error, setError] = useState([]);
-    const [isError, setIsError] = useState(false);
+    const [isError, setIsError] = useState(false)
 
     const onChangeText = (value, setInput) => {
         setInput(value);
@@ -25,7 +31,17 @@ const Subjects = ({route}) => {
             validateForm();
     }
 
-    const createUserSubject = async () => {
+    const getUserSubjects = async () => {
+        try {
+            const response = await getSubjects();
+            setSubjects(response);
+            // console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const create = async () => {
         // console.log('Create User Subject called')
         if (validateForm()) {
             try {
@@ -37,7 +53,7 @@ const Subjects = ({route}) => {
                 if (response && response.message) {
                     Toast.show({
                         type: 'success',
-                        text1: t('subject.success'),
+                        text1: t('SUCCESS'),
                         text2: response.message,
                     });
 
@@ -61,6 +77,72 @@ const Subjects = ({route}) => {
             setIsError(true)
     }
 
+    const edit = async () => {
+        // console.log('Create User Subject called')
+        if (validateForm()) {
+            try {
+                // console.log('Form Good')
+
+                const response = await editSubject(id, input);
+                // console.log('Response : ' + response.message)
+
+                if (response && response.message) {
+                    Toast.show({
+                        type: 'success',
+                        text1: t('subject.success'),
+                        text2: response.message,
+                    });
+
+                    getUserSubjects();
+                }
+
+                setInput("")
+                setVisible(false)
+            } catch (error) {
+                console.log('Error: ' + error)
+
+                Toast.show({
+                    type: 'error',
+                    text1: t('ERROR'),
+                    text2: error.message,
+                });
+            }
+        }
+        else
+            setIsError(true)
+    }
+
+    const drop = async () => {
+        // console.log('Create User Subject called')
+        try {
+            // console.log('Form Good')
+
+            const response = await deleteSubject(id);
+            // console.log('Response : ' + response.message)
+
+            if (response && response.message) {
+                Toast.show({
+                    type: 'success',
+                    text1: t('subject.success'),
+                    text2: response.message,
+                });
+
+                getUserSubjects();
+            }
+
+            setInput("")
+            setVisible(false)
+        } catch (error) {
+            console.log('Error: ' + error)
+
+            Toast.show({
+                type: 'error',
+                text1: t('ERROR'),
+                text2: error.message,
+            });
+        }
+    }
+
     const validateForm = () => {
         let tempErrors = [];
 
@@ -73,32 +155,18 @@ const Subjects = ({route}) => {
         return Object.keys(tempErrors).length === 0;
     }
 
-    const getUserSubjects = async () => {
-        try {
-            const response = await getSubjects();
-            setSubjects(response);
-            // console.log(response);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        getUserSubjects();
+    useEffect(()=>{
+        getUserSubjects()
     }, [])
-
-    useEffect(() => {
-        if (route.params?.update)
-            getUserSubjects();
-    }, [route.params?.update])
 
     const renderItem = ({ item }) => {
         return (
             <CardCollection
                 nameMatiere={item.name}
                 isPublic={false}
-                numberCollection={item.count}
-                onPress={() => navigation.navigate("Collections", item)}
+                numberCollection={item.collections_count}
+                onArrowPress={() => navigation.navigate("Collections", item)}
+                onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
             />
         )
     }
@@ -115,20 +183,30 @@ const Subjects = ({route}) => {
                 numColumns={2}
                 contentContainerStyle={styles.flatListContent}
             />
-{/* 
+
             <CustomModal
                 visible={visible}
                 setVisible={setVisible}
-                title={t("subject.input.title_modal")}
-                title_input={t("subject.input.title_input")}
                 input={input}
                 setInput={(value) => onChangeText(value, setInput)}
                 error={error}
-                onPressCreate={createUserSubject}
+                setTypeModal={setTypeModal}
+                onPressCreate={create}
+                onPressEdit={edit}
+                onPressDelete={drop}
                 type_modal={type_modal}
-            /> */}
+            />
 
-            <Button title="AJOUTER" onPress={() => [setTypeModal("Add"), setVisible(true)]} />
+            <TouchableOpacity
+                style={styles.floatingInput}
+                onPress={() => [setTypeModal("add"), setVisible(true)]}
+            >
+                <FontAwesomeIcon icon={faPlus} size={20} color="black" />
+            </TouchableOpacity>
+
+            {/* <Button title="MODIFIER" onPress={() => [setTypeModal("edit"), setVisible(true)]} /> */}
+            <Toast position='top' bottomOffset={20} />
+
             <StatusBar style="auto" />
             {/* </View>
             </ScrollView> */}
@@ -158,4 +236,17 @@ const styles = StyleSheet.create({
     flatList: {
         marginTop: 10,
     },
+    floatingInput: {
+        borderWidth: 1,
+        borderColor: 'green',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 60,
+        position: 'absolute',
+        top: 570,
+        right: 20,
+        height: 60,
+        backgroundColor: 'green',
+        borderRadius: 100,
+    }
 });

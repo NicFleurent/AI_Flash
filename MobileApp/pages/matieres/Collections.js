@@ -42,54 +42,12 @@ const Collections = ({ route }) => {
     return Object.keys(tempErrors).length === 0;
   }
 
-  const updateHeader = (newTitle) => {
-    navigation.setOptions({
-      title: newTitle || "Collections"
-    })
-  }
-
-  const editUserSubject = async () => {
-    // console.log('Create User Subject called')
-    if (validateForm()) {
-      try {
-        // console.log('Form Good')
-
-        const response = await editSubject(id, input);
-        // console.log('Response : ' + response.message)
-
-        if (response && response.message) {
-          Toast.show({
-            type: 'success',
-            text1: t('subject.success'),
-            text2: response.message,
-          });
-
-          getUserCollections();
-          updateHeader(input)
-          navigation.setParams({'update': input})
-        }
-
-        setInput("")
-        setVisible(false)
-      } catch (error) {
-        console.log('Error: ' + error)
-
-        Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: error.message,
-        });
-      }
-    }
-    else
-      setIsError(true)
-  }
+ 
 
   const getUserCollections = async () => {
     try {
       const response = await getCollections(id);
       setCollections(response);
-      // console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -114,12 +72,12 @@ const Collections = ({ route }) => {
     <SafeAreaView style={styles.container}>
       {/* <ScrollView>
                     <View> */}
-      <View style={styles.containerSecond}>
+      {/* <View style={styles.containerSecond}> */}
         <Text style={styles.titre}>{t("subject.collections.title")}</Text>
-        <TouchableOpacity onPress={() => [setVisible(true), setInput(name), setTypeModal("Edit")]}>
+        {/* <TouchableOpacity onPress={() => [setVisible(true), setInput(name), setTypeModal("Edit")]}>
           <FontAwesomeIcon icon={faPenToSquare} size={20} style={styles.fontIcon} />
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+      {/* </View> */}
 
       <FlatList
         style={styles.flatList}
@@ -142,6 +100,7 @@ const Collections = ({ route }) => {
         type_modal={type_modal}
       /> */}
 
+<Toast position='top' bottomOffset={20} />
       <Button title="MODIFIER" onPress={() => [setTypeModal("Edit"), setVisible(true)]} />
       <StatusBar style="auto" />
       {/* </View>
