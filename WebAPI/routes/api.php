@@ -25,21 +25,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::delete('user/delete', [UsersController::class, 'destroy']);
 
   Route::get('flashcards/todayCount', [FlashcardController::class, 'getTodayFlashCardsCount']);
-
-  // Récupérer toutes les flashcards d'une collection
   Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
-
-  // Créer une nouvelle flashcard
   Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
-
-  // Mettre à jour une flashcard
   Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
-
-  // Supprimer une flashcard
   Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
-  Route::get('flashcards/todayCount', [FlashcardController::class, 'getTodayFlashCardsCount']);
 
-  // Convertir un pdf en texte
   Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
 
 

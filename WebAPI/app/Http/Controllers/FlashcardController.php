@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FlashcardRequest;
+use App\Models\Collection;
 use App\Models\Flashcard;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -36,10 +37,14 @@ class FlashcardController extends Controller
       Log::debug($user_id);
 
       $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
-      $collections_id = Subject::whereIn('subject_id', $subjects_id)->pluck('id');
+      $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
+      $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)->pluck('id');
+
 
       Log::debug("Sujet: ".$subjects_id);
       Log::debug("Collection: ".$collections_id);
+      Log::debug("Flashcard: ".$collections_id);
+      Log::debug("Flashcard count: ".$collections_id->count());
 
       return response()->json(['message' => 'test'], 200);
     }
