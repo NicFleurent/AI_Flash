@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import CardCollection from '../components/publics_pages_components/CardCollection';
+import { getLocalUser } from '../api/secureStore';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
   const isTablet = useSelector((state) => state.screen.isTablet);
   
   const [refreshing, setRefreshing] = useState(false);
-  const [firstname, setFirstname] = useState("Nicolas");
+  const [firstname, setFirstname] = useState("");
 
   const [mockData, setMockData] = useState({
     "total_count":50,
@@ -82,13 +83,21 @@ const Home = () => {
   })
 
   useEffect(()=>{
+    const setUser = async () => {
+      const user = await getLocalUser();
+      setFirstname(user.firstname)
+    }
+    setUser();
+  },[])
+
+  useEffect(()=>{
     navigation.setOptions({
       title:`${t('home.hello')} ${firstname}`
     })
-  },[])
+  },[navigation, firstname])
 
   const handleFlashStudy = () => {
-    navigation.navigate("Study");
+    navigation.navigate("Study", {source_page:'Home',study_type:t('home.flash_study')});
   }
 
   const renderItem = ({ item }) => {
@@ -97,9 +106,11 @@ const Home = () => {
         nameMatiere={item.name}
         numberCollection={item.flashcards_count}
         nameAuthor={item.subject}
+        onPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name})}
       />
     );
   };
+
   const listeVide = () => {
     return (
       <View>
@@ -114,7 +125,6 @@ const Home = () => {
       setRefreshing(false);
     }, 2000);
   };
-
 
   return (
     <View style={styles.container}>
