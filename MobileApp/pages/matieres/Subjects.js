@@ -1,15 +1,13 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, FlatList, View, ScrollView, Button, TouchableOpacity } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, FlatList, View, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
-import { getSubjects, createSubject, editSubject, deleteSubject } from '../../api/subject';
-import CardCollection from '../../components/publics_pages_components/CardCollection';
-import Toast from 'react-native-toast-message';
+import { getSubjects, createSubject, updateSubject, deleteSubject } from '../../api/subject';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
-import AlertModal from '../../components/AlertModal'
-import { getLocalUser } from '../../api/secureStore';
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Toast from 'react-native-toast-message';
 import CustomModal from '../../components/CustomModal'
+import CardCollection from '../../components/publics_pages_components/CardCollection';
 
 
 const Subjects = () => {
@@ -23,6 +21,7 @@ const Subjects = () => {
     const [type_modal, setTypeModal] = useState("")
     const [error, setError] = useState([]);
     const [isError, setIsError] = useState(false)
+    const [change, setChange] = useState(false)
 
     const onChangeText = (value, setInput) => {
         setInput(value);
@@ -31,24 +30,31 @@ const Subjects = () => {
             validateForm();
     }
 
+    const validateForm = () => {
+        let tempErrors = [];
+
+        if (input === "")
+            tempErrors.errorInput = t('subject.error.title_input_required');
+
+        setError(tempErrors);
+        setIsError(!(Object.keys(tempErrors).length === 0))
+
+        return Object.keys(tempErrors).length === 0;
+    }
+
     const getUserSubjects = async () => {
         try {
             const response = await getSubjects();
             setSubjects(response);
-            // console.log(response);
         } catch (error) {
             console.log(error);
         }
     }
 
     const create = async () => {
-        // console.log('Create User Subject called')
         if (validateForm()) {
             try {
-                // console.log('Form Good')
-
                 const response = await createSubject(input);
-                // console.log('Response : ' + response.message)
 
                 if (response && response.message) {
                     Toast.show({
@@ -78,13 +84,9 @@ const Subjects = () => {
     }
 
     const edit = async () => {
-        // console.log('Create User Subject called')
         if (validateForm()) {
             try {
-                // console.log('Form Good')
-
-                const response = await editSubject(id, input);
-                // console.log('Response : ' + response.message)
+                const response = await updateSubject(id, input);
 
                 if (response && response.message) {
                     Toast.show({
@@ -113,12 +115,8 @@ const Subjects = () => {
     }
 
     const drop = async () => {
-        // console.log('Create User Subject called')
         try {
-            // console.log('Form Good')
-
             const response = await deleteSubject(id);
-            // console.log('Response : ' + response.message)
 
             if (response && response.message) {
                 Toast.show({
@@ -143,21 +141,14 @@ const Subjects = () => {
         }
     }
 
-    const validateForm = () => {
-        let tempErrors = [];
-
-        if (input === "")
-            tempErrors.errorInput = t('subject.error.title_input_required');
-
-        setError(tempErrors);
-        setIsError(!(Object.keys(tempErrors).length === 0))
-
-        return Object.keys(tempErrors).length === 0;
-    }
-
-    useEffect(()=>{
+    useEffect(() => {
         getUserSubjects()
     }, [])
+
+    useEffect(() => {
+        getUserSubjects()
+        setChange(false)
+    }, [change])
 
     const renderItem = ({ item }) => {
         return (
@@ -165,7 +156,7 @@ const Subjects = () => {
                 nameMatiere={item.name}
                 isPublic={false}
                 numberCollection={item.collections_count}
-                onArrowPress={() => navigation.navigate("Collections", item)}
+                onArrowPress={() => navigation.navigate("Collections", {'item': item, 'change': change, 'setChange': setChange})}
                 onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
             />
         )
@@ -173,43 +164,42 @@ const Subjects = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <ScrollView>
-                <View> */}
-            <FlatList
-                style={styles.flatList}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                data={subjects}
-                numColumns={2}
-                contentContainerStyle={styles.flatListContent}
-            />
+            {/* <ScrollView> */}
+                <View>
+                    <FlatList
+                        style={styles.flatList}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        data={subjects}
+                        numColumns={2}
+                        contentContainerStyle={styles.flatListContent}
+                    />
 
-            <CustomModal
-                visible={visible}
-                setVisible={setVisible}
-                input={input}
-                setInput={(value) => onChangeText(value, setInput)}
-                error={error}
-                setTypeModal={setTypeModal}
-                onPressCreate={create}
-                onPressEdit={edit}
-                onPressDelete={drop}
-                type_modal={type_modal}
-            />
+                    <CustomModal
+                        visible={visible}
+                        setVisible={setVisible}
+                        input={input}
+                        setInput={(value) => onChangeText(value, setInput)}
+                        error={error}
+                        setTypeModal={setTypeModal}
+                        onPressCreate={create}
+                        onPressEdit={edit}
+                        onPressDelete={drop}
+                        type_modal={type_modal}
+                    />
 
-            <TouchableOpacity
-                style={styles.floatingInput}
-                onPress={() => [setTypeModal("add"), setVisible(true)]}
-            >
-                <FontAwesomeIcon icon={faPlus} size={20} color="black" />
-            </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.floatingInput}
+                        onPress={() => [setTypeModal("add"), setVisible(true)]}
+                    >
+                        <FontAwesomeIcon icon={faPlus} size={20} color="black" />
+                    </TouchableOpacity>
 
-            {/* <Button title="MODIFIER" onPress={() => [setTypeModal("edit"), setVisible(true)]} /> */}
-            <Toast position='top' bottomOffset={20} />
+                    <Toast position='top' bottomOffset={20} />
 
-            <StatusBar style="auto" />
-            {/* </View>
-            </ScrollView> */}
+                    <StatusBar style="auto" />
+                </View>
+            {/* </ScrollView> */}
         </SafeAreaView>
     )
 }

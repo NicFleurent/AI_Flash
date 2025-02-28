@@ -25,14 +25,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::get('getUserSubjects', [SubjectController::class, 'getUserSubjects'])->name('getUserSubjects');
   Route::post('createSubject', [SubjectController::class, 'createSubject'])->name('createSubject');
-  Route::post('editSubject', [SubjectController::class, 'editSubject'])->name('editSubject');
+  Route::post('updateSubject', [SubjectController::class, 'updateSubject'])->name('updateSubject');
   Route::post('deleteSubject', [SubjectController::class, 'deleteSubject'])->name('deleteSubject');
+
+  Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
+  Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
+  Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
+  Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
+
 });
 
 
 
 
-Route::get('getUserCollections/{subject_id}', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
 
 // Récupérer toutes les flashcards d'une collection
 Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');

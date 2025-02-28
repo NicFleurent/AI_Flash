@@ -72,7 +72,8 @@
         "title_input":"Nom de la matière"
       },
       "error":{
-        "title_input_required":"Le nom de la matière est requis"
+        "title_input_required":"Le nom de la matière est requis",
+        "title_input_required_collections":"Le nom de la matière est requis"
       },
       "collections": {
         "title": "Vos collections pour cette matière",

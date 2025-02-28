@@ -55,13 +55,13 @@ export const createSubject = async (subject_name) => {
   }
 };
 
-export const editSubject = async (subject_id, subject_name) => {
+export const updateSubject = async (subject_id, subject_name) => {
   const user = await getLocalUser()
   const token = user?.token
   try {
-    const response = await fetch(`${baseUrl}editSubject`, {
+    const response = await fetch(`${baseUrl}updateSubject`, {
       method: 'POST',
-      body: JSON.stringify({ user_id: user.id, subject_id: subject_id, subject_name: subject_name }),
+      body: JSON.stringify({ subject_id: subject_id, subject_name: subject_name }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export const deleteSubject = async (subject_id) => {
   try {
     const response = await fetch(`${baseUrl}deleteSubject`, {
       method: 'POST',
-      body: JSON.stringify({ user_id: user.id, subject_id: subject_id}),
+      body: JSON.stringify({subject_id: subject_id}),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

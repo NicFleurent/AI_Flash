@@ -119,7 +119,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faArrowRight, faPenToSquare } from "@fortawesome/free-solid-svg-icons"; // Imported faPenToSquare
+import { faArrowRight, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
 const CardCollection = ({
@@ -128,31 +128,19 @@ const CardCollection = ({
   nameAuthor,
   numberCollection,
   isPublic,
-  onArrowPress, // Function to handle arrow press
-  onPenPress,   // Function to handle pen press
+  onArrowPress,
+  onPenPress, 
 }) => {
   const { height } = useWindowDimensions();
   const { t } = useTranslation();
 
   return (
     <View style={[styles.container]}>
-      {/* Grouping title with the arrow icon */}
       <View style={styles.textColumn}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-            {nameMatiere}
-          </Text>
-          <TouchableOpacity onPress={() => onPenPress()}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              size={24}
-              color="#1DB954"
-              icon={faPenToSquare}
-            />
-          </TouchableOpacity>
-        </View>
-        
-        {/* Grouping the collection/flashcards and author with the pen icon */}
+        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          {nameMatiere}
+        </Text>
+
         <View style={styles.textWithIconRow}>
           {isPublic ? (
             <View>
@@ -166,11 +154,23 @@ const CardCollection = ({
               {numberCollection} {t("COLLECTIONS")}
             </Text>
           )}
+        </View>
+
+        <View style={styles.iconRow}>
+          <TouchableOpacity onPress={() => onPenPress()}>
+            <FontAwesomeIcon
+              style={styles.icon}
+              size={24}
+              color="#1DB954"
+              icon={faPenToSquare}
+            />
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => onArrowPress()}>
             <FontAwesomeIcon
               style={styles.icon}
               size={24}
-              color="#1DB954" // You can change the color as needed
+              color="#1DB954"
               icon={faArrowRight}
             />
           </TouchableOpacity>
@@ -193,17 +193,16 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: "space-evenly",
   },
-  titleRow: {
+  iconRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    marginBottom: 10,
   },
   title: {
-    width: '60%',
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
-    marginBottom: 15,
+    marginBottom: 10,
     marginRight: 20,
   },
   numberFlashcard: {
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 10
   },
   icon: {
     width: '5%',
