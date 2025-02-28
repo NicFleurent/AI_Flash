@@ -4,6 +4,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FlashcardController;
+use App\Http\Controllers\PdfController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,22 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('user/updatePassword', [UsersController::class, 'updatePassword']);
   Route::delete('user/delete', [UsersController::class, 'destroy']);
 
+  // Récupérer toutes les flashcards d'une collection
+  Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
+
+  // Créer une nouvelle flashcard
+  Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
+
+  // Mettre à jour une flashcard
+  Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
+
+  // Supprimer une flashcard
+  Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
+
+  // Convertir un pdf en texte
+  Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
+
+
   Route::get('getUserSubjects', [SubjectController::class, 'getUserSubjects'])->name('getUserSubjects');
   Route::post('createSubject', [SubjectController::class, 'createSubject'])->name('createSubject');
   Route::post('updateSubject', [SubjectController::class, 'updateSubject'])->name('updateSubject');
@@ -34,19 +51,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
 
 });
-
-
-
-
-
-// Récupérer toutes les flashcards d'une collection
-Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
-
-// Créer une nouvelle flashcard
-Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
-
-// Mettre à jour une flashcard
-Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
-
-// Supprimer une flashcard
-Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');

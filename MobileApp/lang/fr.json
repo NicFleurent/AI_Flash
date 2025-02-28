@@ -8,6 +8,8 @@
     "FLASHCARDS": "Flashcards",
     "button":{
       "goBack":"Retour",
+      "next":"Suivant",
+      "finish":"Terminer",
       "add":"Créer",
       "cancel":"Annuler",
       "save":"Enregistrer",
