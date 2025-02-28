@@ -38,16 +38,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   // Convertir un pdf en texte
   Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
+
+
+  Route::get('getUserSubjects', [SubjectController::class, 'getUserSubjects'])->name('getUserSubjects');
+  Route::post('createSubject', [SubjectController::class, 'createSubject'])->name('createSubject');
+  Route::post('updateSubject', [SubjectController::class, 'updateSubject'])->name('updateSubject');
+  Route::post('deleteSubject', [SubjectController::class, 'deleteSubject'])->name('deleteSubject');
+
+  Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
+  Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
+  Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
+  Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
+
 });
-
-//Get User's Subjects
-Route::get('getUserSubjects', [SubjectController::class, 'getUserSubjects'])->name('getUserSubjects'); //->middleware('auth:sanctum');
-
-//Create Subject
-Route::post('createUserSubject', [SubjectController::class, 'createUserSubject'])->name('createUserSubject'); //->middleware('auth:sanctum');
-
-//Edit subject
-Route::post('editUserSubject', [SubjectController::class, 'editUserSubject'])->name('editUserSubject'); //->middleware('auth:sanctum');
-
-
-Route::get('getUserCollections/{subject_id}', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
