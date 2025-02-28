@@ -8,14 +8,13 @@
     "FLASHCARDS": "Flashcards",
     "button":{
       "goBack":"Retour",
-      "save":"Enregistrer",
       "next":"Suivant",
       "finish":"Terminer",
       "add":"Créer",
       "cancel":"Annuler",
+      "save":"Enregistrer",
       "yes":"Oui",
-      "delete":"Supprimer",
-      "confirm":"Confirmer"
+      "delete":"Supprimer"
     },
     "input":{
       "firstname":"Prénom",
@@ -70,19 +69,13 @@
       "title":"Vos matières",
       "description":"Description",
       "input":{
-        "title_modal":"Ajouter une matière",
+        "title_modal_add":"Ajouter une matière",
+        "title_modal_edit":"Modifier une matière",
         "title_input":"Nom de la matière"
       },
-      "success":"Succès",
       "error":{
-        "title_input_required":"Le nom de la matière est requis"
-      },
-      "button":{
-        "add":"Créer",
-        "cancel":"Annuler",
-        "save":"Enregistrer",
-        "yes":"Oui",
-        "delete":"Supprimer"
+        "title_input_required":"Le nom de la matière est requis",
+        "title_input_required_collections":"Le nom de la matière est requis"
       },
       "collections": {
         "title": "Vos collections pour cette matière",

@@ -23,7 +23,7 @@ class FlashcardController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue',
+                'message' => __('flashcard.error'),
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -54,13 +54,13 @@ class FlashcardController extends Controller
             $flashcard = Flashcard::create($request->all());
             return response()->json([
                 'success' => true,
-                'message' => 'Flashcard créée avec succès',
+                'message' => __('flashcard.create'),
                 'data' => $flashcard
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue',
+                'message' => __('flashcard.error'),
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -76,16 +76,15 @@ class FlashcardController extends Controller
             $flashcard = Flashcard::findOrFail($id);
             $flashcard->update($request->all());
 
-
             return response()->json([
                 'success' => true,
-                'message' => 'Flashcard mise à jour avec succès',
+                'message' => __('flashcard.update'),
                 'data' => $flashcard
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue',
+                'message' => __('flashcard.error'),
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -102,12 +101,12 @@ class FlashcardController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Flashcard supprimée avec succès',
+                'message' => __('flashcard.delete'),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue',
+                'message' => __('flashcard.error'),
                 'error' => $e->getMessage()
             ], 500);
         }
