@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Flashcard;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -34,19 +35,32 @@ class FlashcardController extends Controller
     {
       $user_id = Auth::user()->id;
 
-      Log::debug($user_id);
+      $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
+      $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
+    
+      $today = Carbon::now('America/Toronto')->toDateString();
+
+      $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)->where('next_revision_date', $today)->count();
+
+      return response()->json(['flashcard_count' => $flashcards_count], 200);
+    }
+
+    public function getTodayFlashCards()
+    {
+      $user_id = Auth::user()->id;
 
       $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
       $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
-      $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)->pluck('id');
+    
+      $today = Carbon::now('America/Toronto')->toDateString();
 
+      $flashcards = Flashcard::select('front_face','back_Face')
+                                ->whereIn('collection_id', $collections_id)
+                                ->where('next_revision_date', $today)
+                                ->limit(25)
+                                ->get();
 
-      Log::debug("Sujet: ".$subjects_id);
-      Log::debug("Collection: ".$collections_id);
-      Log::debug("Flashcard: ".$collections_id);
-      Log::debug("Flashcard count: ".$collections_id->count());
-
-      return response()->json(['message' => 'test'], 200);
+      return response()->json(['flashcards' => $flashcards], 200);
     }
 
     /**

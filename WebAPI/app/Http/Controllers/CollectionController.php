@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Subject;
 use App\Models\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,28 @@ class CollectionController extends Controller
                 'message' => 'Erreur lors de la création de la collection'
             ], 500);
         }
+    }
 
+    public function getTodayCollections()
+    {
+      $user_id = Auth::user()->id;
+      $today = Carbon::now('America/Toronto')->toDateString();
+
+      $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
+      $collections = Collection::whereIn('subject_id', $subjects_id)
+                                ->whereHas('flashcards', function ($query) use ($today) {
+                                  $query->where('next_revision_date', $today);
+                                })
+                                ->get();
+    
+
+      // $flashcards = Flashcard::select('front_face','back_Face')
+      //                           ->whereIn('collection_id', $collections_id)
+      //                           ->where('next_revision_date', $today)
+      //                           ->limit(25)
+      //                           ->get();
+
+      return response()->json(['collections' => $collections], 200);
     }
 
     public function createCollection(Request $request)

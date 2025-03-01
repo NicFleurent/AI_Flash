@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::delete('user/delete', [UsersController::class, 'destroy']);
 
   Route::get('flashcards/todayCount', [FlashcardController::class, 'getTodayFlashCardsCount']);
+  Route::get('flashcards/today', [FlashcardController::class, 'getTodayFlashCards']);
   Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
   Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
   Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
@@ -38,6 +39,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('updateSubject', [SubjectController::class, 'updateSubject'])->name('updateSubject');
   Route::post('deleteSubject', [SubjectController::class, 'deleteSubject'])->name('deleteSubject');
 
+  Route::get('collections/today', [CollectionController::class, 'getTodayCollections'])->name('getTodayCollections');
   Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
   Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
