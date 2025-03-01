@@ -54,7 +54,7 @@ class FlashcardController extends Controller
     
       $today = Carbon::now('America/Toronto')->toDateString();
 
-      $flashcards = Flashcard::select('id','front_face','back_Face')
+      $flashcards = Flashcard::select('id','front_face','back_face')
                                 ->whereIn('collection_id', $collections_id)
                                 ->whereDate('next_revision_date','<=',$today)
                                 ->limit(25)
@@ -67,7 +67,7 @@ class FlashcardController extends Controller
     {    
       $today = Carbon::now('America/Toronto')->toDateString();
 
-      $flashcards = Flashcard::select('id','front_face','back_Face')
+      $flashcards = Flashcard::select('id','front_face','back_face')
                                 ->where('collection_id', $collection_id)
                                 ->whereDate('next_revision_date','<=',$today)
                                 ->limit(25)

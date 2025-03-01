@@ -57,7 +57,7 @@ const Home = () => {
         nameAuthor={item.subject}
         //onPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name})}
         onArrowPress={()=>alert("Diriger vers page librairie")}
-        onPenPress={()=>alert("Diriger vers page Study")}
+        onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
       />
     );
   };
@@ -80,19 +80,32 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>{t('home.today')}</Text>
-      <TouchableOpacity
-        onPress={handleFlashStudy}
-        style={styles.flashStudyContainer}
+      {totalCount > 0 &&
+        <TouchableOpacity
+          onPress={handleFlashStudy}
+          style={styles.flashStudyContainer}
+        >
+          <View>
+            <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
+            <Text style={styles.flashStudyCount}>{totalCount} {t('home.remaining_flashcards')}</Text>
+          </View>
+          <View>
+            <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
+          </View>
+        </TouchableOpacity>
+      ||
+        <View
+        style={[styles.flashStudyContainer, {backgroundColor:'#c0c0c0'}]}
       >
         <View>
           <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
-          <Text style={styles.flashStudyCount}>{totalCount} {t('home.remaining_flashcards')}</Text>
+          <Text style={styles.flashStudyCount}>Aucune cartes à étudier</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
         </View>
-      </TouchableOpacity>
-
+      </View>
+      }
       <Text style={styles.titleText}>{t('home.detailed_studies')}</Text>
       <FlatList 
         data={collections} 
