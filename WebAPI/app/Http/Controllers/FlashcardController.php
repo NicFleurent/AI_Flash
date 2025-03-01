@@ -54,8 +54,21 @@ class FlashcardController extends Controller
     
       $today = Carbon::now('America/Toronto')->toDateString();
 
-      $flashcards = Flashcard::select('front_face','back_Face')
+      $flashcards = Flashcard::select('id','front_face','back_Face')
                                 ->whereIn('collection_id', $collections_id)
+                                ->whereDate('next_revision_date','<=',$today)
+                                ->limit(25)
+                                ->get();
+
+      return response()->json(['flashcards' => $flashcards], 200);
+    }
+
+    public function getCollectionTodayFlashCards($collection_id)
+    {    
+      $today = Carbon::now('America/Toronto')->toDateString();
+
+      $flashcards = Flashcard::select('id','front_face','back_Face')
+                                ->where('collection_id', $collection_id)
                                 ->whereDate('next_revision_date','<=',$today)
                                 ->limit(25)
                                 ->get();

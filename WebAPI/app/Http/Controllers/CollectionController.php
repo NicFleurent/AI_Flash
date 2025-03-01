@@ -35,18 +35,20 @@ class CollectionController extends Controller
       $today = Carbon::now('America/Toronto')->toDateString();
 
       $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
-      $collections = Collection::whereIn('subject_id', $subjects_id)
+      $collections = Collection::select('id','name', 'subject_id')
+                                ->whereIn('subject_id', $subjects_id)
                                 ->whereHas('flashcards', function ($query) use ($today) {
-                                  $query->where('next_revision_date', $today);
+                                  $query->whereDate('next_revision_date','<=',$today);
                                 })
+                                ->with([
+                                  'subject' => function ($query) {
+                                    $query->select('id', 'name')->get();
+                                  },
+                                ])
+                                ->withCount(['flashcards as flashcards_count' => function ($query) use ($today) {
+                                    $query->whereDate('next_revision_date', '<=', $today);
+                                }])
                                 ->get();
-    
-
-      // $flashcards = Flashcard::select('front_face','back_Face')
-      //                           ->whereIn('collection_id', $collections_id)
-      //                           ->where('next_revision_date', $today)
-      //                           ->limit(25)
-      //                           ->get();
 
       return response()->json(['collections' => $collections], 200);
     }
