@@ -25,9 +25,9 @@ export default function App() {
   const {t} = useTranslation();
   const [landingPage, setLandingPage] = useState("CollectionsCreate");
 
-  // useEffect(()=>{
-  //   isUserLoggedIn();
-  // },[])
+  useEffect(()=>{
+    isUserLoggedIn();
+  },[])
 
   const isUserLoggedIn = async ()=>{
     try {
