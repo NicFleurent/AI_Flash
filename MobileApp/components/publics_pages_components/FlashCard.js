@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-const FLashCard = ({ title, description, isEditable }) => {
+const FLashCard = ({ title, description, isEditable, handleEdit }) => {
   const iconColor = "#1DB954";
   const iconSize = 24;
 
@@ -12,15 +12,18 @@ const FLashCard = ({ title, description, isEditable }) => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
         {isEditable && (
-          <FontAwesomeIcon
-            style={styles.icon}
-            size={iconSize}
-            color={iconColor}
-            icon={faPenToSquare}
-          />
+          <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={handleEdit}>
+              <FontAwesomeIcon
+                size={iconSize}
+                color={iconColor}
+                icon={faPenToSquare}
+              />
+            </TouchableOpacity>
+          </View>
         )}
       </View>
-      
+
       <View style={styles.containerCircle}>
         <View style={styles.circle}></View>
         <View style={styles.circle}></View>
@@ -41,23 +44,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, 
+    elevation: 3,
   },
   titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "center", 
+    position: "relative", 
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333333",
     marginBottom: 8,
-    textAlign: "center",
-    flex: 1,
+    textAlign: "center", 
   },
-  icon: {
-    marginRight: 20,
+  iconContainer: {
+    position: "absolute", 
+    right: 0, 
   },
   containerCircle: {
     flexDirection: "row",
