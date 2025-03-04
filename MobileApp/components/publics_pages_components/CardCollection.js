@@ -150,7 +150,13 @@ const CardCollection = ({
               </Text>
               <Text style={styles.author}>{nameAuthor}</Text>
             </View>
-          ) : (
+          ) : isStudy ? (
+            <View>
+              <Text style={styles.collection}>
+                {numberFlashcard} {t("FLASHCARDS")}
+              </Text>
+            </View>
+          ):(
             <Text style={styles.collection}>
               {numberCollection} {t("COLLECTIONS")}
             </Text>
