@@ -92,6 +92,10 @@
       "collections": {
         "title": "Vos collections pour cette matière",
         "input":{
+          "title_modal_add":"Ajouter une collection",
+          "title_modal_edit":"Modifier une collection",
+          "title_modal_delete":"Supprimer une collection",
+          "modal_delete":"Voulez-vous vraiment supprimer la collection ",
           "title_modal":"Modifier une matière",
           "title_input":"Nom de la matière"
         }

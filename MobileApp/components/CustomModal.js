@@ -20,7 +20,8 @@ const CustomModal = ({
   onPressEdit,
   isCancel,
   onPressCancel,
-  modalTitle
+  modalTitle,
+  deleteMessage
 }) => {
   const { t } = useTranslation();
 
@@ -141,7 +142,7 @@ const CustomModal = ({
                     </View>
 
                     <Text style={{textAlign: 'left', marginTop: 10, color: 'white', fontSize: 15}}>
-                      {t('subject.input.modal_delete')}"{input}" ?
+                      {deleteMessage}"{input}" ?
                     </Text>
 
                     <View style={styles.buttonsContainer}>

@@ -187,6 +187,7 @@ const Subjects = () => {
                         onPressDelete={drop}
                         type_modal={type_modal}
                         modalTitle={t("subject.input.title_modal_"+type_modal)}
+                        deleteMessage={t("subject.input.modal_delete")}
                     />
 
                     <TouchableOpacity
