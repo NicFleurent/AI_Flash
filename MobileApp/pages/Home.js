@@ -55,9 +55,9 @@ const Home = () => {
         nameMatiere={item.name}
         numberCollection={item.flashcards_count}
         nameAuthor={item.subject}
-        //onPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name})}
         onArrowPress={()=>alert("Diriger vers page librairie")}
         onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
+        isStudy={true}
       />
     );
   };
