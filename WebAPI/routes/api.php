@@ -29,6 +29,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('flashcards/today/{collection_id}', [FlashcardController::class, 'getCollectionTodayFlashCards']);
   Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
   Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
+  Route::put('flashcards/remembered', [FlashcardController::class, 'updateRememberedFlashcard']);
+  Route::put('flashcards/forgotten', [FlashcardController::class, 'updateForgottenFlashcard']);
   Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
   Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
 

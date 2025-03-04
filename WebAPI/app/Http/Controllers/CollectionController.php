@@ -38,7 +38,10 @@ class CollectionController extends Controller
       $collections = Collection::select('id','name', 'subject_id')
                                 ->whereIn('subject_id', $subjects_id)
                                 ->whereHas('flashcards', function ($query) use ($today) {
-                                  $query->whereDate('next_revision_date','<=',$today);
+                                  $query->whereDate('next_revision_date','<=',$today)
+                                        ->whereDate('last_revision_date','<',$today)
+                                        ->whereNot('forgetting_curve_stage', 5)
+                                        ->orWhere('forgetting_curve_stage', 0);
                                 })
                                 ->with([
                                   'subject' => function ($query) {
@@ -46,7 +49,10 @@ class CollectionController extends Controller
                                   },
                                 ])
                                 ->withCount(['flashcards as flashcards_count' => function ($query) use ($today) {
-                                    $query->whereDate('next_revision_date', '<=', $today);
+                                    $query->whereDate('next_revision_date', '<=', $today)
+                                            ->whereDate('last_revision_date','<',$today)
+                                            ->whereNot('forgetting_curve_stage', 5)
+                                            ->orWhere('forgetting_curve_stage', 0);
                                 }])
                                 ->get();
 

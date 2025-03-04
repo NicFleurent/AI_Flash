@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FlashcardRequest extends FormRequest
+class ForgottenCurveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,7 @@ class FlashcardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'front_face' => 'required|string',
-            'back_face' => 'required|string',
-            'next_revision_date' => 'required|date',
-            'forgetting_curve_stage' => 'required|int',
-            'collection_id' => 'required|integer|exists:collections,id',
+            'id' => 'required',
         ];
     }
 }

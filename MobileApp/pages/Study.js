@@ -4,7 +4,7 @@ import CustomButton from '../components/CustomButton';
 import FlipCard from '../components/flip_card/FlipCard';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { getCollectionTodayFlashCards, getTodayFlashcards } from '../api/flashcard';
+import { getCollectionTodayFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
 
 const Study = ({route}) => {
   const navigation = useNavigation();
@@ -67,11 +67,13 @@ const Study = ({route}) => {
     setDisplayButton(true);
   }
 
-  const handleRemembered = () => {
+  const handleRemembered = (id) => {
+    updateRememberedFlashcard(id);
     displayTransitionButton();
   }
 
-  const handleForgotten = () => {
+  const handleForgotten = (id) => {
+    updateForgottenFlashcard(id);
     displayTransitionButton();
   }
 
@@ -118,13 +120,13 @@ const Study = ({route}) => {
             <CustomButton
               type="green-full"
               label={t('study.remembered')}
-              onPress={handleRemembered}
+              onPress={()=>handleRemembered(flashcards[currentCard].id)}
               additionnalStyle={{ marginTop: 20 }}
             />
             <CustomButton
               type="white-outline"
               label={t('study.forgotten')}
-              onPress={handleForgotten}
+              onPress={()=>handleForgotten(flashcards[currentCard].id)}
               additionnalStyle={{ marginTop: 20 }}
             />
           </>
