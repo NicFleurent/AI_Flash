@@ -9,6 +9,7 @@ import CustomButton from "./CustomButton";
 const CustomModal = ({
   visible,
   setVisible,
+  inputs,
   input,
   setInput,
   error,
@@ -17,6 +18,9 @@ const CustomModal = ({
   onPressCreate,
   onPressDelete,
   onPressEdit,
+  isCancel,
+  onPressCancel,
+  modalTitle
 }) => {
   const { t } = useTranslation();
 
@@ -30,31 +34,57 @@ const CustomModal = ({
               <>
                 <View style={styles.containerHead}> 
                   <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-                    {t("subject.input.title_modal_edit")}
+                    {modalTitle}{/**t("subject.input.title_modal_edit")**/}
                   </Text>
                   <TouchableOpacity onPress={() => setVisible(false)}>
                     <FontAwesomeIcon icon={faX} size={20} color="green"/>
                   </TouchableOpacity>
                 </View>
 
-                <CustomInput
-                  label={t("subject.input.title_input")}
-                  value={input}
-                  onChangeText={setInput}
-                  isPassword={false}
-                  error={error.errorInput}
-                />
+                {inputs && inputs.map((input, index)=>(
+                  <CustomInput
+                    key={index}
+                    label={input.label}
+                    value={input.value}
+                    onChangeText={input.onChangeText}
+                    isPassword={input.isPassword}
+                    error={input.error}
+                  />
+                )) ||
+
+                  <CustomInput
+                    label={t("subject.input.title_input")}
+                    value={input}
+                    onChangeText={setInput}
+                    isPassword={false}
+                    error={error && error.errorInput}
+                  />
+                }
 
                 <View style={styles.buttonsContainer}>
-                  <CustomButton
-                    type="white-outline"
-                    label={t('button.delete')}
-                    onPress={() => setTypeModal("delete")}
-                  /> 
+                  {isCancel &&
+                    <CustomButton
+                      type="white-outline"
+                      label={t('button.cancel')}
+                      onPress={onPressCancel}
+                      isSmall={true}
+                      additionnalStyle={{width:'35%', marginRight:10}}
+                    /> 
+                  ||
+                    <CustomButton
+                      type="white-outline"
+                      label={t('button.delete')}
+                      onPress={() => setTypeModal("delete")}
+                      isSmall={true}
+                      additionnalStyle={{width:'35%', marginRight:10}}
+                    /> 
+                  }
                   <CustomButton
                     type="green-full"
                     label={t('button.save')}
                     onPress={async () => onPressEdit()}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%'}}
                   />
                 </View>
               </>
@@ -144,7 +174,7 @@ const styles = StyleSheet.create({
     width: '90%',
     padding: 20,
     backgroundColor: 'black',
-    borderRadius: 50
+    borderRadius: 35
   },
   title: {
     fontSize: 20,
@@ -155,10 +185,8 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '50%',
-    height: 60,
-    marginTop: 20
+    justifyContent: 'flex-end',
+    width: '100%',
   },
   containerHead: {
     flexDirection: 'row',

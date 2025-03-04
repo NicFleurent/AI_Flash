@@ -21,6 +21,7 @@
       "lastname":"Nom",
       "email":"Adresse courriel",
       "password":"Mot de passe",
+      "newPassword":"Nouveau mot de passe",
       "passwordConfirm":"Confirmer le mot de passe",
       "error":{
         "firstname_required":"Le prénom est requis",
@@ -49,9 +50,17 @@
     },
     "account":{
       "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
+      "logout_success":"Déconnection réussie",
+      "logout_error":"La déconnection a échouée",
       "update":"Enregistrer",
       "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
-      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?"
+      "update_success":"Le compte a été mis à jour",
+      "update_error":"La modification a échouée",
+      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?",
+      "delete_success":"Le compte a été supprimé",
+      "delete_error":"Le compte n'a pas pu être supprimé",
+      "updatePassword_success":"Votre mot de passe a été modifier",
+      "updatePassword_error":"La modification de mot de passe a échouée"
     },
     "home":{
       "hello":"Bonjour",
