@@ -94,7 +94,7 @@ const CustomModal = ({
               type_modal === "add" &&
               <>
                 <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-                  {t("subject.input.title_modal_add")}
+                  {modalTitle}
                 </Text>
 
                 <CustomInput
@@ -110,11 +110,15 @@ const CustomModal = ({
                     type="white-outline"
                     label={t('button.cancel')}
                     onPress={() => setVisible(false)}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%', marginRight:10}}
                   /> 
                   <CustomButton
                     type="green-full"
                     label={t('button.add')}
                     onPress={async () => onPressCreate()}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%'}}
                   />
                 </View>
               </>
@@ -136,8 +140,8 @@ const CustomModal = ({
                       </TouchableOpacity>
                     </View>
 
-                    <Text style={{textAlign: 'center', marginTop: 10, color: 'white', fontSize: 15}}>
-                      Voulez-vous vraiment supprimer la matière "{input}" ?
+                    <Text style={{textAlign: 'left', marginTop: 10, color: 'white', fontSize: 15}}>
+                      {t('subject.input.modal_delete')}"{input}" ?
                     </Text>
 
                     <View style={styles.buttonsContainer}>
@@ -145,11 +149,15 @@ const CustomModal = ({
                         type="white-outline"
                         label={t('button.cancel')}
                         onPress={() => setVisible(false)}
+                        isSmall={true}
+                        additionnalStyle={{width:'35%', marginRight:10, marginTop:20}}
                       /> 
                       <CustomButton
                         type="green-full"
                         label={t('button.yes')}
                         onPress={async () => onPressDelete()}
+                        isSmall={true}
+                        additionnalStyle={{width:'35%', marginTop:20}}
                       />
                     </View>
                   </View>                

@@ -186,6 +186,7 @@ const Subjects = () => {
                         onPressEdit={edit}
                         onPressDelete={drop}
                         type_modal={type_modal}
+                        modalTitle={t("subject.input.title_modal_"+type_modal)}
                     />
 
                     <TouchableOpacity

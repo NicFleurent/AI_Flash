@@ -14,7 +14,8 @@
       "cancel":"Annuler",
       "save":"Enregistrer",
       "yes":"Oui",
-      "delete":"Supprimer"
+      "delete":"Supprimer",
+      "confirm":"Confirmer"
     },
     "input":{
       "firstname":"Prénom",
@@ -80,6 +81,8 @@
       "input":{
         "title_modal_add":"Ajouter une matière",
         "title_modal_edit":"Modifier une matière",
+        "title_modal_delete":"Supprimer une matière",
+        "modal_delete":"Voulez-vous vraiment supprimer la matière ",
         "title_input":"Nom de la matière"
       },
       "error":{
