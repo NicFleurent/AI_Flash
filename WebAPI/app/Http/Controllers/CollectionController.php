@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Subject;
 use App\Models\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,36 @@ class CollectionController extends Controller
                 'message' => 'Erreur lors de la création de la collection'
             ], 500);
         }
+    }
 
+    public function getTodayCollections()
+    {
+      $user_id = Auth::user()->id;
+      $today = Carbon::now('America/Toronto')->toDateString();
+
+      $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
+      $collections = Collection::select('id','name', 'subject_id')
+                                ->whereIn('subject_id', $subjects_id)
+                                ->whereHas('flashcards', function ($query) use ($today) {
+                                  $query->whereDate('next_revision_date','<=',$today)
+                                        ->whereDate('last_revision_date','<',$today)
+                                        ->whereNot('forgetting_curve_stage', 5)
+                                        ->orWhere('forgetting_curve_stage', 0);
+                                })
+                                ->with([
+                                  'subject' => function ($query) {
+                                    $query->select('id', 'name')->get();
+                                  },
+                                ])
+                                ->withCount(['flashcards as flashcards_count' => function ($query) use ($today) {
+                                    $query->whereDate('next_revision_date', '<=', $today)
+                                            ->whereDate('last_revision_date','<',$today)
+                                            ->whereNot('forgetting_curve_stage', 5)
+                                            ->orWhere('forgetting_curve_stage', 0);
+                                }])
+                                ->get();
+
+      return response()->json(['collections' => $collections], 200);
     }
 
     public function createCollection(Request $request)

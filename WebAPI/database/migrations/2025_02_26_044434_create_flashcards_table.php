@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('front_face');
             $table->string('back_face');
+            $table->date('last_revision_date');
             $table->date('next_revision_date');
             $table->integer('forgetting_curve_stage');
             $table->foreignId('collection_id')->constrained('collections')->onDelete('cascade');

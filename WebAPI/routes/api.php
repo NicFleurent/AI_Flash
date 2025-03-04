@@ -24,19 +24,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('user/updatePassword', [UsersController::class, 'updatePassword']);
   Route::delete('user/delete', [UsersController::class, 'destroy']);
 
-  // Récupérer toutes les flashcards d'une collection
+  Route::get('flashcards/todayCount', [FlashcardController::class, 'getTodayFlashCardsCount']);
+  Route::get('flashcards/today', [FlashcardController::class, 'getTodayFlashCards']);
+  Route::get('flashcards/today/{collection_id}', [FlashcardController::class, 'getCollectionTodayFlashCards']);
   Route::get('flashcards/{collection_id}', [FlashcardController::class, 'getFlashCards'])->name('flashcards.index');
-
-  // Créer une nouvelle flashcard
   Route::post('flashcards', [FlashcardController::class, 'storeFlashcard'])->name('flashcards.store');
-
-  // Mettre à jour une flashcard
+  Route::put('flashcards/remembered', [FlashcardController::class, 'updateRememberedFlashcard']);
+  Route::put('flashcards/forgotten', [FlashcardController::class, 'updateForgottenFlashcard']);
   Route::put('flashcards/{id}', [FlashcardController::class, 'updateFlashcard'])->name('flashcards.update');
-
-  // Supprimer une flashcard
   Route::delete('flashcards/{id}', [FlashcardController::class, 'destroyFlashcard'])->name('flashcards.destroy');
 
-  // Convertir un pdf en texte
   Route::post('extract', [PdfController::class, 'extractText'])->name('extract');
 
 
@@ -45,6 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('updateSubject', [SubjectController::class, 'updateSubject'])->name('updateSubject');
   Route::post('deleteSubject', [SubjectController::class, 'deleteSubject'])->name('deleteSubject');
 
+  Route::get('collections/today', [CollectionController::class, 'getTodayCollections'])->name('getTodayCollections');
   Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
   Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
