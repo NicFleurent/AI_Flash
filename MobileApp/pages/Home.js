@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import CardCollection from '../components/publics_pages_components/CardCollection';
 import { getLocalUser } from '../api/secureStore';
 import { useSelector } from 'react-redux';
+import { getTodayCollections } from '../api/collection';
+import { getTodayFlashcardsCount } from '../api/flashcard';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -16,78 +18,25 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [firstname, setFirstname] = useState("");
 
-  const [mockData, setMockData] = useState({
-    "total_count":50,
-    "collections":[
-      {
-        id:1,
-        name:"Examen Mi-Session",
-        flashcards_count:25,
-        subject:"Introduction à la programmation"
-      },
-      {
-        id:2,
-        name:"Révision générale",
-        flashcards_count:10,
-        subject:"Communication en informatique"
-      },
-      {
-        id:3,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:4,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:5,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:6,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:7,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:8,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:9,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      },
-      {
-        id:10,
-        name:"Quiz Scrum",
-        flashcards_count:5,
-        subject:"Génie logiciel"
-      }
-    ]
-  })
+  const [totalCount, setTotalCount] = useState(0)
+  const [collections, setCollections] = useState([])
 
   useEffect(()=>{
     const setUser = async () => {
       const user = await getLocalUser();
       setFirstname(user.firstname)
     }
+    const getCollections = async () => {
+      const data = await getTodayCollections();
+      setCollections(data.collections);
+    }
+    const getFlashcardsCount = async () => {
+      const data = await getTodayFlashcardsCount();
+      setTotalCount(data.flashcard_count);
+    }
     setUser();
+    getCollections();
+    getFlashcardsCount();
   },[])
 
   useEffect(()=>{
@@ -104,9 +53,11 @@ const Home = () => {
     return (
       <CardCollection
         nameMatiere={item.name}
-        numberCollection={item.flashcards_count}
+        numberFlashcard={item.flashcards_count}
         nameAuthor={item.subject}
-        onPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name})}
+        onArrowPress={()=>alert("Diriger vers page librairie")}
+        onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
+        isStudy={true}
       />
     );
   };
@@ -129,22 +80,35 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>{t('home.today')}</Text>
-      <TouchableOpacity
-        onPress={handleFlashStudy}
-        style={styles.flashStudyContainer}
+      {totalCount > 0 &&
+        <TouchableOpacity
+          onPress={handleFlashStudy}
+          style={styles.flashStudyContainer}
+        >
+          <View>
+            <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
+            <Text style={styles.flashStudyCount}>{totalCount} {t('home.remaining_flashcards')}</Text>
+          </View>
+          <View>
+            <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
+          </View>
+        </TouchableOpacity>
+      ||
+        <View
+        style={[styles.flashStudyContainer, {backgroundColor:'#c0c0c0'}]}
       >
         <View>
           <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
-          <Text style={styles.flashStudyCount}>{mockData.total_count} {t('home.remaining_flashcards')}</Text>
+          <Text style={styles.flashStudyCount}>Aucune cartes à étudier</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
         </View>
-      </TouchableOpacity>
-
+      </View>
+      }
       <Text style={styles.titleText}>{t('home.detailed_studies')}</Text>
       <FlatList 
-        data={mockData.collections} 
+        data={collections} 
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatListContainer}

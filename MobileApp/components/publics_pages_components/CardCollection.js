@@ -119,7 +119,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faArrowRight, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faBolt, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
 const CardCollection = ({
@@ -130,6 +130,7 @@ const CardCollection = ({
   isPublic,
   onArrowPress,
   onPenPress, 
+  isStudy
 }) => {
   const { height } = useWindowDimensions();
   const { t } = useTranslation();
@@ -149,7 +150,13 @@ const CardCollection = ({
               </Text>
               <Text style={styles.author}>{nameAuthor}</Text>
             </View>
-          ) : (
+          ) : isStudy ? (
+            <View>
+              <Text style={styles.collection}>
+                {numberFlashcard} {t("FLASHCARDS")}
+              </Text>
+            </View>
+          ):(
             <Text style={styles.collection}>
               {numberCollection} {t("COLLECTIONS")}
             </Text>
@@ -158,12 +165,21 @@ const CardCollection = ({
 
         <View style={styles.iconRow}>
           <TouchableOpacity onPress={() => onPenPress()}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              size={24}
-              color="#1DB954"
-              icon={faPenToSquare}
-            />
+            {isStudy ?
+              <FontAwesomeIcon
+                style={styles.icon}
+                size={24}
+                color="#1DB954"
+                icon={faBolt}
+              />
+            :
+              <FontAwesomeIcon
+                style={styles.icon}
+                size={24}
+                color="#1DB954"
+                icon={faPenToSquare}
+              />
+            }
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => onArrowPress()}>

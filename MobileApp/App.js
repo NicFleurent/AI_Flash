@@ -120,7 +120,7 @@ export default function App() {
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 32,
+        fontSize: 26,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
@@ -166,7 +166,7 @@ export default function App() {
       },
       headerTintColor: "#ffffff",
       headerTitleStyle: {
-        fontSize: 32,
+        fontSize: 26,
         fontWeight: "bold"
       },
       headerTitleAlign: 'left',
