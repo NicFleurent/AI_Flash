@@ -53,9 +53,19 @@
     "register":"S'inscrire",
     "logout":"Déconnexion",
     "deleteAccount":"Supprimer le compte",
-    "changePassword":"Modifier mot de passe"
+    "changePassword":"Modifier mot de passe",
+    "invalid_credentials":"Le courriel ou le mot de passe n'est pas valide",
+    "error_signup":"La création de compte à échouée",
+    "successful_logout":"Déconnection réussie",
+    "error_logout":"La déconnexion à échouée",
+    "successful_update":"Le compte a été mis à jour",
+    "error_update":"La modification a échouée",
+    "successful_update_password":"Le mot de passe a été mis à jour",
+    "successful_delete":"Le compte a été supprimé",
+    "error_delete":"La suppression a échouée"
   },
   "account":{
+    "title":"Votre compte",
     "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
     "logout_success":"Déconnection réussie",
     "logout_error":"La déconnection a échouée",
@@ -75,6 +85,7 @@
     "warning":"Attention, changer la langue redémarrera l'application"
   },
   "home":{
+    "title":"Accueil",
     "hello":"Bonjour",
     "today":"Aujourd'hui",
     "remaining_flashcards":"flashcards restantes",

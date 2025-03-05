@@ -22,7 +22,7 @@ class UsersController extends Controller
     $request->validated($request->all());
 
     if (!Auth::attempt($request->only('email', 'password'))) {
-      return $this->error('', 'Le courriel ou le mot de passe n\'est pas valide', 401);
+      return $this->error('', 'auth.invalid_credentials', 401);
     }
 
     $user = Auth::user();
@@ -36,28 +36,36 @@ class UsersController extends Controller
   public function register(RegisterRequest $request)
   {
     $request->validated($request->all());
+    try {
+      $user = User::create([
+        'email' => $request->email,
+        'firstname' => $request->firstname,
+        'lastname' => $request->lastname,
+        'password' => Hash::make($request->password),
+      ]);
 
-    $user = User::create([
-      'email' => $request->email,
-      'firstname' => $request->firstname,
-      'lastname' => $request->lastname,
-      'password' => Hash::make($request->password),
-    ]);
-
-
-    return $this->success([
-      'user' => $user,
-      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
-    ]);
+      return $this->success([
+        'user' => $user,
+        'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
+      ]);
+    } catch (\Throwable $e) {
+      Log::debug($e);
+      return response()->json(['error' => 'auth.error_signup'], 422);
+    }
   }
 
   public function logout()
   {
-    Auth::user()->currentAccessToken()->delete();
+    try {
+      Auth::user()->currentAccessToken()->delete();
 
-    return $this->success([
-      'message' => __('auth.successful_logout')
-    ]);
+      return $this->success([
+        'message' => 'auth.successful_logout'
+      ]);
+    } catch (\Throwable $e) {
+      Log::debug($e);
+      return response()->json(['error' => 'auth.error_logout'], 422);
+    }
   }
 
   public function refreshToken()
@@ -73,38 +81,48 @@ class UsersController extends Controller
 
   public function update(UserUpdateRequest $request)
   {
-    $user = Auth::user();
+    try {
+      $user = Auth::user();
 
-    if ($user->email != $request->email) {
-      $user->email = $request->email;
-    }
-    if ($user->firstname != $request->firstname) {
-      $user->firstname = $request->firstname;
-    }
-    if ($user->lastname != $request->lastname) {
-      $user->lastname = $request->lastname;
-    }
+      if ($user->email != $request->email) {
+        $user->email = $request->email;
+      }
+      if ($user->firstname != $request->firstname) {
+        $user->firstname = $request->firstname;
+      }
+      if ($user->lastname != $request->lastname) {
+        $user->lastname = $request->lastname;
+      }
 
-    $user->save();
+      $user->save();
 
-    return $this->success([
-      'user' => $user,
-      'message' => __('auth.successful_update')
-    ]);
+      return $this->success([
+        'user' => $user,
+        'message' => 'auth.successful_update'
+      ]);
+    } catch (\Throwable $e) {
+      Log::debug($e);
+      return response()->json(['error' => 'auth.error_update'], 422);
+    }
   }
 
   public function updatePassword(UserUpdatePasswordRequest $request)
   {
-    $user = Auth::user();
+    try {
+      $user = Auth::user();
 
-    if (!Hash::check($request->old_password, $user->password)) {
-      return response()->json(['error' => __('auth.password')], 422);
+      if (!Hash::check($request->old_password, $user->password)) {
+        return response()->json(['error' => __('auth.password')], 422);
+      }
+
+      $user->password = Hash::make($request->new_password);
+      $user->save();
+
+      return response()->json(['message' => 'auth.successful_update_password'], 200);
+    } catch (\Throwable $e) {
+      Log::debug($e);
+      return response()->json(['error' => 'auth.error_update'], 422);
     }
-
-    $user->password = Hash::make($request->new_password);
-    $user->save();
-
-    return response()->json(['message' => __('auth.successful_update_password')], 200);
   }
 
   public function destroy()
@@ -115,10 +133,10 @@ class UsersController extends Controller
       $user->delete();
       
 
-      return response()->json(['message' => __('auth.successful_delete')], 200);
+      return response()->json(['message' => 'auth.successful_delete'], 200);
     } catch (\Throwable $e) {
       Log::debug($e);
-      return response()->json(['error' => __('auth.error_delete')], 422);
+      return response()->json(['error' => 'auth.error_delete'], 422);
     }
   }
 

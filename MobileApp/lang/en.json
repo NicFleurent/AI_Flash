@@ -53,9 +53,19 @@
     "register": "Register",
     "logout": "Log out",
     "deleteAccount": "Delete account",
-    "changePassword": "Change password"
+    "changePassword": "Change password",
+    "invalid_credentials": "Invalid email or password",
+    "error_signup": "Account creation failed",
+    "successful_logout": "Successfully logged out",
+    "error_logout": "Log out failed",
+    "successful_update": "Account updated successfully",
+    "error_update": "Update failed",
+    "successful_update_password": "Password updated successfully",
+    "successful_delete": "Account deleted successfully",
+    "error_delete": "Deletion failed"
   },
   "account": {
+    "title": "Your account",
     "logout_confirm": "Are you sure you want to log out?",
     "logout_success": "Successfully logged out",
     "logout_error": "Log out failed",
@@ -75,13 +85,14 @@
     "warning": "Warning, changing the language will restart the application"
   },
   "home": {
+    "title": "Home",
     "hello": "Hello",
     "today": "Today",
     "remaining_flashcards": "flashcards remaining",
     "flash_study": "Quick study",
-    "no_card_to_study":"No studies today",
+    "no_card_to_study": "No cards to study",
     "detailed_studies": "Detailed studies",
-    "no_studies_today": "No studies today"
+    "no_studies_today": "No studies to do today"
   },
   "study": {
     "remembered": "I remembered",

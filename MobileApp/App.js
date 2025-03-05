@@ -106,13 +106,13 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: "Accueil",
+          title: t('home.title'),
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: "Votre compte",
+          title: t('account.title'),
         },
       },
       Explore: {
