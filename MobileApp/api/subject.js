@@ -106,3 +106,30 @@ export const deleteSubject = async (subject_id) => {
     throw new Error(error.message);
   }
 };
+
+export const getAIflashcards = async (question) => {
+  const user = await getLocalUser()
+  const token = user?.token
+  try {
+    // await fetch(`${baseUrl}getAIflashcards?question=${encodeURIComponent(question)}`
+    const response = await fetch(`${baseUrl}getAIflashcards`, {
+      method: 'POST',
+      body: JSON.stringify({ question: question }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    
+    const data = await response.json();
+    
+    if(response.status === 200)
+      return data;
+    else
+      throw new Error(data.message);
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

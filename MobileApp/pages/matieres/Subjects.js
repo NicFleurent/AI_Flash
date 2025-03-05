@@ -1,20 +1,25 @@
-import { SafeAreaView, StatusBar, StyleSheet, FlatList, View, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, FlatList, View, ScrollView, TouchableOpacity, Button } from "react-native";
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
-import { getSubjects, createSubject, updateSubject, deleteSubject } from '../../api/subject';
+import { getSubjects, createSubject, updateSubject, deleteSubject, getAIflashcards } from '../../api/subject';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../components/CustomModal'
 import CardCollection from '../../components/publics_pages_components/CardCollection';
+import CustomInput from "../../components/CustomInput";
+import FLashCard from "../../components/publics_pages_components/FlashCard";
+import { FloatingLabelInput } from "react-native-floating-label-input";
 
+// Modifier les titlres de collectins et vider l'input
 
 const Subjects = () => {
     const navigation = useNavigation();
     const { t } = useTranslation();
 
     const [subjects, setSubjects] = useState([]);
+    const [flashCards, setFlashCards] = useState([]);
     const [visible, setVisible] = useState(false)
     const [input, setInput] = useState("")
     const [id, setId] = useState("")
@@ -162,10 +167,67 @@ const Subjects = () => {
         )
     }
 
+    // const renderItem = ({ item }) => {
+    //     return (
+    //         <FLashCard 
+    //             title={item[0]}
+    //             description={item[1]}
+    //         />
+    //     )
+    // }
+
+    // const envoyer = async () => {
+    //     try {
+    //         const response = await getAIflashcards(input);
+
+    //         if (response && response.message && response.answer) {
+    //             Toast.show({
+    //                 type: 'success',
+    //                 text1: t('SUCCESS'),
+    //                 text2: response.message,
+    //             });
+
+    //             const parseAnswer = JSON.parse(response.answer)
+    //             setFlashCards(Object.entries(parseAnswer))
+    //         }
+
+    //         setInput("")
+    //         setVisible(false)
+
+    //     } catch (error) {
+    //         console.log('Error: ' + error)
+
+    //         Toast.show({
+    //             type: 'error',
+    //             text1: t('ERROR'),
+    //             text2: error.message,
+    //         });
+    //     }
+    // }
+
     return (
         <SafeAreaView style={styles.container}>
-            {/* <ScrollView> */}
-                <View>
+            {/* <ScrollView>
+                <View> */}
+                {/* <CustomInput
+                  label={"Posez votre question"}
+                  value={input}
+                  onChangeText={setInput}
+                  isPassword={false}
+                  error={error.errorInput}
+                />
+
+                <Button title="Envoyer" onPress={() => envoyer()}/>
+
+                    <FlatList
+                        style={styles.flatList}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={flashCards}
+                        numColumns={1}
+                        contentContainerStyle={styles.flatListContent}
+                    /> */}
+
                     <FlatList
                         style={styles.flatList}
                         renderItem={renderItem}
@@ -194,12 +256,12 @@ const Subjects = () => {
                     >
                         <FontAwesomeIcon icon={faPlus} size={20} color="black" />
                     </TouchableOpacity>
-
+                    
                     <Toast position='top' bottomOffset={20} />
 
                     <StatusBar style="auto" />
-                </View>
-            {/* </ScrollView> */}
+                {/* </View>
+            </ScrollView> */}
         </SafeAreaView>
     )
 }
