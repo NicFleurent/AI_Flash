@@ -58,12 +58,16 @@ const AddCollectionByMyself = ({ route }) => {
           const collectionResponse = await createCollection(subjectId, collectionName);
       
             if (collectionResponse && collectionResponse.data) {
-      
+
                 const collectionId = collectionResponse.data.id;
-        
+
+                console.log(collectionId);
+                console.log(flashcardsData);
+
                 for (const flashcard of flashcardsData) {
-                await createFlashcard({ ...flashcard, collection_id: collectionId });
+                    await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
+                console.log("ahhhhhhhhhhhhhhhh");
         
                 Toast.show({
                 type: 'success',
@@ -76,6 +80,8 @@ const AddCollectionByMyself = ({ route }) => {
 
         } catch (error) {
           console.log('Error: ' + error);
+
+          console.log('ehhhhhhh ');
       
           Toast.show({
             type: 'error',

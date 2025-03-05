@@ -65,6 +65,7 @@ const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, i
               id: Date.now(),
               front_face: face,
               back_face: enDos,
+              last_revision_date: nextRevisionDate,
               next_revision_date: nextRevisionDate, 
               forgetting_curve_stage: 0, 
               collection_id: collectionId 
