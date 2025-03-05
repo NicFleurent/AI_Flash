@@ -5,12 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faLanguage, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
+import LanguagesModal from '../../components/LanguagesModal';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -20,6 +21,7 @@ const Account = () => {
   const [isModalLogoutVisible, setIsModalLogoutVisible] = useState(false);
   const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
+  const [isModalLanguageVisible, setIsModalLanguageVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -150,6 +152,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setFirstname)}
             isPassword={false}
             error={errors.errorFirstname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.lastname')}
@@ -157,6 +160,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setLastname)}
             isPassword={false}
             error={errors.errorLastname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.email')}
@@ -165,6 +169,7 @@ const Account = () => {
             isPassword={false}
             error={errors.errorEmail}
             keyboardType='email-address'
+            removeBottomMarginErrror={true}
           />
         </View>
 
@@ -173,14 +178,28 @@ const Account = () => {
             type="white-outline"
             label={t('button.save')}
             onPress={openUpdateAlert}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faSave}
+          />
+          <CustomButton
+            type="white-outline"
+            label={t('auth.changePassword')}
+            onPress={handleChangePassword}
+            additionnalStyle={{ marginBottom: 15 }}
+            icon={faPenToSquare}
+          />
+          <CustomButton
+            type="white-outline"
+            label={t('account.languages')}
+            onPress={()=>setIsModalLanguageVisible(true)}
+            additionnalStyle={{ marginBottom: 15 }}
+            icon={faLanguage}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
             onPress={()=>setIsModalLogoutVisible(true)}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faArrowRightFromBracket}
           />
           <CustomButton
@@ -189,13 +208,6 @@ const Account = () => {
             onPress={()=>setIsModalDeleteVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faUserXmark}
-          />
-          <CustomButton
-            type="white-outline"
-            label={t('auth.changePassword')}
-            onPress={handleChangePassword}
-            additionnalStyle={{ marginBottom: 20 }}
-            icon={faPenToSquare}
           />
         </View>
       </View>
@@ -229,6 +241,10 @@ const Account = () => {
         onCancel={()=>setIsModalDeleteVisible(false)}
         onClose={()=>setIsModalDeleteVisible(false)}
         onConfirm={handleDelete}
+      />
+      <LanguagesModal
+        visible={isModalLanguageVisible}
+        setVisible={setIsModalLanguageVisible}
       />
       
       <Toast position='top' bottomOffset={20} />

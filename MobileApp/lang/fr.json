@@ -51,7 +51,11 @@
       "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
       "update":"Enregistrer",
       "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
-      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?"
+      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?",
+      "languages":"Langues"
+    },
+    "language_modal":{
+      "title":"Langues"
     },
     "home":{
       "hello":"Bonjour",
