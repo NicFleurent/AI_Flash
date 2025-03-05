@@ -58,15 +58,15 @@ const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, i
             back_face: enDos 
           });
         } else {
-          const formattedDate = new Date();
-          formattedDate.setDate(formattedDate.getDate()); 
-          const nextRevisionDate = formattedDate.toISOString().split("T")[0];
+            const formattedDate = new Date();
+            const options = { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' };
+            const dateDuJour = new Intl.DateTimeFormat('en-CA', options).format(formattedDate);
           onAddFlashCard?.({ 
               id: Date.now(),
               front_face: face,
               back_face: enDos,
-              last_revision_date: nextRevisionDate,
-              next_revision_date: nextRevisionDate, 
+              last_revision_date: dateDuJour,
+              next_revision_date: dateDuJour, 
               forgetting_curve_stage: 0, 
               collection_id: collectionId 
           });

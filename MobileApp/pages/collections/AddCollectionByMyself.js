@@ -61,18 +61,14 @@ const AddCollectionByMyself = ({ route }) => {
 
                 const collectionId = collectionResponse.data.id;
 
-                console.log(collectionId);
-                console.log(flashcardsData);
-
                 for (const flashcard of flashcardsData) {
                     await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
-                console.log("ahhhhhhhhhhhhhhhh");
         
                 Toast.show({
-                type: 'success',
-                text1: t('SUCCESS'),
-                text2: t('add_collection_by_myself.collection_and_flashcards_created'),
+                    type: 'success',
+                    text1: t('SUCCESS'),
+                    text2: t('add_collection_by_myself.collection_and_flashcards_created'),
                 });
 
                 navigation.goBack();
@@ -80,8 +76,6 @@ const AddCollectionByMyself = ({ route }) => {
 
         } catch (error) {
           console.log('Error: ' + error);
-
-          console.log('ehhhhhhh ');
       
           Toast.show({
             type: 'error',
@@ -104,7 +98,6 @@ const AddCollectionByMyself = ({ route }) => {
         addFlashcardRef.current?.close();
     }, []);
 
-    
 
     const renderItem = ({ item }) => {
         return (

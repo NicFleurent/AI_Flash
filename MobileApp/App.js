@@ -32,10 +32,10 @@ export default function App() {
   const isUserLoggedIn = async ()=>{
     try {
       const response = await refreshToken();
-      setLandingPage("Menu")
+      setLandingPage("Menu");
     } catch (error) {
       console.log(error)
-      setLandingPage("Auth")
+      setLandingPage("Auth");
     }
   }
 
