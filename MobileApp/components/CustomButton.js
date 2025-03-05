@@ -85,9 +85,6 @@ const styles = {
   smallTxt:{
     fontSize:14
   },
-  smallTxt:{
-    fontSize:14
-  },
   greenFullContainer:{
     backgroundColor:'#1DB954',
   },
