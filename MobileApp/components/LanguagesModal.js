@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, useWindowDimensions, Modal, TextInput, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRight, faWarning, faX } from "@fortawesome/free-solid-svg-icons";
@@ -6,26 +6,36 @@ import CustomInput from "./CustomInput";
 import { useTranslation } from 'react-i18next'
 import CustomButton from "./CustomButton";
 import { useSelector } from "react-redux";
+import { Dropdown } from "react-native-element-dropdown";
+import { getLocalData, saveLocalData } from "../api/asyncStorage";
 
 const LanguagesModal = ({
   visible,
   setVisible,
-  inputs,
-  input,
-  setInput,
-  error,
-  setTypeModal,
-  type_modal,
-  onPressCreate,
-  onPressDelete,
-  onPressEdit,
-  isCancel,
-  onPressCancel,
-  modalTitle,
-  deleteMessage
+  onSave
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
+
+  const [language, setLanguage] = useState("");
+
+  const languageData = [
+    { label: 'Français', value: 'fr' },
+    { label: 'English', value: 'en' },
+  ]
+
+  useEffect(()=>{
+    const getParams = async () =>{
+      const langue = await getLocalData("language");
+      setLanguage(langue);
+    }
+    getParams()
+  },[])
+
+  const handleSave = () => {
+    saveLocalData("language", language);
+    i18n.changeLanguage(language.value);
+  }
 
   return (
     <View>
@@ -33,7 +43,7 @@ const LanguagesModal = ({
         <View style={styles.modalContainer}>
           <View style={[styles.modalContent, isTablet && styles.modalContentTablet]}>
             <View style={styles.containerHead}> 
-              <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+              <Text style={styles.title}>
                 {t('language_modal.title')}
               </Text>
               <TouchableOpacity onPress={() => setVisible(false)}>
@@ -41,48 +51,35 @@ const LanguagesModal = ({
               </TouchableOpacity>
             </View>
 
-            {inputs && inputs.map((input, index)=>(
-              <CustomInput
-                key={index}
-                label={input.label}
-                value={input.value}
-                onChangeText={input.onChangeText}
-                isPassword={input.isPassword}
-                error={input.error}
-              />
-            )) ||
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              data={languageData}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Veuillez choisir une option"
+              value={language}
+              onChange={setLanguage}
+            />
 
-              <CustomInput
-                label={t("subject.input.title_input")}
-                value={input}
-                onChangeText={setInput}
-                isPassword={false}
-                error={error && error.errorInput}
-              />
-            }
+            <Text style={styles.warning}>
+              {t('language_modal.warning')}
+            </Text>
 
             <View style={styles.buttonsContainer}>
-              {isCancel &&
-                <CustomButton
-                  type="white-outline"
-                  label={t('button.cancel')}
-                  onPress={onPressCancel}
-                  isSmall={true}
-                  additionnalStyle={{width:'35%', marginRight:10}}
-                /> 
-              ||
-                <CustomButton
-                  type="white-outline"
-                  label={t('button.delete')}
-                  onPress={() => setTypeModal("delete")}
-                  isSmall={true}
-                  additionnalStyle={{width:'35%', marginRight:10}}
-                /> 
-              }
+              <CustomButton
+                type="white-outline"
+                label={t('button.cancel')}
+                onPress={() => setVisible(false)}
+                isSmall={true}
+                additionnalStyle={{width:'35%', marginRight:10}}
+              /> 
               <CustomButton
                 type="green-full"
                 label={t('button.save')}
-                onPress={async () => onPressEdit()}
+                onPress={handleSave}
                 isSmall={true}
                 additionnalStyle={{width:'35%'}}
               />
@@ -118,6 +115,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  warning: {
+    fontSize: 18,
+    color: 'red',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginLeft:10
+  },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -127,6 +132,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     justifyContent: 'space-between'
+  },
+  dropdown: {
+    margin: 16,
+    height: 50,
+    borderBottomColor: 'white',
+    borderBottomWidth: 0.5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color:'white'
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color:'white'
   },
 });
 

@@ -16,6 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-native-fontawesome": "^0.3.2",
     "@gorhom/bottom-sheet": "^5.1.1",
+    "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/blur": "^4.4.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/elements": "^2.2.5",
@@ -34,6 +35,7 @@
     "react-i18next": "^15.4.0",
     "react-native": "^0.76.7",
     "react-native-dropdown-select-list": "^2.0.5",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-floating-label-input": "^1.4.3",
     "react-native-gesture-handler": "^2.24.0",
@@ -45,7 +47,8 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "expo-localization": "~16.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

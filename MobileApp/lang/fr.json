@@ -1,126 +1,133 @@
 {
-  "translation": {
-    "APP_NAME": "AI Flash",
-    "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
-    "ERROR":"Erreur",
-    "SUCCESS":"Succès",
-    "COLLECTIONS": "Collections",
-    "FLASHCARDS": "Flashcards",
-    "button":{
-      "goBack":"Retour",
-      "next":"Suivant",
-      "finish":"Terminer",
-      "add":"Créer",
-      "cancel":"Annuler",
-      "save":"Enregistrer",
-      "yes":"Oui",
-      "delete":"Supprimer",
-      "confirm":"Confirmer"
-    },
+  "APP_NAME": "AI Flash",
+  "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
+  "ERROR":"Erreur",
+  "SUCCESS":"Succès",
+  "COLLECTIONS": "Collections",
+  "FLASHCARDS": "Flashcards",
+  "button":{
+    "goBack":"Retour",
+    "next":"Suivant",
+    "finish":"Terminer",
+    "add":"Créer",
+    "cancel":"Annuler",
+    "save":"Enregistrer",
+    "yes":"Oui",
+    "delete":"Supprimer",
+    "confirm":"Confirmer"
+  },
+  "input":{
+    "firstname":"Prénom",
+    "lastname":"Nom",
+    "email":"Adresse courriel",
+    "password":"Mot de passe",
+    "newPassword":"Nouveau mot de passe",
+    "passwordConfirm":"Confirmer le mot de passe",
+    "error":{
+      "firstname_required":"Le prénom est requis",
+      "lastname_required":"Le nom est requis",
+      "email_required":"L'adresse courriel est requise",
+      "email_invalid":"L'adresse courriel n'est pas valide",
+      "password_required":"Le mot de passe est requis",
+      "passwordConfirm_required":"Les mots de passe ne correspondent pas"
+    }
+  },
+  "secureStore":{
+    "error":{
+      "save":"Erreur lors de la sauvegarde",
+      "get":"Erreur lors de la récupération",
+      "delete":"Erreur lors de la suppression"
+    }
+  },
+  "asyncStorage":{
+    "error":{
+      "save":"Erreur lors de la sauvegarde",
+      "get":"Erreur lors de la récupération",
+      "delete":"Erreur lors de la suppression"
+    }
+  },
+  "auth":{
+    "connection":"Connexion",
+    "login":"Se connecter",
+    "signin":"Inscription",
+    "register":"S'inscrire",
+    "logout":"Déconnexion",
+    "deleteAccount":"Supprimer le compte",
+    "changePassword":"Modifier mot de passe"
+  },
+  "account":{
+    "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
+    "logout_success":"Déconnection réussie",
+    "logout_error":"La déconnection a échouée",
+    "update":"Enregistrer",
+    "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
+    "update_success":"Le compte a été mis à jour",
+    "update_error":"La modification a échouée",
+    "delete_confirm":"Voulez-vous vraiment supprimer votre compte?",
+    "languages":"Langues",
+    "delete_success":"Le compte a été supprimé",
+    "delete_error":"Le compte n'a pas pu être supprimé",
+    "updatePassword_success":"Votre mot de passe a été modifier",
+    "updatePassword_error":"La modification de mot de passe a échouée"
+  },
+  "language_modal":{
+    "title":"Langues",
+    "warning":"Attention, changer la langue redémarrera l'application"
+  },
+  "home":{
+    "hello":"Bonjour",
+    "today":"Aujourd'hui",
+    "remaining_flashcards":"flashcards restantes",
+    "flash_study":"Étude rapide",
+    "no_card_to_study":"Aucune cartes à étudier",
+    "detailed_studies":"Études détaillées",
+    "no_studies_today":"Aucune étude à faire aujourd'hui"
+  },
+  "study":{
+    "remembered":"Je m'en souvenais",
+    "forgotten":"J'avais oublié"
+  },
+  "subject":{
+    "title":"Vos matières",
+    "description":"Description",
     "input":{
-      "firstname":"Prénom",
-      "lastname":"Nom",
-      "email":"Adresse courriel",
-      "password":"Mot de passe",
-      "newPassword":"Nouveau mot de passe",
-      "passwordConfirm":"Confirmer le mot de passe",
-      "error":{
-        "firstname_required":"Le prénom est requis",
-        "lastname_required":"Le nom est requis",
-        "email_required":"L'adresse courriel est requise",
-        "email_invalid":"L'adresse courriel n'est pas valide",
-        "password_required":"Le mot de passe est requis",
-        "passwordConfirm_required":"Les mots de passe ne correspondent pas"
-      }
+      "title_modal_add":"Ajouter une matière",
+      "title_modal_edit":"Modifier une matière",
+      "title_modal_delete":"Supprimer une matière",
+      "modal_delete":"Voulez-vous vraiment supprimer la matière ",
+      "title_input":"Nom de la matière"
     },
-    "secureStore":{
-      "error":{
-        "save":"Erreur lors de la sauvegarde",
-        "get":"Erreur lors de la récupération",
-        "delete":"Erreur lors de la suppression"
-      }
+    "error":{
+      "title_input_required":"Le nom de la matière est requis",
+      "title_input_required_collections":"Le nom de la matière est requis"
     },
-    "auth":{
-      "connection":"Connexion",
-      "login":"Se connecter",
-      "signin":"Inscription",
-      "register":"S'inscrire",
-      "logout":"Déconnexion",
-      "deleteAccount":"Supprimer le compte",
-      "changePassword":"Modifier mot de passe"
-    },
-    "account":{
-      "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
-      "logout_success":"Déconnection réussie",
-      "logout_error":"La déconnection a échouée",
-      "update":"Enregistrer",
-      "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
-      "update_success":"Le compte a été mis à jour",
-      "update_error":"La modification a échouée",
-      "delete_confirm":"Voulez-vous vraiment supprimer votre compte?",
-      "languages":"Langues",
-      "delete_success":"Le compte a été supprimé",
-      "delete_error":"Le compte n'a pas pu être supprimé",
-      "updatePassword_success":"Votre mot de passe a été modifier",
-      "updatePassword_error":"La modification de mot de passe a échouée"
-    },
-    "language_modal":{
-      "title":"Langues"
-    },
-    "home":{
-      "hello":"Bonjour",
-      "today":"Aujourd'hui",
-      "remaining_flashcards":"flashcards restantes",
-      "flash_study":"Étude rapide",
-      "detailed_studies":"Études détaillées",
-      "no_studies_today":"Aucune étude à faire aujourd'hui"
-    },
-    "study":{
-      "remembered":"Je m'en souvenais",
-      "forgotten":"J'avais oublié"
-    },
-    "subject":{
-      "title":"Vos matières",
-      "description":"Description",
+    "collections": {
+      "title": "Vos collections pour cette matière",
       "input":{
-        "title_modal_add":"Ajouter une matière",
-        "title_modal_edit":"Modifier une matière",
-        "title_modal_delete":"Supprimer une matière",
-        "modal_delete":"Voulez-vous vraiment supprimer la matière ",
+        "title_modal_add":"Ajouter une collection",
+        "title_modal_edit":"Modifier une collection",
+        "title_modal_delete":"Supprimer une collection",
+        "modal_delete":"Voulez-vous vraiment supprimer la collection ",
+        "title_modal":"Modifier une matière",
         "title_input":"Nom de la matière"
-      },
-      "error":{
-        "title_input_required":"Le nom de la matière est requis",
-        "title_input_required_collections":"Le nom de la matière est requis"
-      },
-      "collections": {
-        "title": "Vos collections pour cette matière",
-        "input":{
-          "title_modal_add":"Ajouter une collection",
-          "title_modal_edit":"Modifier une collection",
-          "title_modal_delete":"Supprimer une collection",
-          "modal_delete":"Voulez-vous vraiment supprimer la collection ",
-          "title_modal":"Modifier une matière",
-          "title_input":"Nom de la matière"
-        }
       }
-    },
-    "explore":{
-      "title": "Explorez",
-      "find": "Rechercher",
-      "bottom_sheet":{
-        "copy": "Copier",
-        "add": "Ajouter",
-        "copy_made": "Copie effectuée",
-        "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
-        "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
-        "add_to_existing_subject": "Ajouter à une matière existante",
-        "create_new_subject": "Créer une nouvelle matière",
-        "select_subject":"Sélectionner la matière",
-        "add_subject": "Nouvelle matière",
-        "subject_name": "Nom de la matière",
-        "author": "Créée par"
-      }
-    }    
-  }
+    }
+  },
+  "explore":{
+    "title": "Explorez",
+    "find": "Rechercher",
+    "bottom_sheet":{
+      "copy": "Copier",
+      "add": "Ajouter",
+      "copy_made": "Copie effectuée",
+      "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
+      "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
+      "add_to_existing_subject": "Ajouter à une matière existante",
+      "create_new_subject": "Créer une nouvelle matière",
+      "select_subject":"Sélectionner la matière",
+      "add_subject": "Nouvelle matière",
+      "subject_name": "Nom de la matière",
+      "author": "Créée par"
+    }
+  }    
 }

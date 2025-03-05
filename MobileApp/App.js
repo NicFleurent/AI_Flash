@@ -17,13 +17,23 @@ import store from './stores/store';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
 import Study from './pages/Study';
+import { getLocalData } from "./api/asyncStorage.js";
 
 export default function App() {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
     isUserLoggedIn();
+  },[])
+
+  
+  useEffect(()=>{
+    const getParams = async () =>{
+      const language = await getLocalData("language");
+      i18n.changeLanguage(language.value);
+    }
+    getParams()
   },[])
 
   const isUserLoggedIn = async ()=>{
