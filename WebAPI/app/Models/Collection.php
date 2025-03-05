@@ -17,4 +17,8 @@ class Collection extends Model
     public function subject() {
         return $this->belongsTo(Subject::class);
     }
+    
+    public function flashcards() {
+        return $this->hasMany(Flashcard::class);
+    }
 }

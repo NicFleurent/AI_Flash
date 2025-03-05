@@ -1,11 +1,11 @@
 import { getLocalUser } from "./secureStore";
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export const getCollections = async (subject_id) => {
+export const getTodayFlashcardsCount = async () => {
   const user = await getLocalUser()
   const token = user?.token
   try {
-    const response = await fetch(`${baseUrl}getUserCollections?subject_id=${subject_id}`, {
+    const response = await fetch(`${baseUrl}flashcards/todayCount`, {
       method: 'GET',
       headers: {
         Accept: "application/json",
@@ -26,11 +26,11 @@ export const getCollections = async (subject_id) => {
   }
 };
 
-export const getTodayCollections = async () => {
+export const getTodayFlashcards = async () => {
   const user = await getLocalUser()
   const token = user?.token
   try {
-    const response = await fetch(`${baseUrl}collections/today`, {
+    const response = await fetch(`${baseUrl}flashcards/today`, {
       method: 'GET',
       headers: {
         Accept: "application/json",
@@ -51,13 +51,12 @@ export const getTodayCollections = async () => {
   }
 };
 
-export const createCollection = async (subject_id, collection_name) => {
+export const getCollectionTodayFlashCards = async (collection_id) => {
   const user = await getLocalUser()
   const token = user?.token
   try {
-    const response = await fetch(`${baseUrl}createCollection`, {
-      method: 'POST',
-      body: JSON.stringify({ subject_id: subject_id, collection_name: collection_name }),
+    const response = await fetch(`${baseUrl}flashcards/today/${collection_id}`, {
+      method: 'GET',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -77,53 +76,57 @@ export const createCollection = async (subject_id, collection_name) => {
   }
 };
 
-export const updateCollection = async (collection_id, collection_name) => {
-  const user = await getLocalUser()
-  const token = user?.token
+export const updateRememberedFlashcard = async (id) => {
   try {
-    const response = await fetch(`${baseUrl}updateCollection`, {
-      method: 'POST',
-      body: JSON.stringify({ collection_id: collection_id, collection_name: collection_name }),
+    const user = await getLocalUser();
+
+    const response = await fetch(`${baseUrl}flashcards/remembered`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: id
+      }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
     
     const data = await response.json();
-    
-    if(response.status === 200)
+
+    if(response.status === 200){
       return data;
+    }
     else
       throw new Error(data.message);
-
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const deleteCollection = async (collection_id) => {
-  const user = await getLocalUser()
-  const token = user?.token
+export const updateForgottenFlashcard = async (id) => {
   try {
-    const response = await fetch(`${baseUrl}deleteCollection`, {
-      method: 'POST',
-      body: JSON.stringify({collection_id: collection_id}),
+    const user = await getLocalUser();
+
+    const response = await fetch(`${baseUrl}flashcards/forgotten`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: id
+      }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
     
     const data = await response.json();
-    
-    if(response.status === 200)
+
+    if(response.status === 200){
       return data;
+    }
     else
       throw new Error(data.message);
-
   } catch (error) {
     throw new Error(error.message);
   }
