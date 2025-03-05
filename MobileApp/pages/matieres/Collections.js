@@ -184,6 +184,8 @@ const Collections = ({ route }) => {
             onPressEdit={edit}
             onPressDelete={drop}
             type_modal={type_modal}
+            modalTitle={t("subject.collections.input.title_modal_"+type_modal)}
+            deleteMessage={t("subject.collections.input.modal_delete")}
           />
 
           <TouchableOpacity
