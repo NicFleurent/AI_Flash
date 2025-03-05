@@ -54,7 +54,7 @@ const Home = () => {
       <CardCollection
         nameMatiere={item.name}
         numberFlashcard={item.flashcards_count}
-        nameAuthor={item.subject}
+        nameAuthor={item.subject.name}
         onArrowPress={()=>alert("Diriger vers page librairie")}
         onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
         isStudy={true}
