@@ -16,6 +16,7 @@ const styles = {
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    padding:20
   },
   text: {
     color: '#000000',
