@@ -15,4 +15,8 @@ class Flashcard extends Model
         'forgetting_curve_stage',
         'collection_id'
     ];
+
+    public function collection() {
+        return $this->belongsTo(Collection::class);
+    }
 }

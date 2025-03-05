@@ -20,12 +20,12 @@ class OpenAIController extends Controller
             $payload = [
                 'model' => 'gpt-4o',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Provide your responses in a key-value dictionary format where each key is a concept or principle, and the value is the corresponding definition or description. The key can be the concept or principle, and the value should be a concise definition. Do not include examples or extra details, just the definition.'],
+                    ['role' => 'system', 'content' => 'Extract key concepts, principles, and important definitions from the provided text and present them as a dictionary. Each key should be a concept or principle, and the corresponding value should be a concise definition or description. Do not include examples or extra details. The output should be in dictionary format. And a minimum of 40. You can give more.'],
                     ['role' => 'user', 'content' => $question],
                 ],
-                'max_tokens'=> 8192
-            ];
-            
+                'max_tokens' => 8192
+            ];  
+                                   
             $response = $client->post('https://api.openai.com/v1/chat/completions', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $key,
@@ -41,7 +41,7 @@ class OpenAIController extends Controller
             Log::debug("Body " . $responseBody['choices'][0]['message']['content']);
 
             $content = $responseBody['choices'][0]['message']['content'];
-            $content = preg_replace('/^```json|\n?```$/', '', $content);
+            $content = preg_replace('/^```python|\n?```$/', '', $content);
             Log::debug("Content " . $content);
 
             return response()->json([

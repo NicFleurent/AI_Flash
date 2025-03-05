@@ -14,8 +14,10 @@ const CustomModal = ({
   input,
   setInput,
   error,
+  setError,
   setTypeModal,
   type_modal,
+  name_modal,
   onPressCreate,
   onPressDelete,
   onPressEdit,
@@ -37,9 +39,9 @@ const CustomModal = ({
               <>
                 <View style={styles.containerHead}> 
                   <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-                    {modalTitle}{/**t("subject.input.title_modal_edit")**/}
+                    {modalTitle}
                   </Text>
-                  <TouchableOpacity onPress={() => [setVisible(false), setInput("")]}>
+                  <TouchableOpacity onPress={() => [setVisible(false), setInput(""), setError([])]}>
                     <FontAwesomeIcon icon={faX} size={20} color="green"/>
                   </TouchableOpacity>
                 </View>
@@ -56,7 +58,7 @@ const CustomModal = ({
                 )) ||
 
                   <CustomInput
-                    label={t("subject.input.title_input")}
+                    label={t("subject.input.title_input_" + name_modal)}
                     value={input}
                     onChangeText={setInput}
                     isPassword={false}
@@ -101,7 +103,7 @@ const CustomModal = ({
                 </Text>
 
                 <CustomInput
-                  label={t("subject.input.title_input")}
+                  label={t("subject.input.title_input_" + name_modal)}
                   value={input}
                   onChangeText={setInput}
                   isPassword={false}
@@ -114,7 +116,7 @@ const CustomModal = ({
                     label={t('button.cancel')}
                     isSmall={true}
                     additionnalStyle={{width:'35%', marginRight:10}}
-                    onPress={() => [setVisible(false), setInput("")]}
+                    onPress={() => [setVisible(false), setInput(""), setError([])]}
                   /> 
                   <CustomButton
                     type="green-full"
@@ -138,7 +140,7 @@ const CustomModal = ({
                   <View style={{flex: 1}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '95%'}}>
                       <Text style={[styles.title, {marginBottom: 0}]} numberOfLines={2} ellipsizeMode="tail">Attention</Text>
-                      <TouchableOpacity onPress={() => [setVisible(false), setInput("")]}>
+                      <TouchableOpacity onPress={() => [setVisible(false), setInput(""), setError([])]}>
                         <FontAwesomeIcon icon={faX} size={20} color="green" />
                       </TouchableOpacity>
                     </View>
@@ -151,10 +153,9 @@ const CustomModal = ({
                       <CustomButton
                         type="white-outline"
                         label={t('button.cancel')}
-                        onPress={() => setVisible(false)}
                         isSmall={true}
                         additionnalStyle={{width:'35%', marginRight:10, marginTop:20}}
-                        onPress={() => [setVisible(false), setInput("")]}
+                        onPress={() => [setVisible(false), setInput(""), setError([])]}
                       /> 
                       <CustomButton
                         type="green-full"

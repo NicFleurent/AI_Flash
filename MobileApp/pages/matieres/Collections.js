@@ -20,6 +20,7 @@ const Collections = ({ route }) => {
   const [input, setInput] = useState("")
   const [collection_id, setCollectionId] = useState("")
   const [type_modal, setTypeModal] = useState("")
+  const [name_modal, setNameModal] = useState("")
   const [error, setError] = useState([]);
   const [isError, setIsError] = useState(false);
 
@@ -90,7 +91,7 @@ const Collections = ({ route }) => {
         if (response && response.message) {
           Toast.show({
             type: 'success',
-            text1: t('subject.success'),
+            text1: t('SUCCESS'),
             text2: t(response.message)
           });
 
@@ -121,7 +122,7 @@ const Collections = ({ route }) => {
       if (response && response.message) {
         Toast.show({
           type: 'success',
-          text1: t('subject.success'),
+          text1: t('SUCCESS'),
           text2: t(response.message)
         });
 
@@ -151,7 +152,7 @@ const Collections = ({ route }) => {
       <CardCollection
         nameMatiere={item.name}
         isPublic={true}
-        numberCollection={item.collections_count}
+        numberFlashcard={item.flashcards_count}
         // onArrowPress={() => navigation.navigate("Collections", item)}
         onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id)]}
       />
@@ -179,18 +180,20 @@ const Collections = ({ route }) => {
             input={input}
             setInput={(value) => onChangeText(value, setInput)}
             error={error}
+            setError={setError}
+            name_modal={name_modal}
+            type_modal={type_modal}
             setTypeModal={setTypeModal}
             onPressCreate={create}
             onPressEdit={edit}
             onPressDelete={drop}
-            type_modal={type_modal}
             modalTitle={t("subject.collections.input.title_modal_"+type_modal)}
             deleteMessage={t("subject.collections.input.modal_delete")}
           />
 
           <TouchableOpacity
             style={styles.floatingInput}
-            onPress={() => [setTypeModal("add"), setVisible(true)]}
+            onPress={() => [setTypeModal("add"), setVisible(true), setNameModal("collection")]}
           >
             <FontAwesomeIcon icon={faPlus} size={20} color="black" />
           </TouchableOpacity>

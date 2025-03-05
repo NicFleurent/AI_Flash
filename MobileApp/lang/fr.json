@@ -83,7 +83,8 @@
         "title_modal_edit":"Modifier une matière",
         "title_modal_delete":"Supprimer une matière",
         "modal_delete":"Voulez-vous vraiment supprimer la matière ",
-        "title_input":"Nom de la matière"
+        "title_input_matiere":"Nom de la matière",
+        "title_input_collection":"Nom de la collection"
       },
       "error":{
         "title_input_required":"Le nom de la matière est requis",

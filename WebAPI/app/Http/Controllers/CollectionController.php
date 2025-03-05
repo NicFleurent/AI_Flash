@@ -18,7 +18,11 @@ class CollectionController extends Controller
         $subject_id = $data['subject_id'] ?? '';
         Log::debug($data);
 
-        $collections = Collection::where('subject_id', $subject_id)->get();
+        $collections = Collection::where('subject_id', $subject_id)
+                            ->withCount('flashcards') 
+                            ->get();
+
+                            Log::debug($collections);
 
         return response()->json($collections);
     }

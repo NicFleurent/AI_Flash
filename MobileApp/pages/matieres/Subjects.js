@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, StyleSheet, FlatList, View, ScrollView, TouchableOpacity, Button } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, FlatList, TouchableOpacity, Button, useWindowDimensions } from "react-native";
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
@@ -10,9 +10,8 @@ import CustomModal from '../../components/CustomModal'
 import CardCollection from '../../components/publics_pages_components/CardCollection';
 import CustomInput from "../../components/CustomInput";
 import FLashCard from "../../components/publics_pages_components/FlashCard";
-import { FloatingLabelInput } from "react-native-floating-label-input";
 
-// Modifier les titlres de collectins et vider l'input
+// const { height } = useWindowDimensions();
 
 const Subjects = () => {
     const navigation = useNavigation();
@@ -24,6 +23,7 @@ const Subjects = () => {
     const [input, setInput] = useState("")
     const [id, setId] = useState("")
     const [type_modal, setTypeModal] = useState("")
+    const [name_modal, setNameModal] = useState("")
     const [error, setError] = useState([]);
     const [isError, setIsError] = useState(false)
     const [change, setChange] = useState(false)
@@ -60,7 +60,6 @@ const Subjects = () => {
         if (validateForm()) {
             try {
                 const response = await createSubject(input);
-                console.log(response)
                 if (response && response.message) {
                     Toast.show({
                         type: 'success',
@@ -70,7 +69,7 @@ const Subjects = () => {
 
                     getUserSubjects();
                 }
-                
+
                 setInput("")
                 setVisible(false)
             } catch (error) {
@@ -91,7 +90,6 @@ const Subjects = () => {
         if (validateForm()) {
             try {
                 const response = await updateSubject(id, input);
-
                 if (response && response.message) {
                     Toast.show({
                         type: 'success',
@@ -121,7 +119,6 @@ const Subjects = () => {
     const drop = async () => {
         try {
             const response = await deleteSubject(id);
-
             if (response && response.message) {
                 Toast.show({
                     type: 'success',
@@ -156,118 +153,118 @@ const Subjects = () => {
         setInput("")
     }, [change])
 
-    // const renderItem = ({ item }) => {
-    //     return (
-    //         <CardCollection
-    //             nameMatiere={item.name}
-    //             isPublic={false}
-    //             numberCollection={item.collections_count}
-    //             onArrowPress={() => navigation.navigate("Collections", {'item': item, 'change': change, 'setChange': setChange})}
-    //             onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
-    //         />
-    //     )
-    // }
-
     const renderItem = ({ item }) => {
         return (
-            <FLashCard 
-                title={item[0]}
-                description={item[1]}
+            <CardCollection
+                nameMatiere={item.name}
+                isPublic={false}
+                numberCollection={item.collections_count}
+                onArrowPress={() => navigation.navigate("Collections", { 'item': item, 'change': change, 'setChange': setChange })}
+                onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
             />
         )
     }
 
-    const envoyer = async () => {
-        try {
-            const response = await getAIflashcards(input);
+    // const renderItem = ({ item }) => {
+    //     return (
+    //         <FLashCard 
+    //             title={item[0]}
+    //             description={item[1]}
+    //         />
+    //     )
+    // }
 
-            if (response && response.message && response.answer) {
-                Toast.show({
-                    type: 'success',
-                    text1: t('SUCCESS'),
-                    text2: response.message,
-                });
-                console.log("Response - " + response.answer)
+    // const envoyer = async () => {
+    //     try {
+    //         const response = await getAIflashcards(input);
 
-                const parseAnswer = JSON.parse(response.answer)
-                console.log("ParsedANSWER - " + parseAnswer)
+    //         if (response && response.message && response.answer) {
+    //             Toast.show({
+    //                 type: 'success',
+    //                 text1: t('SUCCESS'),
+    //                 text2: response.message,
+    //             });
+    //             console.log("Response - " + response.answer)
 
-                setFlashCards(Object.entries(parseAnswer))
-            }
+    //             const parseAnswer = JSON.parse(response.answer)
+    //             console.log("ParsedANSWER - " + parseAnswer)
 
-            setInput("")
-            setVisible(false)
+    //             setFlashCards(Object.entries(parseAnswer))
+    //         }
 
-        } catch (error) {
-            console.log('Error: ' + error)
+    //         setInput("")
+    //         setVisible(false)
 
-            Toast.show({
-                type: 'error',
-                text1: t('ERROR'),
-                text2: error.message,
-            });
-        }
-    }
+    //     } catch (error) {
+    //         console.log('Error: ' + error)
+
+    //         Toast.show({
+    //             type: 'error',
+    //             text1: t('ERROR'),
+    //             text2: error.message,
+    //         });
+    //     }
+    // }
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <ScrollView>
-                <View> */}
+            {/* 
                 <CustomInput
-                  label={"Posez votre question"}
-                  value={input}
-                  onChangeText={setInput}
-                  isPassword={false}
-                  error={error.errorInput}
+                    label={"Posez votre question"}
+                    value={input}
+                    onChangeText={setInput}
+                    isPassword={false}
+                    error={error.errorInput}
                 />
 
                 <Button title="Envoyer" onPress={() => envoyer()}/>
 
-                    <FlatList
-                        style={styles.flatList}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        data={flashCards}
-                        numColumns={1}
-                        contentContainerStyle={styles.flatListContent}
-                    />
+                <FlatList
+                    style={styles.flatList}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    data={flashCards}
+                    numColumns={1}
+                    contentContainerStyle={styles.flatListContent}
+                /> 
+            */}
 
-                    {/* <FlatList
-                        style={styles.flatList}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        data={subjects}
-                        numColumns={2}
-                        contentContainerStyle={styles.flatListContent}
-                    />
+            <FlatList
+                style={styles.flatList}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                data={subjects}
+                numColumns={2}
+                contentContainerStyle={styles.flatListContent}
+            />
 
-                    <CustomModal
-                        visible={visible}
-                        setVisible={setVisible}
-                        input={input}
-                        setInput={(value) => onChangeText(value, setInput)}
-                        error={error}
-                        setTypeModal={setTypeModal}
-                        onPressCreate={create}
-                        onPressEdit={edit}
-                        onPressDelete={drop}
-                        type_modal={type_modal}
-                        modalTitle={t("subject.input.title_modal_"+type_modal)}
-                        deleteMessage={t("subject.input.modal_delete")}
-                    />
+            <CustomModal
+                visible={visible}
+                setVisible={setVisible}
+                input={input}
+                setInput={(value) => onChangeText(value, setInput)}
+                error={error}
+                setError={setError}
+                name_modal={name_modal}
+                type_modal={type_modal}
+                setTypeModal={setTypeModal}
+                onPressCreate={create}
+                onPressEdit={edit}
+                onPressDelete={drop}
+                modalTitle={t("subject.input.title_modal_" + type_modal)}
+                deleteMessage={t("subject.input.modal_delete")}
+            />
 
-                    <TouchableOpacity
-                        style={styles.floatingInput}
-                        onPress={() => [setTypeModal("add"), setVisible(true)]}
-                    >
-                        <FontAwesomeIcon icon={faPlus} size={20} color="black" />
-                    </TouchableOpacity>
-                    
-                    <Toast position='top' bottomOffset={20} /> */}
+            <TouchableOpacity
+                style={styles.floatingInput}
+                onPress={() => [setTypeModal("add"), setVisible(true), setNameModal("matiere")]}
+            >
+                <FontAwesomeIcon icon={faPlus} size={20} color="black" />
+            </TouchableOpacity>
 
-                    <StatusBar style="auto" />
-                {/* </View>
-            </ScrollView> */}
+            <Toast position='top' bottomOffset={20} />
+
+            <StatusBar style="auto" />
         </SafeAreaView>
     )
 }
@@ -300,10 +297,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: 60,
-        position: 'absolute',
-        top: 570,
-        right: 20,
         height: 60,
+        position: 'absolute',
+        bottom: 50,
+        right: 20,
         backgroundColor: 'green',
         borderRadius: 100,
     }
