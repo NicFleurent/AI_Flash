@@ -18,15 +18,9 @@ class CollectionController extends Controller
         $subject_id = $data['subject_id'] ?? '';
         Log::debug($data);
 
-        if (!empty($subject_id)){
-            $collections = Collection::where('subject_id', $subject_id)->get();
+        $collections = Collection::where('subject_id', $subject_id)->get();
 
-            return response()->json($collections);
-        } else {
-            return response()->json([
-                'message' => 'Erreur lors de la création de la collection'
-            ], 500);
-        }
+        return response()->json($collections);
     }
 
     public function getTodayCollections()
@@ -66,16 +60,14 @@ class CollectionController extends Controller
             $subject_id = $data['subject_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
 
-            if (!empty($subject_id) && !empty($collection_name)){
-                DB::table('collections')->insert(['name' => $collection_name, 'subject_id' => $subject_id]);
+            DB::table('collections')->insert(['name' => $collection_name, 'subject_id' => $subject_id]);
 
-                return response()->json([
-                    'message' => 'Collection créée avec succès'
-                ], 200);
-            }
+            return response()->json([
+                'message' => 'subject.collections.error.create.success'
+            ], 200);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Erreur lors de la création de la collection'
+                'message' => 'subject.collections.error.create.error'
             ], 500);
         }
     }
@@ -87,18 +79,16 @@ class CollectionController extends Controller
             $collection_id = $data['collection_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
 
-            if (!empty($collection_name) && !empty($collection_id)){
-                DB::table('collections')
-                    ->where('id', $collection_id)
-                    ->update(['name' => $collection_name]);
+            DB::table('collections')
+                ->where('id', $collection_id)
+                ->update(['name' => $collection_name]);
 
-                return response()->json([
-                    'message' => 'Collection modifiée avec succès'
-                ], 200);
-            }
+            return response()->json([
+                'message' => 'subject.collections.error.update.success'
+            ], 200);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Erreur lors de la modification de la collection'
+                'message' => 'subject.collections.error.update.error'
             ], 500);
         }
     }
@@ -109,18 +99,16 @@ class CollectionController extends Controller
             $data = $request->all();
             $collection_id = $data['collection_id'] ?? '';
 
-            if (!empty($collection_id)){
-                DB::table('collections')
-                    ->where('id', $collection_id)
-                    ->delete();
+            DB::table('collections')
+                ->where('id', $collection_id)
+                ->delete();
 
-                return response()->json([
-                    'message' => 'Collection supprimée avec succès'
-                ], 200);
-            }
+            return response()->json([
+                'message' => 'subject.collections.error.delete.success'
+            ], 200);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Erreur lors de la suppression de la collection'
+                'message' => 'subject.collections.error.delete.error'
             ], 500);
         }
     }

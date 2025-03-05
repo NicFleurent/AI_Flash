@@ -75,13 +75,39 @@
       },
       "error":{
         "title_input_required":"Le nom de la matière est requis",
-        "title_input_required_collections":"Le nom de la matière est requis"
+        "title_input_required_collections":"Le nom de la matière est requis",
+        "create": {
+          "success": "Matière créée avec succès",
+          "error": "Erreur lors de la création de la matière"
+        },
+        "update": {
+          "success": "Matière modifiée avec succès",
+          "error": "Erreur lors de la modification de la matière"
+        },
+        "delete": {
+          "success": "Matière supprimée avec succès",
+          "error": "Erreur lors de la suppression de la matière"
+        }
       },
       "collections": {
         "title": "Vos collections pour cette matière",
         "input":{
           "title_modal":"Modifier une matière",
           "title_input":"Nom de la matière"
+        },
+        "error": {
+          "create": {
+            "success": "Collection créée avec succès",
+            "error": "Erreur lors de la création de la collection"
+          },
+          "update": {
+            "success": "Collection modifiée avec succès",
+            "error": "Erreur lors de la modification de la collection"
+          },
+          "delete": {
+            "success": "Collection supprimée avec succès",
+            "error": "Erreur lors de la suppression de la collection"
+          }
         }
       }
     },

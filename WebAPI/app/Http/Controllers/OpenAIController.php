@@ -25,7 +25,7 @@ class OpenAIController extends Controller
                 ],
                 'max_tokens'=> 8192
             ];
-
+            
             $response = $client->post('https://api.openai.com/v1/chat/completions', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $key,
@@ -38,13 +38,15 @@ class OpenAIController extends Controller
             ]);
 
             $responseBody = json_decode($response->getBody()->getContents(), true);
+            Log::debug("Body " . $responseBody['choices'][0]['message']['content']);
 
             $content = $responseBody['choices'][0]['message']['content'];
             $content = preg_replace('/^```json|\n?```$/', '', $content);
+            Log::debug("Content " . $content);
 
             return response()->json([
                 'message' => 'Question recuuuu et voici réponse',
-                'answer' => $responseBody['choices'][0]['message']['content']
+                'answer' => $content
             ]);
         } catch (\Throwable $e) {
             Log::debug("Error - " . $e->getMessage());

@@ -60,27 +60,26 @@ const Subjects = () => {
         if (validateForm()) {
             try {
                 const response = await createSubject(input);
-
+                console.log(response)
                 if (response && response.message) {
                     Toast.show({
                         type: 'success',
                         text1: t('SUCCESS'),
-                        text2: response.message,
+                        text2: t(response.message),
                     });
 
                     getUserSubjects();
                 }
-
+                
                 setInput("")
                 setVisible(false)
-
             } catch (error) {
                 console.log('Error: ' + error)
 
                 Toast.show({
                     type: 'error',
                     text1: t('ERROR'),
-                    text2: error.message,
+                    text2: t(error.message),
                 });
             }
         }
@@ -96,8 +95,8 @@ const Subjects = () => {
                 if (response && response.message) {
                     Toast.show({
                         type: 'success',
-                        text1: t('subject.success'),
-                        text2: response.message,
+                        text1: t('SUCCESS'),
+                        text2: t(response.message)
                     });
 
                     getUserSubjects();
@@ -111,7 +110,7 @@ const Subjects = () => {
                 Toast.show({
                     type: 'error',
                     text1: t('ERROR'),
-                    text2: error.message,
+                    text2: t(error.message)
                 });
             }
         }
@@ -126,8 +125,8 @@ const Subjects = () => {
             if (response && response.message) {
                 Toast.show({
                     type: 'success',
-                    text1: t('subject.success'),
-                    text2: response.message,
+                    text1: t('SUCCESS'),
+                    text2: t(response.message)
                 });
 
                 getUserSubjects();
@@ -141,75 +140,80 @@ const Subjects = () => {
             Toast.show({
                 type: 'error',
                 text1: t('ERROR'),
-                text2: error.message,
+                text2: t(error.message)
             });
         }
     }
 
     useEffect(() => {
         getUserSubjects()
+        setInput("")
     }, [])
 
     useEffect(() => {
         getUserSubjects()
         setChange(false)
+        setInput("")
     }, [change])
-
-    const renderItem = ({ item }) => {
-        return (
-            <CardCollection
-                nameMatiere={item.name}
-                isPublic={false}
-                numberCollection={item.collections_count}
-                onArrowPress={() => navigation.navigate("Collections", {'item': item, 'change': change, 'setChange': setChange})}
-                onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
-            />
-        )
-    }
 
     // const renderItem = ({ item }) => {
     //     return (
-    //         <FLashCard 
-    //             title={item[0]}
-    //             description={item[1]}
+    //         <CardCollection
+    //             nameMatiere={item.name}
+    //             isPublic={false}
+    //             numberCollection={item.collections_count}
+    //             onArrowPress={() => navigation.navigate("Collections", {'item': item, 'change': change, 'setChange': setChange})}
+    //             onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
     //         />
     //     )
     // }
 
-    // const envoyer = async () => {
-    //     try {
-    //         const response = await getAIflashcards(input);
+    const renderItem = ({ item }) => {
+        return (
+            <FLashCard 
+                title={item[0]}
+                description={item[1]}
+            />
+        )
+    }
 
-    //         if (response && response.message && response.answer) {
-    //             Toast.show({
-    //                 type: 'success',
-    //                 text1: t('SUCCESS'),
-    //                 text2: response.message,
-    //             });
+    const envoyer = async () => {
+        try {
+            const response = await getAIflashcards(input);
 
-    //             const parseAnswer = JSON.parse(response.answer)
-    //             setFlashCards(Object.entries(parseAnswer))
-    //         }
+            if (response && response.message && response.answer) {
+                Toast.show({
+                    type: 'success',
+                    text1: t('SUCCESS'),
+                    text2: response.message,
+                });
+                console.log("Response - " + response.answer)
 
-    //         setInput("")
-    //         setVisible(false)
+                const parseAnswer = JSON.parse(response.answer)
+                console.log("ParsedANSWER - " + parseAnswer)
 
-    //     } catch (error) {
-    //         console.log('Error: ' + error)
+                setFlashCards(Object.entries(parseAnswer))
+            }
 
-    //         Toast.show({
-    //             type: 'error',
-    //             text1: t('ERROR'),
-    //             text2: error.message,
-    //         });
-    //     }
-    // }
+            setInput("")
+            setVisible(false)
+
+        } catch (error) {
+            console.log('Error: ' + error)
+
+            Toast.show({
+                type: 'error',
+                text1: t('ERROR'),
+                text2: error.message,
+            });
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
             {/* <ScrollView>
                 <View> */}
-                {/* <CustomInput
+                <CustomInput
                   label={"Posez votre question"}
                   value={input}
                   onChangeText={setInput}
@@ -226,9 +230,9 @@ const Subjects = () => {
                         data={flashCards}
                         numColumns={1}
                         contentContainerStyle={styles.flatListContent}
-                    /> */}
+                    />
 
-                    <FlatList
+                    {/* <FlatList
                         style={styles.flatList}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
@@ -257,7 +261,7 @@ const Subjects = () => {
                         <FontAwesomeIcon icon={faPlus} size={20} color="black" />
                     </TouchableOpacity>
                     
-                    <Toast position='top' bottomOffset={20} />
+                    <Toast position='top' bottomOffset={20} /> */}
 
                     <StatusBar style="auto" />
                 {/* </View>

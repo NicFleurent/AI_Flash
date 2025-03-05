@@ -22,7 +22,7 @@ const CustomModal = ({
 
   return (
     <View>
-      <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={() => setVisible(false)}>
+      <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={() => [setVisible(false), setInput("")]}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {
@@ -32,7 +32,7 @@ const CustomModal = ({
                   <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
                     {t("subject.input.title_modal_edit")}
                   </Text>
-                  <TouchableOpacity onPress={() => setVisible(false)}>
+                  <TouchableOpacity onPress={() => [setVisible(false), setInput("")]}>
                     <FontAwesomeIcon icon={faX} size={20} color="green"/>
                   </TouchableOpacity>
                 </View>
@@ -79,7 +79,7 @@ const CustomModal = ({
                   <CustomButton
                     type="white-outline"
                     label={t('button.cancel')}
-                    onPress={() => setVisible(false)}
+                    onPress={() => [setVisible(false), setInput("")]}
                   /> 
                   <CustomButton
                     type="green-full"
@@ -101,7 +101,7 @@ const CustomModal = ({
                   <View style={{flex: 1}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '95%'}}>
                       <Text style={[styles.title, {marginBottom: 0}]} numberOfLines={2} ellipsizeMode="tail">Attention</Text>
-                      <TouchableOpacity onPress={() => setVisible(false)}>
+                      <TouchableOpacity onPress={() => [setVisible(false), setInput("")]}>
                         <FontAwesomeIcon icon={faX} size={20} color="green" />
                       </TouchableOpacity>
                     </View>
@@ -114,7 +114,7 @@ const CustomModal = ({
                       <CustomButton
                         type="white-outline"
                         label={t('button.cancel')}
-                        onPress={() => setVisible(false)}
+                        onPress={() => [setVisible(false), setInput("")]}
                       /> 
                       <CustomButton
                         type="green-full"

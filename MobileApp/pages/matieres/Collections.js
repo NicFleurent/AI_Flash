@@ -60,7 +60,7 @@ const Collections = ({ route }) => {
           Toast.show({
             type: 'success',
             text1: t('SUCCESS'),
-            text2: response.message,
+            text2: t(response.message)
           });
           getUserCollections();
         }
@@ -74,7 +74,7 @@ const Collections = ({ route }) => {
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
-          text2: error.message,
+          text2: t(error.message)
         });
       }
     }
@@ -91,7 +91,7 @@ const Collections = ({ route }) => {
           Toast.show({
             type: 'success',
             text1: t('subject.success'),
-            text2: response.message,
+            text2: t(response.message)
           });
 
           getUserCollections();
@@ -106,7 +106,7 @@ const Collections = ({ route }) => {
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
-          text2: error.message,
+          text2: t(error.message)
         });
       }
     }
@@ -122,7 +122,7 @@ const Collections = ({ route }) => {
         Toast.show({
           type: 'success',
           text1: t('subject.success'),
-          text2: response.message,
+          text2: t(response.message)
         });
 
         getUserCollections();
@@ -137,7 +137,7 @@ const Collections = ({ route }) => {
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: error.message,
+        text2: t(error.message)
       });
     }
   }
