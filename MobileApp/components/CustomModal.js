@@ -5,6 +5,7 @@ import { faArrowRight, faWarning, faX } from "@fortawesome/free-solid-svg-icons"
 import CustomInput from "./CustomInput";
 import { useTranslation } from 'react-i18next'
 import CustomButton from "./CustomButton";
+import { useSelector } from "react-redux";
 
 const CustomModal = ({
   visible,
@@ -24,12 +25,13 @@ const CustomModal = ({
   deleteMessage
 }) => {
   const { t } = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
   return (
     <View>
       <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={() => setVisible(false)}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, isTablet && styles.modalContentTablet]}>
             {
               type_modal === "edit" && 
               <>
@@ -184,6 +186,9 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'black',
     borderRadius: 35
+  },
+  modalContentTablet:{
+    width:'50%'
   },
   title: {
     fontSize: 20,
