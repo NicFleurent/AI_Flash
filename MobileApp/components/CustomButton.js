@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useSelector } from 'react-redux';
 
-const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle}) => {
+const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle, isSmall}) => {
   const [isLongText, setIsLongText] = useState(false);
   const isTablet = useSelector((state) => state.screen.isTablet);
 
@@ -21,6 +21,7 @@ const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle
       type == "white-outline" && styles.whiteOutlineContainer,
       type == "red-full" && styles.redFullContainer,
       isTablet && styles.containerTablet,
+      isSmall && styles.smallContainer,
       additionnalStyle
     ]}
     onPress={onPress}
@@ -39,7 +40,8 @@ const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle
         styles.txtButton, 
         type == "green-full" && styles.greenFullTxt, 
         type == "white-outline" && styles.whiteOutlineTxt,
-        isLongText && styles.txtButtonLongText
+        isLongText && styles.txtButtonLongText,
+        isSmall && styles.smallTxt
       ]}
       >
         {label}
@@ -62,6 +64,10 @@ const styles = {
   containerTablet:{
     height:60,
   },
+  smallContainer:{
+    height:40,
+    paddingHorizontal:10
+  },
   txtContainer:{
     width:'100%',
     alignItems:'center'
@@ -75,6 +81,12 @@ const styles = {
   },
   txtButtonLongText:{
     fontSize:16
+  },
+  smallTxt:{
+    fontSize:14
+  },
+  smallTxt:{
+    fontSize:14
   },
   greenFullContainer:{
     backgroundColor:'#1DB954',

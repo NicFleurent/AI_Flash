@@ -7,10 +7,11 @@ import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faLanguage, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
-import { deleteUser, logout, updateUser } from '../../api/user';
+import { deleteUser, logout, updateUser, updateUserPassword } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
+import CustomModal from '../../components/CustomModal';
 import LanguagesModal from '../../components/LanguagesModal';
 
 const Account = () => {
@@ -21,6 +22,7 @@ const Account = () => {
   const [isModalLogoutVisible, setIsModalLogoutVisible] = useState(false);
   const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
+  const [isModalUpdatePwdVisible, setIsModalUpdatePwdVisible] = useState(false);
   const [isModalLanguageVisible, setIsModalLanguageVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
@@ -28,6 +30,11 @@ const Account = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
   const [isError, setIsError] = useState(false);
+
+  const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [passwordConfirmation, setPasswordConfirmation] = useState("")
+  const [errorsPassword, setErrorsPassword] = useState([]);
 
   useEffect(()=>{
     getUser();
@@ -62,7 +69,7 @@ const Account = () => {
       if(response){
         Toast.show({
           type: 'success',
-          text1: response.data.message
+          text1: t('account.update_success')
         });
       }
 
@@ -70,7 +77,7 @@ const Account = () => {
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: error.message,
+        text2: t('account.update_error'),
       });
     }
   }
@@ -108,7 +115,7 @@ const Account = () => {
             name:'Auth',
             params:{
               screen:'Intro',
-              params:{success:response.data.message}
+              params:{success:t('account.logout_success')}
             }
           }
         ]
@@ -118,7 +125,7 @@ const Account = () => {
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: error.message,
+        text2: t('account.logout_error'),
       });
     }
   }
@@ -127,21 +134,55 @@ const Account = () => {
     try {
       const response = await deleteUser();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:response.message}})
+      navigation.navigate("Auth", {screen: "Intro", params:{success:t('account.delete_success')}})
 
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: error.message,
+        text2: t('account.delete_error'),
       });
     }
   }
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
+    if(validatePassword()){
+      try {
+        const response = await updateUserPassword(password, newPassword, passwordConfirmation);
 
+        setIsModalUpdatePwdVisible(false);
+        setPassword("");
+        setNewPassword("");
+        setPasswordConfirmation("");
+
+        Toast.show({
+          type: 'success',
+          text1: t('account.updatePassword_success')
+        });
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('account.updatePassword_error')
+        });
+      }
+    }
   }
 
+  const validatePassword = () => {
+    let tempErrors = [];
+
+    if (password === "")
+      tempErrors.errorPassword = t('input.error.password_required');
+    if (newPassword === "")
+      tempErrors.errorNewPassword = t('input.error.password_required');
+    if (newPassword != passwordConfirmation)
+      tempErrors.errorPasswordConfirm = t('input.error.passwordConfirm_required');
+
+    setErrorsPassword(tempErrors);
+
+    return Object.keys(tempErrors).length === 0;
+  }
   return (
     <View style={[styles.container]}>
       <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>
@@ -183,13 +224,6 @@ const Account = () => {
           />
           <CustomButton
             type="white-outline"
-            label={t('auth.changePassword')}
-            onPress={handleChangePassword}
-            additionnalStyle={{ marginBottom: 15 }}
-            icon={faPenToSquare}
-          />
-          <CustomButton
-            type="white-outline"
             label={t('account.languages')}
             onPress={()=>setIsModalLanguageVisible(true)}
             additionnalStyle={{ marginBottom: 15 }}
@@ -208,6 +242,13 @@ const Account = () => {
             onPress={()=>setIsModalDeleteVisible(true)}
             additionnalStyle={{ marginBottom: 20 }}
             icon={faUserXmark}
+          />
+          <CustomButton
+            type="white-outline"
+            label={t('auth.changePassword')}
+            onPress={()=>setIsModalUpdatePwdVisible(true)}
+            additionnalStyle={{ marginBottom: 20 }}
+            icon={faPenToSquare}
           />
         </View>
       </View>
@@ -241,6 +282,43 @@ const Account = () => {
         onCancel={()=>setIsModalDeleteVisible(false)}
         onClose={()=>setIsModalDeleteVisible(false)}
         onConfirm={handleDelete}
+      />
+      <CustomModal
+        modalTitle={t('auth.changePassword')}
+        visible={isModalUpdatePwdVisible}
+        setVisible={setIsModalUpdatePwdVisible}
+        type_modal="edit"
+        isCancel={true}
+        onPressCancel={()=>{
+          setIsModalUpdatePwdVisible(false);
+          setPassword("");
+          setNewPassword("");
+          setPasswordConfirmation("");
+        }}
+        onPressEdit={handleChangePassword}
+        inputs={[
+          {
+            label:t('input.password'),
+            value:password,
+            onChangeText:setPassword,
+            isPassword:true,
+            error:errorsPassword.errorPassword
+          },
+          {
+            label:t('input.newPassword'),
+            value:newPassword,
+            onChangeText:setNewPassword,
+            isPassword:true,
+            error:errorsPassword.errorNewPassword
+          },
+          {
+            label:t('input.passwordConfirm'),
+            value:passwordConfirmation,
+            onChangeText:setPasswordConfirmation,
+            isPassword:true,
+            error:errorsPassword.errorPasswordConfirm
+          }
+        ]}
       />
       <LanguagesModal
         visible={isModalLanguageVisible}
