@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle}) => {
+const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle, isSmall}) => {
   const [isLongText, setIsLongText] = useState(false);
 
   useEffect(()=>{
@@ -18,6 +18,7 @@ const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle
       type == "green-full" && styles.greenFullContainer, 
       type == "white-outline" && styles.whiteOutlineContainer,
       type == "red-full" && styles.redFullContainer,
+      isSmall && styles.smallContainer,
       additionnalStyle
     ]}
     onPress={onPress}
@@ -36,7 +37,8 @@ const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle
         styles.txtButton, 
         type == "green-full" && styles.greenFullTxt, 
         type == "white-outline" && styles.whiteOutlineTxt,
-        isLongText && styles.txtButtonLongText
+        isLongText && styles.txtButtonLongText,
+        isSmall && styles.smallTxt
       ]}
       >
         {label}
@@ -56,6 +58,10 @@ const styles = {
     borderRadius:30,
     paddingHorizontal:30
   },
+  smallContainer:{
+    height:40,
+    paddingHorizontal:10
+  },
   txtContainer:{
     width:'100%',
     alignItems:'center'
@@ -69,6 +75,9 @@ const styles = {
   },
   txtButtonLongText:{
     fontSize:18
+  },
+  smallTxt:{
+    fontSize:14
   },
   greenFullContainer:{
     backgroundColor:'#1DB954',
