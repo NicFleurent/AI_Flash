@@ -34,60 +34,60 @@ class FlashcardController extends Controller
 
     public function getTodayFlashCardsCount()
     {
-      $user_id = Auth::user()->id;
+        $user_id = Auth::user()->id;
 
-      $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
-      $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
-    
-      $today = Carbon::now('America/Toronto')->toDateString();
+        $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
+        $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
 
-      $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)
-                                      ->whereDate('next_revision_date','<=',$today)
-                                      ->whereDate('last_revision_date','<',$today)
-                                      ->whereNot('forgetting_curve_stage', 5)
-                                      ->orWhere('forgetting_curve_stage', 0)
-                                      ->count();
+        $today = Carbon::now('America/Toronto')->toDateString();
 
-      return response()->json(['flashcard_count' => $flashcards_count], 200);
+        $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)
+            ->whereDate('next_revision_date', '<=', $today)
+            ->whereDate('last_revision_date', '<', $today)
+            ->whereNot('forgetting_curve_stage', 5)
+            ->orWhere('forgetting_curve_stage', 0)
+            ->count();
+
+        return response()->json(['flashcard_count' => $flashcards_count], 200);
     }
 
     public function getTodayFlashCards()
     {
-      $user_id = Auth::user()->id;
+        $user_id = Auth::user()->id;
 
-      $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
-      $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
-    
-      $today = Carbon::now('America/Toronto')->toDateString();
+        $subjects_id = Subject::where('user_id', $user_id)->pluck('id');
+        $collections_id = Collection::whereIn('subject_id', $subjects_id)->pluck('id');
 
-      $flashcards = Flashcard::select('id','front_face','back_face')
-                                ->whereIn('collection_id', $collections_id)
-                                ->whereDate('next_revision_date','<=',$today)
-                                ->whereDate('last_revision_date','<',$today)
-                                ->whereNot('forgetting_curve_stage', 5)
-                                ->orWhere('forgetting_curve_stage', 0)
-                                ->inRandomOrder()
-                                ->limit(25)
-                                ->get();
+        $today = Carbon::now('America/Toronto')->toDateString();
 
-      return response()->json(['flashcards' => $flashcards], 200);
+        $flashcards = Flashcard::select('id', 'front_face', 'back_face')
+            ->whereIn('collection_id', $collections_id)
+            ->whereDate('next_revision_date', '<=', $today)
+            ->whereDate('last_revision_date', '<', $today)
+            ->whereNot('forgetting_curve_stage', 5)
+            ->orWhere('forgetting_curve_stage', 0)
+            ->inRandomOrder()
+            ->limit(25)
+            ->get();
+
+        return response()->json(['flashcards' => $flashcards], 200);
     }
 
     public function getCollectionTodayFlashCards($collection_id)
-    {    
-      $today = Carbon::now('America/Toronto')->toDateString();
+    {
+        $today = Carbon::now('America/Toronto')->toDateString();
 
-      $flashcards = Flashcard::select('id','front_face','back_face')
-                                ->where('collection_id', $collection_id)
-                                ->whereDate('next_revision_date','<=',$today)
-                                ->whereDate('last_revision_date','<',$today)
-                                ->whereNot('forgetting_curve_stage', 5)
-                                ->orWhere('forgetting_curve_stage', 0)
-                                ->inRandomOrder()
-                                ->limit(25)
-                                ->get();
+        $flashcards = Flashcard::select('id', 'front_face', 'back_face')
+            ->where('collection_id', $collection_id)
+            ->whereDate('next_revision_date', '<=', $today)
+            ->whereDate('last_revision_date', '<', $today)
+            ->whereNot('forgetting_curve_stage', 5)
+            ->orWhere('forgetting_curve_stage', 0)
+            ->inRandomOrder()
+            ->limit(25)
+            ->get();
 
-      return response()->json(['flashcards' => $flashcards], 200);
+        return response()->json(['flashcards' => $flashcards], 200);
     }
 
     /**
@@ -146,14 +146,13 @@ class FlashcardController extends Controller
             $isNew = $flashcard->forgetting_curve_stage == 0;
             $isKnown = $flashcard->forgetting_curve_stage == 5;
 
-            if(($needsRevision || $isNew) && (!$isKnown)){
-              $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
-              $flashcard->forgetting_curve_stage += 1;
-              $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
-            }
-            else if(!$isKnown){
-              $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
-              $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
+            if (($needsRevision || $isNew) && (!$isKnown)) {
+                $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
+                $flashcard->forgetting_curve_stage += 1;
+                $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
+            } else if (!$isKnown) {
+                $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
+                $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
             }
 
             $flashcard->save();
@@ -179,9 +178,9 @@ class FlashcardController extends Controller
             $flashcard = Flashcard::findOrFail($request->id);
             $isKnown = $flashcard->forgetting_curve_stage == 5;
 
-            if(!$isKnown){
-              $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
-              $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
+            if (!$isKnown) {
+                $flashcard->last_revision_date = Carbon::now('America/Toronto')->toDateString();
+                $flashcard->next_revision_date = $this->getNextRevisionDate($flashcard->forgetting_curve_stage);
             }
 
             $flashcard->save();
@@ -203,17 +202,27 @@ class FlashcardController extends Controller
 
     private function getNextRevisionDate($stage)
     {
-      switch ($stage) {
-        case 0: return Carbon::now('America/Toronto')->toDateString(); break;
-        case 1: return Carbon::now('America/Toronto')->addDays(1)->toDateString(); break;
-        case 2: return Carbon::now('America/Toronto')->addDays(7)->toDateString(); break;
-        case 3: return Carbon::now('America/Toronto')->addDays(30)->toDateString(); break;
-        case 4: return Carbon::now('America/Toronto')->addDays(180)->toDateString(); break;
-        
-        default:
-          return Carbon::now('America/Toronto')->toDateString();
-          break;
-      }
+        switch ($stage) {
+            case 0:
+                return Carbon::now('America/Toronto')->toDateString();
+                break;
+            case 1:
+                return Carbon::now('America/Toronto')->addDays(1)->toDateString();
+                break;
+            case 2:
+                return Carbon::now('America/Toronto')->addDays(7)->toDateString();
+                break;
+            case 3:
+                return Carbon::now('America/Toronto')->addDays(30)->toDateString();
+                break;
+            case 4:
+                return Carbon::now('America/Toronto')->addDays(180)->toDateString();
+                break;
+
+            default:
+                return Carbon::now('America/Toronto')->toDateString();
+                break;
+        }
     }
 
     /**

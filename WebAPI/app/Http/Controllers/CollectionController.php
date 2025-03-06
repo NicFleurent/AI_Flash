@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Subject;
@@ -18,7 +19,7 @@ class CollectionController extends Controller
         $subject_id = $data['subject_id'] ?? '';
         Log::debug($data);
 
-        if (!empty($subject_id)){
+        if (!empty($subject_id)) {
             $collections = Collection::where('subject_id', $subject_id)->get();
 
             return response()->json($collections);
@@ -66,11 +67,12 @@ class CollectionController extends Controller
             $subject_id = $data['subject_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
 
-            if (!empty($subject_id) && !empty($collection_name)){
+            if (!empty($subject_id) && !empty($collection_name)) {
                 DB::table('collections')->insert(['name' => $collection_name, 'subject_id' => $subject_id]);
 
                 return response()->json([
-                    'message' => 'Collection créée avec succès'
+                    'message' => 'Collection créée avec succès',
+                    'data' => DB::table('collections')->orderBy('id', 'desc')->first()
                 ], 200);
             }
         } catch (\Throwable $e) {
@@ -87,7 +89,7 @@ class CollectionController extends Controller
             $collection_id = $data['collection_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
 
-            if (!empty($collection_name) && !empty($collection_id)){
+            if (!empty($collection_name) && !empty($collection_id)) {
                 DB::table('collections')
                     ->where('id', $collection_id)
                     ->update(['name' => $collection_name]);
@@ -109,7 +111,7 @@ class CollectionController extends Controller
             $data = $request->all();
             $collection_id = $data['collection_id'] ?? '';
 
-            if (!empty($collection_id)){
+            if (!empty($collection_id)) {
                 DB::table('collections')
                     ->where('id', $collection_id)
                     ->delete();
