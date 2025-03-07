@@ -1,19 +1,23 @@
 import React, { useCallback, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, useWindowDimensions, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import AddFlashCardBottomSheet from '../../components/collections_components/bottoms_sheets/AddFlashCardBottomSheet';
 import CustomButton from '../../components/CustomButton';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as DocumentPicker from "expo-document-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faL } from "@fortawesome/free-solid-svg-icons";
 import { sendPdf } from '../../api/pdf';
+import FLashCard from '../../components/publics_pages_components/FlashCard';
 
 const AddCollectionByAi = () => {
     const { width, height } = useWindowDimensions();
     const [file, setFile] = useState(null);
     const [collectionName, setCollectionName] = useState("");
     const addFlashcardRef = useRef(null);
+    const [visibleFlalist, setVisibleFlatlist] = useState(false)
+    const [visibleBtn, setVisibleBtn] = useState(true)
+    const [flashCards, setFlashCards] = useState([]);
 
     const pickFile = async () => {
         try {
@@ -53,11 +57,36 @@ const AddCollectionByAi = () => {
 
         try {
             const response = await sendPdf(file);
-            console.log("Réponse du serveur :", response);
+
+            if (response && response.message && response.answer) {
+                // Toast.show({
+                //     type: 'success',
+                //     text1: t('SUCCESS'),
+                //     text2: response.message,
+                // });
+                // console.log("Response - " + response.answer)
+
+                const parseAnswer = JSON.parse(response.answer)
+                // console.log("ParsedANSWER - " + parseAnswer)
+
+                setFlashCards(Object.entries(parseAnswer))
+            }
+
+            setVisibleFlatlist(true)
+            setVisibleBtn(false)
         } catch (error) {
             console.error("Erreur lors de l'envoi du fichier :", error);
         }
     };
+
+    const renderItem = ({ item }) => {
+        return (
+            <FLashCard 
+                title={item[0]}
+                description={item[1]}
+            />
+        )
+    }
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -71,31 +100,48 @@ const AddCollectionByAi = () => {
                     />
                 </View>
 
-                <View>
-                    <TouchableOpacity onPress={pickFile}>
-                        <View style={styles.fileContainer}>
-                            <View style={styles.fileContent}>
-                                <FontAwesomeIcon
-                                    style={styles.icon}
-                                    size={30}
-                                    color={"#1DB954"}
-                                    icon={faDownload}
-                                />
-                                <ScrollView horizontal>
-                                    <Text style={styles.fileText} numberOfLines={1} ellipsizeMode="tail">
-                                        {fileDisplayName}
-                                    </Text>
-                                </ScrollView>
+                {
+                    visibleFlalist && 
+                    <FlatList
+                        style={styles.flatList}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={flashCards}
+                        numColumns={1}
+                        contentContainerStyle={styles.flatListContent}
+                    /> 
+                }
+
+                
+                    {
+                        visibleBtn && 
+                        <View>
+                            <TouchableOpacity onPress={pickFile}>
+                            <View style={styles.fileContainer}>
+                                <View style={styles.fileContent}>
+                                    <FontAwesomeIcon
+                                        style={styles.icon}
+                                        size={30}
+                                        color={"#1DB954"}
+                                        icon={faDownload}
+                                    />
+                                    <ScrollView horizontal>
+                                        <Text style={styles.fileText} numberOfLines={1} ellipsizeMode="tail">
+                                            {fileDisplayName}
+                                        </Text>
+                                    </ScrollView>
+                                </View>
                             </View>
+                            </TouchableOpacity>
+                            <CustomButton
+                                type="green-full"
+                                label="Generer des cartes"
+                                additionnalStyle={styles.generateButton}
+                                onPress={handleGenerateCards}
+                            />  
                         </View>
-                    </TouchableOpacity>
-                    <CustomButton
-                        type="green-full"
-                        label="Generer des cartes"
-                        additionnalStyle={styles.generateButton}
-                        onPress={handleGenerateCards}
-                    />
-                </View>
+                    }
+              
 
                 <AddFlashCardBottomSheet ref={addFlashcardRef} />
             </View>
@@ -135,6 +181,12 @@ const styles = StyleSheet.create({
     generateButton: {
         marginBottom: 40,
         marginTop: 40,
+    },
+    flatListContent: {
+        paddingHorizontal: 10,
+    },
+    flatList: {
+        marginTop: 10,
     },
 });
 

@@ -11,6 +11,7 @@ class OpenAIController extends Controller
     public function getAIflashcards($question)
     {
         try {
+            Log::debug('OPENAI CONTROLLER - ' . $question);
             $key = env('OPENAI_API_KEY');
 
             $client = new Client();

@@ -21,14 +21,14 @@ class PdfController extends Controller
             $pdf = $parser->parseFile($pdfFile->getPathname());
             $text = $pdf->getText();
 
-            $response = $open->getAIflashcards($text);
+            Log::debug('PDF CONTROLLER text- '. $text);
 
-            Log::debug('PDF CONTROLLER - ', $response);
+            $response = $open->getAIflashcards($text);
 
             return response()->json([
                 'success' => true,
                 'message' =>  __('pdf.successful_extraction'),
-                'text' => $response
+                'answer' => $response
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

@@ -23,7 +23,7 @@ import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
 
 export default function App() {
   const {t} = useTranslation();
-  const [landingPage, setLandingPage] = useState("CollectionsCreate");
+  const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
     isUserLoggedIn();
