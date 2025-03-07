@@ -11,19 +11,14 @@ import CustomButton from "../../CustomButton";
 import styles from "./style/ModalStyle";
 import { useTranslation } from "react-i18next";
 
-const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet }, ref) => {
+const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet, name, author, data }, ref) => {
   const { width, height } = useWindowDimensions();
   const {t} = useTranslation();
 
-  const limitedData = [
-    { id: "1", text: "Item 1" },
-    { id: "2", text: "Item 2" },
-  ];
-
   const renderItemModal = ({ item }) => (
     <FLashCard
-      title="Polymorphisme"
-      description="Permet d’interchanger des entités parentes entre elles."
+      title={item.front_face}
+      description={item.back_face}
     />
   );
 
@@ -43,14 +38,14 @@ const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet }, ref) => {
       <BottomSheetView style={styles.bottomSheetContainer}>
         <View style={styles.bottomSheet}>
           <View style={styles.handle} />
-          <Text style={styles.modalTitle}>Programmation orientée objet</Text>
-          <Text style={styles.modalSubTitle}>{t('explore.bottom_sheet.author')} Nicolas Fleurent</Text>
+          <Text style={styles.modalTitle}>{name}</Text>
+          <Text style={styles.modalSubTitle}>{t('explore.bottom_sheet.author')} {author}</Text>
           <FlatList
-            scrollEnabled={false}
+            scrollEnabled={true}
             style={styles.flatList}
             renderItem={renderItemModal}
             keyExtractor={(item) => item.id}
-            data={limitedData}
+            data={data}
           />
           <CustomButton
             type="green-full"

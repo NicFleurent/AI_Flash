@@ -47,5 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
   Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
-
+  Route::put('/collections/{collection}/toggle-visibility', [CollectionController::class, 'toggleCollectionVisibility'])->name('toggleCollectionVisibility');
+  Route::post('/collections/copy', [CollectionController::class, 'copyCollection'])->name('copyCollection');
+  Route::get('/collections/public', [CollectionController::class, 'getPublicCollections'])->name('getPublicCollections');
 });

@@ -6,7 +6,7 @@ import styles from "./style/ModalStyle";
 import { useTranslation } from "react-i18next";
 
 const ChooseCreateSubjectBottomSheet = forwardRef(
-  ({ onOpenOtherSheet }, ref) => {
+  ({ onSelectSubjectSheet, onCreateSubjectSheet}, ref) => {
     const { width, height } = useWindowDimensions();
     const {t} = useTranslation();
     return (
@@ -33,13 +33,13 @@ const ChooseCreateSubjectBottomSheet = forwardRef(
               type="green-full"
               label={t('explore.bottom_sheet.add_to_existing_subject')}
               additionnalStyle={{ marginBottom: 20 }}
-              onPress={onOpenOtherSheet}
+              onPress={onSelectSubjectSheet}
             />
             <CustomButton
               type="white-outline"
               label={t('explore.bottom_sheet.create_new_subject')}
               additionnalStyle={{ marginBottom: 10 }}
-              onPress={onOpenOtherSheet}
+              onPress={onCreateSubjectSheet}
             />
           </View>
         </BottomSheetView>
