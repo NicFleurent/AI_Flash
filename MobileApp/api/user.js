@@ -117,7 +117,6 @@ export const refreshToken = async () => {
       
 
   } catch (error) {
-    console.log("test2");
     throw new Error(error.message);
   }
 }

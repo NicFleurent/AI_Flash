@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PdfRequest;
 use Smalot\PdfParser\Parser;
 use App\Http\Controllers\OpenAIController;
+use Illuminate\Support\Facades\Log;
+
 
 class PdfController extends Controller
 {
@@ -21,12 +23,13 @@ class PdfController extends Controller
 
             $response = $open->getAIflashcards($text);
 
+            Log::debug('PDF CONTROLLER - ', $response);
+
             return response()->json([
                 'success' => true,
                 'message' =>  __('pdf.successful_extraction'),
                 'text' => $response
             ], 200);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
