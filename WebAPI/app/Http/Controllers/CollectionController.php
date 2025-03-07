@@ -20,10 +20,10 @@ class CollectionController extends Controller
         Log::debug($data);
 
         $collections = Collection::where('subject_id', $subject_id)
-                            ->withCount('flashcards') 
-                            ->get();
+                        ->withCount('flashcards') 
+                        ->get();
 
-                            Log::debug($collections);
+        Log::debug($collections);
 
         return response()->json($collections);
     }
