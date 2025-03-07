@@ -156,6 +156,7 @@ const CardCollection = ({
               <Text style={styles.collection}>
                 {numberFlashcard} {t("FLASHCARDS")}
               </Text>
+              <Text style={styles.subjectTxt}>{nameAuthor}</Text>
             </View>
           ):(
             <Text style={styles.collection}>
@@ -231,6 +232,10 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 12,
     fontWeight: "300",
+  },
+  subjectTxt: {
+    fontSize: 10,
+    marginTop:5
   },
   collection: {
     fontSize: 12,

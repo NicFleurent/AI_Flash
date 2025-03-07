@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import FlipCardContent from './FlipCardContent';
+import { useSelector } from 'react-redux';
 
 const FlipCard = ({
   isFlipped,
@@ -17,6 +18,7 @@ const FlipCard = ({
   onPress,
   duration = 300
 }) => {
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
   const regularCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped), [0, 1], [0, 180]);
@@ -46,7 +48,8 @@ const FlipCard = ({
           <Animated.View
             style={[
               styles.regularCard,
-              styles.flipCard,
+              !isTablet && styles.flipCard,
+              isTablet && styles.flipCardTablet,
               regularCardAnimatedStyle,
             ]}>
             <FlipCardContent content={faceContent} />
@@ -54,7 +57,8 @@ const FlipCard = ({
           <Animated.View
             style={[
               styles.flippedCard,
-              styles.flipCard,
+              !isTablet && styles.flipCard,
+              isTablet && styles.flipCardTablet,
               flippedCardAnimatedStyle,
             ]}>
             <FlipCardContent content={backContent} />
@@ -74,7 +78,12 @@ const styles = StyleSheet.create({
   flipCard: {
     width: 300,
     height: 300,
-    backfaceVisibility: 'hidden',
+    backfaceVisibility: 'hidden'
+  },
+  flipCardTablet:{
+    width: 600,
+    height: 400,
+    backfaceVisibility: 'hidden'
   },
   regularCard: {
     position: 'absolute',

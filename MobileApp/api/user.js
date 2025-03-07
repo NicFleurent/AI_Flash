@@ -159,6 +159,40 @@ export const updateUser = async (
   }
 };
 
+export const updateUserPassword = async (
+  old_password, 
+  new_password,
+  new_password_confirmation
+) => {
+  try {
+    const user = await getLocalUser();
+
+    const response = await fetch(`${baseUrl}user/updatePassword`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        old_password:old_password,
+        new_password:new_password,
+        new_password_confirmation:new_password_confirmation
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    
+    const data = await response.json();
+
+    if(response.status === 200){
+      return data;
+    }
+    else
+      throw new Error(data.message);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const deleteUser = async () => {
   try {
     const user = await getLocalUser();

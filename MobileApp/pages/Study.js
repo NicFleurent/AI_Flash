@@ -5,10 +5,12 @@ import FlipCard from '../components/flip_card/FlipCard';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { getCollectionTodayFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
+import { useSelector } from 'react-redux';
 
 const Study = ({route}) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [progress, setProgress] = useState(0);
   const [displayButton, setDisplayButton] = useState(false);
   const [displayNextButton, setDisplayNextButton] = useState(false);
@@ -115,50 +117,52 @@ const Study = ({route}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        {displayButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('study.remembered')}
-              onPress={()=>handleRemembered(flashcards[currentCard].id)}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-            <CustomButton
-              type="white-outline"
-              label={t('study.forgotten')}
-              onPress={()=>handleForgotten(flashcards[currentCard].id)}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
-        {displayNextButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('button.next')}
-              onPress={switchCard}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
-        {displayFinalButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('button.finish')}
-              onPress={()=>navigation.reset({
-                index:0,
-                routes:[
-                  {
-                    name:'Menu',
-                    params:{screen:route.params.source_page}
-                  }
-                ]
-              })}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
+        <View style={isTablet && styles.buttonContainerTablet}>
+          {displayButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('study.remembered')}
+                onPress={()=>handleRemembered(flashcards[currentCard].id)}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+              <CustomButton
+                type="white-outline"
+                label={t('study.forgotten')}
+                onPress={()=>handleForgotten(flashcards[currentCard].id)}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+          {displayNextButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('button.next')}
+                onPress={switchCard}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+          {displayFinalButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('button.finish')}
+                onPress={()=>navigation.reset({
+                  index:0,
+                  routes:[
+                    {
+                      name:'Menu',
+                      params:{screen:route.params.source_page}
+                    }
+                  ]
+                })}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+        </View>
       </View>
     </View>
   )
@@ -189,6 +193,7 @@ const styles = {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    width:'100%'
   },
   buttonContainer: {
     flex: 2,
@@ -196,24 +201,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  card: {
-    backgroundColor: '#1DB954',
-    width:'100%',
+  buttonContainerTablet:{
+    width:'50%'
   },
-  face: {
-    backgroundColor: 'red',
-    height:250,
-    width:'100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  back:{
-    backgroundColor: 'blue',
-    height:250,
-    width:300,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
 }
 
 export default Study

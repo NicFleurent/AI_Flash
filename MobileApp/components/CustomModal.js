@@ -5,10 +5,12 @@ import { faArrowRight, faWarning, faX } from "@fortawesome/free-solid-svg-icons"
 import CustomInput from "./CustomInput";
 import { useTranslation } from 'react-i18next'
 import CustomButton from "./CustomButton";
+import { useSelector } from "react-redux";
 
 const CustomModal = ({
   visible,
   setVisible,
+  inputs,
   input,
   setInput,
   error,
@@ -17,44 +19,75 @@ const CustomModal = ({
   onPressCreate,
   onPressDelete,
   onPressEdit,
+  isCancel,
+  onPressCancel,
+  modalTitle,
+  deleteMessage
 }) => {
   const { t } = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
   return (
     <View>
       <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={() => setVisible(false)}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, isTablet && styles.modalContentTablet]}>
             {
               type_modal === "edit" && 
               <>
                 <View style={styles.containerHead}> 
                   <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-                    {t("subject.input.title_modal_edit")}
+                    {modalTitle}{/**t("subject.input.title_modal_edit")**/}
                   </Text>
                   <TouchableOpacity onPress={() => setVisible(false)}>
                     <FontAwesomeIcon icon={faX} size={20} color="green"/>
                   </TouchableOpacity>
                 </View>
 
-                <CustomInput
-                  label={t("subject.input.title_input")}
-                  value={input}
-                  onChangeText={setInput}
-                  isPassword={false}
-                  error={error.errorInput}
-                />
+                {inputs && inputs.map((input, index)=>(
+                  <CustomInput
+                    key={index}
+                    label={input.label}
+                    value={input.value}
+                    onChangeText={input.onChangeText}
+                    isPassword={input.isPassword}
+                    error={input.error}
+                  />
+                )) ||
+
+                  <CustomInput
+                    label={t("subject.input.title_input")}
+                    value={input}
+                    onChangeText={setInput}
+                    isPassword={false}
+                    error={error && error.errorInput}
+                  />
+                }
 
                 <View style={styles.buttonsContainer}>
-                  <CustomButton
-                    type="white-outline"
-                    label={t('button.delete')}
-                    onPress={() => setTypeModal("delete")}
-                  /> 
+                  {isCancel &&
+                    <CustomButton
+                      type="white-outline"
+                      label={t('button.cancel')}
+                      onPress={onPressCancel}
+                      isSmall={true}
+                      additionnalStyle={{width:'35%', marginRight:10}}
+                    /> 
+                  ||
+                    <CustomButton
+                      type="white-outline"
+                      label={t('button.delete')}
+                      onPress={() => setTypeModal("delete")}
+                      isSmall={true}
+                      additionnalStyle={{width:'35%', marginRight:10}}
+                    /> 
+                  }
                   <CustomButton
                     type="green-full"
                     label={t('button.save')}
                     onPress={async () => onPressEdit()}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%'}}
                   />
                 </View>
               </>
@@ -64,7 +97,7 @@ const CustomModal = ({
               type_modal === "add" &&
               <>
                 <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-                  {t("subject.input.title_modal_add")}
+                  {modalTitle}
                 </Text>
 
                 <CustomInput
@@ -80,11 +113,15 @@ const CustomModal = ({
                     type="white-outline"
                     label={t('button.cancel')}
                     onPress={() => setVisible(false)}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%', marginRight:10}}
                   /> 
                   <CustomButton
                     type="green-full"
                     label={t('button.add')}
                     onPress={async () => onPressCreate()}
+                    isSmall={true}
+                    additionnalStyle={{width:'35%'}}
                   />
                 </View>
               </>
@@ -106,8 +143,8 @@ const CustomModal = ({
                       </TouchableOpacity>
                     </View>
 
-                    <Text style={{textAlign: 'center', marginTop: 10, color: 'white', fontSize: 15}}>
-                      Voulez-vous vraiment supprimer la matière "{input}" ?
+                    <Text style={{textAlign: 'left', marginTop: 10, color: 'white', fontSize: 15}}>
+                      {deleteMessage}"{input}" ?
                     </Text>
 
                     <View style={styles.buttonsContainer}>
@@ -115,11 +152,15 @@ const CustomModal = ({
                         type="white-outline"
                         label={t('button.cancel')}
                         onPress={() => setVisible(false)}
+                        isSmall={true}
+                        additionnalStyle={{width:'35%', marginRight:10, marginTop:20}}
                       /> 
                       <CustomButton
                         type="green-full"
                         label={t('button.yes')}
                         onPress={async () => onPressDelete()}
+                        isSmall={true}
+                        additionnalStyle={{width:'35%', marginTop:20}}
                       />
                     </View>
                   </View>                
@@ -144,7 +185,10 @@ const styles = StyleSheet.create({
     width: '90%',
     padding: 20,
     backgroundColor: 'black',
-    borderRadius: 50
+    borderRadius: 35
+  },
+  modalContentTablet:{
+    width:'50%'
   },
   title: {
     fontSize: 20,
@@ -155,10 +199,8 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '50%',
-    height: 60,
-    marginTop: 20
+    justifyContent: 'flex-end',
+    width: '100%',
   },
   containerHead: {
     flexDirection: 'row',
