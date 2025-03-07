@@ -8,6 +8,7 @@ import styles from "./style/ModalStyle";
 import { getSubjects } from "../../../api/subject";
 import { getFromStorage, getLocalUser } from "../../../api/secureStore";
 import { copyCollection } from "../../../api/collection";
+import Toast from "react-native-toast-message";
 
 const useSubjects = () => {
   const [subjects, setSubjects] = useState([]);
@@ -56,7 +57,11 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
       ref.current?.close();
       onOpenConfirmModal();
     } catch (error) {
-      console.error("Erreur lors de la copie de la collection :", error);
+      Toast.show({
+                type: 'error',
+                text1: t('ERROR'),
+                text2: "Erreur lors de la copie de la collection : " +error,
+              });
     } finally {
       setIsCopying(false);
     }
@@ -101,6 +106,7 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
               onPress={handleCopyCollection}
               disabled={isCopying || !selectedSubject}
             />
+            <Toast position='top' bottomOffset={20} />
           </View>
         </BottomSheetView>
       </BottomSheet>
