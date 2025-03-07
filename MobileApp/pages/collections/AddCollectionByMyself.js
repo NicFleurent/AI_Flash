@@ -71,7 +71,7 @@ const AddCollectionByMyself = ({ route }) => {
                     text2: t('add_collection_by_myself.collection_and_flashcards_created'),
                 });
 
-                navigation.goBack();
+                navigation.navigate("Subjects");
             }
 
         } catch (error) {

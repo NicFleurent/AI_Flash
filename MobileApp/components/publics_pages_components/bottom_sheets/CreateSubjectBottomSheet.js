@@ -10,7 +10,6 @@ import { createSubject } from "../../../api/subject";
 import { copyCollection } from "../../../api/collection";
 import { getFromStorage, getLocalUser } from "../../../api/secureStore";
 
-// Hook personnalisé pour gérer les événements du clavier
 const useKeyboardListener = (setSnapPoints) => {
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -36,10 +35,8 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
-  // Utilisation du hook personnalisé pour gérer les événements du clavier
   useKeyboardListener(setSnapPoints);
 
-  // Validation du formulaire
   const validateForm = () => {
     const newErrors = {};
     if (!matiere.trim()) newErrors.nom = t("errors.subject_name_required");
@@ -47,7 +44,6 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Gestion de l'ajout d'une matière
   const handleAddSubject = async () => {
     if (!validateForm()) return;
 
@@ -108,7 +104,6 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
         </KeyboardAwareScrollView>
       </BottomSheet>
 
-      {/* Overlay de chargement */}
       {isLoading && (
         <View style={loadingStyles.overlay}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -118,7 +113,6 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
   );
 });
 
-// Styles pour l'overlay de chargement
 const loadingStyles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,

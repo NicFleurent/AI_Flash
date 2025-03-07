@@ -10,14 +10,13 @@ import ChooseSubjectBottomSheet from "../../components/publics_pages_components/
 import CreateSubjectBottomSheet from "../../components/publics_pages_components/bottom_sheets/CreateSubjectBottomSheet";
 import AlertModal from "../../components/AlertModal";
 import { useTranslation } from "react-i18next";
-import {getPublicCollections} from "../../api/collection";
+import { getPublicCollections } from "../../api/collection";
 import { saveToStorage } from "../../api/secureStore";
-
 
 const Explore = () => {
   const [search, onChangeSearch] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const listFlashcardRef = useRef(null);
   const chooseCreateSubjectRef = useRef(null);
   const chooseSubjectRef = useRef(null);
@@ -25,20 +24,25 @@ const Explore = () => {
   const [collections, setCollections] = useState([]);
   const [selectItem, setSelectItem] = useState({});
 
-  useEffect(()=>{
-    
+  useEffect(() => {
     const setPublicCollections = async () => {
       try {
-          const result = await getPublicCollections();
-          setCollections(result);
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
+        const result = await getPublicCollections();
+        setCollections(result);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
 
     setPublicCollections();
+  }, []);
 
-    },[])
+  const filteredCollections = useMemo(() => {
+    if (!search) return collections; 
+    return collections.filter((collection) =>
+      collection.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [collections, search]);
 
   const openBottomSheet = useCallback((ref) => {
     [
@@ -89,9 +93,9 @@ const Explore = () => {
 
   const formattedData = useMemo(() => {
     const numColumns = 2;
-    const numberOfFullRows = Math.floor(collections.length / numColumns);
-    let numberOfElementsLastRow = collections.length - numberOfFullRows * numColumns;
-    const dataCopy = [...collections];
+    const numberOfFullRows = Math.floor(filteredCollections.length / numColumns);
+    let numberOfElementsLastRow = filteredCollections.length - numberOfFullRows * numColumns;
+    const dataCopy = [...filteredCollections];
 
     if (numberOfElementsLastRow !== 0) {
       for (let i = numberOfElementsLastRow; i < numColumns; i++) {
@@ -100,31 +104,31 @@ const Explore = () => {
     }
 
     return dataCopy;
-  }, [collections]);
+  }, [filteredCollections]);
 
   const renderItem = useCallback(
     ({ item }) => {
       if (item.empty) {
         return <View style={styles.itemInvisible} />;
       }
-  
+
       const handleArrowPress = async () => {
         setSelectItem(item);
         await saveToStorage("collection_id", JSON.stringify({ collection_id: item.id }));
         openListFlashcard();
       };
-  
+
       return (
         <CardCollection
           nameMatiere={item.name}
           isPublic={true}
           numberFlashcard={item.flashcards.length}
           nameAuthor={item.lastname + " " + item.firstname}
-          onArrowPress={handleArrowPress} 
+          onArrowPress={handleArrowPress}
         />
       );
     },
-    [openListFlashcard, saveToStorage] 
+    [openListFlashcard]
   );
 
   return (
@@ -132,11 +136,11 @@ const Explore = () => {
       <View style={styles.container}>
         <View style={{ marginTop: Platform.OS === "ios" ? 20 : 0 }}>
           <CustomInput
-            label={t('explore.find')}
+            label={t("explore.find")}
             value={search}
             onChangeText={onChangeSearch}
             isPassword={false}
-          />
+            placeholder={t("explore.search_placeholder")} />
         </View>
 
         <FlatList
@@ -152,12 +156,12 @@ const Explore = () => {
           <ListFlashcardBottomSheet
             onOpenOtherSheet={openChooseCreateSubject}
             name={selectItem.name}
-            author={selectItem.lastname +" "+selectItem.firstname}
+            author={selectItem.lastname + " " + selectItem.firstname}
             data={selectItem.flashcards}
             ref={listFlashcardRef}
           />
           <ChooseCreateSubjectBottomSheet
-            onSelectSubjectSheet={openChooseSubject} 
+            onSelectSubjectSheet={openChooseSubject}
             onCreateSubjectSheet={openCreateSubject}
             ref={chooseCreateSubjectRef}
           />
@@ -169,13 +173,13 @@ const Explore = () => {
             onOpenConfirmModal={openModal}
             ref={createSubjectRef}
           />
-          
+
           <AlertModal
             isVisible={isModalVisible}
             onClose={closeModal}
             showCancelButton={false}
             title="Success"
-            description="Collection copier avec suceess"
+            description="Collection copiée avec succès"
             confirmButtonText="Ok"
             onConfirm={handleConfirm}
           />

@@ -1,5 +1,5 @@
 import React, { useState, forwardRef, useEffect, useCallback } from "react";
-import { View, Text, useWindowDimensions, ActivityIndicator } from "react-native";
+import { View, Text, useWindowDimensions, ActivityIndicator, StyleSheet } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { SelectList } from "react-native-dropdown-select-list";
 import { useTranslation } from "react-i18next";
@@ -52,7 +52,6 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
       const user = await getLocalUser();
 
       const data = await copyCollection(collection_id, selectedSubject, user.id);
-      console.log("Collection copiée avec succès :", data);
 
       ref.current?.close();
       onOpenConfirmModal();
@@ -64,53 +63,65 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
   }, [selectedSubject, ref, onOpenConfirmModal]);
 
   return (
-    <BottomSheet
-      ref={ref}
-      snapPoints={["50%"]}
-      index={-1}
-      handleComponent={null}
-      enablePanDownToClose
-      backgroundComponent={() => <View style={[styles.blurView, { width, height }]} />}
-    >
-      <BottomSheetView style={styles.bottomSheetContainer}>
-        <View style={styles.bottomSheet}>
-          <View style={styles.handle} />
+    <>
+      <BottomSheet
+        ref={ref}
+        snapPoints={["50%"]}
+        index={-1}
+        handleComponent={null}
+        enablePanDownToClose
+        backgroundComponent={() => <View style={[styles.blurView, { width, height }]} />}
+      >
+        <BottomSheetView style={styles.bottomSheetContainer}>
+          <View style={styles.bottomSheet}>
+            <View style={styles.handle} />
 
-          <Text style={styles.modalTitle}>{t("explore.bottom_sheet.select_subject")}</Text>
+            <Text style={styles.modalTitle}>{t("explore.bottom_sheet.select_subject")}</Text>
 
-          {isSubjectsLoading ? (
-            <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
-          ) : (
-            <SelectList
-              setSelected={setSelectedSubject}
-              data={subjects}
-              save="key"
-              placeholder={t("explore.bottom_sheet.select_subject")}
-              search={false}
-              defaultOption={""}
-              boxStyles={styles.selectList}
-              inputStyles={styles.selectListInput}
-              dropdownStyles={styles.dropdownStyle}
+            {isSubjectsLoading ? (
+              <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
+            ) : (
+              <SelectList
+                setSelected={setSelectedSubject}
+                data={subjects}
+                save="key"
+                placeholder={t("explore.bottom_sheet.select_subject")}
+                search={false}
+                defaultOption={""}
+                boxStyles={styles.selectList}
+                inputStyles={styles.selectListInput}
+                dropdownStyles={styles.dropdownStyle}
+              />
+            )}
+
+            <CustomButton
+              type="green-full"
+              label={t("explore.bottom_sheet.add")}
+              additionnalStyle={{ marginBottom: 5, marginTop: 40 }}
+              onPress={handleCopyCollection}
+              disabled={isCopying || !selectedSubject}
             />
-          )}
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
 
-          <CustomButton
-            type="green-full"
-            label={t("explore.bottom_sheet.add")}
-            additionnalStyle={{ marginBottom: 5, marginTop: 40 }}
-            onPress={handleCopyCollection}
-            disabled={isCopying || !selectedSubject}
-          />
-
-          {isCopying && (
-            <View style={styles.overlay}>
-              <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-          )}
+      {isCopying && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      </BottomSheetView>
-    </BottomSheet>
+      )}
+    </>
   );
+});
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject, 
+    backgroundColor: "rgba(0, 0, 0, 0.5)", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    zIndex: 9999, 
+  },
 });
 
 export default ChooseSubjectBottomSheet;
