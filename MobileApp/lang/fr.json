@@ -144,6 +144,29 @@
         "subject_name": "Nom de la matière",
         "author": "Créée par"
       }
-    }    
+    }, 
+    "add_collection_by_myself":{
+        "collection_name_required": "Le nom de la collection est requis.",
+        "success": "Succès",
+        "collection_and_flashcards_created": "Collection et flashcards créées avec succès !",
+        "error": "Erreur",
+        "something_went_wrong": "Quelque chose s'est mal passé.",
+        "collection_name": "Nom de la collection",
+        "new_card": "Nouvelle carte",
+        "save_collection": "Enregistrer la collection"
+    },
+    "bottom_sheet_add_flashcard":{
+        "face": "Face",
+        "back": "Endos",
+        "face_required": "La face est requise.",
+        "back_required": "L'endos est requis.",
+        "edit_card": "Modifier la carte",
+        "add_card": "Ajouter la carte"
+    },
+    "new_collection_choose_options":{
+      "choose_how_to_generate": "Comment voulez-vous générer vos cartes?",
+      "by_myself": "Par moi-même",
+      "from_document": "À partir d'un document"
+    }
   }
 }

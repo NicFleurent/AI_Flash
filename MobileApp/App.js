@@ -17,10 +17,13 @@ import store from './stores/store';
 import Subjects from './pages/matieres/Subjects';
 import Collections from './pages/matieres/Collections';
 import Study from './pages/Study';
+import NewCollectionChooseOptions from "./pages/collections/NewCollectionChooseOptions";
+import AddCollectionByMyself from "./pages/collections/AddCollectionByMyself";
+import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
 
 export default function App() {
   const {t} = useTranslation();
-  const [landingPage, setLandingPage] = useState("Auth");
+  const [landingPage, setLandingPage] = useState("CollectionsCreate");
 
   useEffect(()=>{
     isUserLoggedIn();
@@ -29,12 +32,47 @@ export default function App() {
   const isUserLoggedIn = async ()=>{
     try {
       const response = await refreshToken();
-      setLandingPage("Menu")
+      setLandingPage("Menu");
     } catch (error) {
       console.log(error)
-      setLandingPage("Auth")
+      setLandingPage("Auth");
     }
   }
+
+  const collectionsStack =createNativeStackNavigator({
+    initialRouteName:"NewCollectionChooseOptions",
+    screenOptions:{
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 32,
+        fontWeight: "bold"
+      },
+      headerTitleAlign: 'left',
+    },
+    screens:{
+      NewCollectionChooseOptions: {
+        screen: NewCollectionChooseOptions,
+        options:{
+          title:"Nouvelle collection"
+        }
+      },
+      AddCollectionByMyself: {
+        screen: AddCollectionByMyself,
+        options:{
+          title:"Nouvelle collection"
+        }
+      },
+      AddCollectionByAi: {
+        screen: AddCollectionByAi,
+        options:{
+          title:"Nouvelle collection"
+        }
+      },
+    }
+  });
 
   const authStack = createNativeStackNavigator({
     initialRouteName:"Intro",
@@ -154,7 +192,13 @@ export default function App() {
       },
       Study:{
         screen:Study
-      }
+      },
+      CollectionsCreate:{
+        screen: collectionsStack,
+        options:{
+          headerShown:false
+        }
+      },
     },
   });
 
