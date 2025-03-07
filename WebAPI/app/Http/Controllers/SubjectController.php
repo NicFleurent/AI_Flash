@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Subject;
@@ -18,8 +19,8 @@ class SubjectController extends Controller
         $user_id = $user->id;
 
         $subjects = Subject::where('user_id', $user_id)
-                    ->withCount('collections') 
-                    ->get();
+            ->withCount('collections')
+            ->get();
 
         return response()->json($subjects);
     }

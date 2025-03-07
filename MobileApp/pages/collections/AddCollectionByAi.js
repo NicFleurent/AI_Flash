@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as DocumentPicker from "expo-document-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { sendPdf } from '../../api/pdf';
 
 const AddCollectionByAi = () => {
     const { width, height } = useWindowDimensions();
@@ -17,8 +18,8 @@ const AddCollectionByAi = () => {
     const pickFile = async () => {
         try {
             const result = await DocumentPicker.getDocumentAsync({
-                type: "application/pdf", 
-                copyToCacheDirectory: true, 
+                type: "application/pdf",
+                copyToCacheDirectory: true,
             });
 
             if (!result.canceled) {
@@ -44,10 +45,24 @@ const AddCollectionByAi = () => {
         return file ? file.assets[0].name : "Ajouter un fichier";
     }, [file]);
 
+    const handleGenerateCards = async () => {
+        if (!file) {
+            console.log("Aucun fichier sélectionné");
+            return;
+        }
+
+        try {
+            const response = await sendPdf(file);
+            console.log("Réponse du serveur :", response);
+        } catch (error) {
+            console.error("Erreur lors de l'envoi du fichier :", error);
+        }
+    };
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <View style={{ marginTop: 20 }}>
+                <View style={styles.inputContainer}>
                     <CustomInput
                         label="Nom de la collection"
                         value={collectionName}
@@ -74,14 +89,11 @@ const AddCollectionByAi = () => {
                             </View>
                         </View>
                     </TouchableOpacity>
-
                     <CustomButton
                         type="green-full"
                         label="Generer des cartes"
-                        additionnalStyle={{ marginBottom: 40, marginTop: 40 }}
-                        onPress={() => {
-                            
-                        }}
+                        additionnalStyle={styles.generateButton}
+                        onPress={handleGenerateCards}
                     />
                 </View>
 
@@ -91,31 +103,39 @@ const AddCollectionByAi = () => {
     );
 };
 
+// Styles
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
         paddingHorizontal: 10,
         flex: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+    },
+    inputContainer: {
+        marginTop: 20,
     },
     fileContainer: {
         backgroundColor: "white",
-        borderRadius: 8
+        borderRadius: 8,
     },
     fileContent: {
         marginVertical: 18,
         marginLeft: 10,
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
     },
     icon: {
-        marginLeft: 20
+        marginLeft: 20,
     },
     fileText: {
         marginLeft: 20,
         fontWeight: "bold",
-        flexShrink: 1
-    }
+        flexShrink: 1,
+    },
+    generateButton: {
+        marginBottom: 40,
+        marginTop: 40,
+    },
 });
 
 export default AddCollectionByAi;

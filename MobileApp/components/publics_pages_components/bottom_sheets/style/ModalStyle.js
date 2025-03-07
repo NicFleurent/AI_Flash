@@ -83,6 +83,11 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 8,
+  },
 });
 
 export default styles;
