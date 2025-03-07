@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { StatusBar, StyleSheet, FlatList, View, Platform } from "react-native";
 import CardCollection from "../../components/publics_pages_components/CardCollection";
 import CustomInput from "../../components/CustomInput";
@@ -10,18 +10,9 @@ import ChooseSubjectBottomSheet from "../../components/publics_pages_components/
 import CreateSubjectBottomSheet from "../../components/publics_pages_components/bottom_sheets/CreateSubjectBottomSheet";
 import AlertModal from "../../components/AlertModal";
 import { useTranslation } from "react-i18next";
+import {getPublicCollections} from "../../api/collection";
+import { saveToStorage } from "../../api/secureStore";
 
-const data = [
-  { id: "1", text: "Item 1" },
-  { id: "2", text: "Item 2" },
-  { id: "3", text: "Item 3" },
-  { id: "4", text: "Item 4" },
-  { id: "5", text: "Item 5" },
-  { id: "6", text: "Item 6" },
-  { id: "7", text: "Item 7" },
-  { id: "8", text: "Item 8" },
-  { id: "9", text: "Item 9" },
-];
 
 const Explore = () => {
   const [search, onChangeSearch] = useState("");
@@ -31,6 +22,23 @@ const Explore = () => {
   const chooseCreateSubjectRef = useRef(null);
   const chooseSubjectRef = useRef(null);
   const createSubjectRef = useRef(null);
+  const [collections, setCollections] = useState([]);
+  const [selectItem, setSelectItem] = useState({});
+
+  useEffect(()=>{
+    
+    const setPublicCollections = async () => {
+      try {
+          const result = await getPublicCollections();
+          setCollections(result);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    setPublicCollections();
+
+    },[])
 
   const openBottomSheet = useCallback((ref) => {
     [
@@ -81,9 +89,9 @@ const Explore = () => {
 
   const formattedData = useMemo(() => {
     const numColumns = 2;
-    const numberOfFullRows = Math.floor(data.length / numColumns);
-    let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-    const dataCopy = [...data];
+    const numberOfFullRows = Math.floor(collections.length / numColumns);
+    let numberOfElementsLastRow = collections.length - numberOfFullRows * numColumns;
+    const dataCopy = [...collections];
 
     if (numberOfElementsLastRow !== 0) {
       for (let i = numberOfElementsLastRow; i < numColumns; i++) {
@@ -92,24 +100,31 @@ const Explore = () => {
     }
 
     return dataCopy;
-  }, [data]);
+  }, [collections]);
 
   const renderItem = useCallback(
     ({ item }) => {
       if (item.empty) {
         return <View style={styles.itemInvisible} />;
       }
+  
+      const handleArrowPress = async () => {
+        setSelectItem(item);
+        await saveToStorage("collection_id", JSON.stringify({ collection_id: item.id }));
+        openListFlashcard();
+      };
+  
       return (
         <CardCollection
-          nameMatiere="Programmation orientée objet"
+          nameMatiere={item.name}
           isPublic={true}
-          numberFlashcard={25}
-          nameAuthor="Nicolas Fleurent"
-          onPress={openListFlashcard}
+          numberFlashcard={item.flashcards.length}
+          nameAuthor={item.lastname + " " + item.firstname}
+          onArrowPress={handleArrowPress} 
         />
       );
     },
-    [openListFlashcard]
+    [openListFlashcard, saveToStorage] 
   );
 
   return (
@@ -136,29 +151,32 @@ const Explore = () => {
         <View style={styles.overlay}>
           <ListFlashcardBottomSheet
             onOpenOtherSheet={openChooseCreateSubject}
+            name={selectItem.name}
+            author={selectItem.lastname +" "+selectItem.firstname}
+            data={selectItem.flashcards}
             ref={listFlashcardRef}
           />
           <ChooseCreateSubjectBottomSheet
-            onOpenOtherSheet={openChooseSubject}
+            onSelectSubjectSheet={openChooseSubject} 
+            onCreateSubjectSheet={openCreateSubject}
             ref={chooseCreateSubjectRef}
           />
           <ChooseSubjectBottomSheet
-            onOpenOtherSheet={openCreateSubject}
+            onOpenConfirmModal={openModal}
             ref={chooseSubjectRef}
           />
           <CreateSubjectBottomSheet
             onOpenConfirmModal={openModal}
             ref={createSubjectRef}
           />
-
+          
           <AlertModal
             isVisible={isModalVisible}
             onClose={closeModal}
-            title="Titre du modal"
-            description="Ceci est une description du modal."
-            cancelButtonText="Annuler"
-            confirmButtonText="Confirmer"
-            onCancel={handleCancel}
+            showCancelButton={false}
+            title="Success"
+            description="Collection copier avec suceess"
+            confirmButtonText="Ok"
             onConfirm={handleConfirm}
           />
         </View>
@@ -178,6 +196,9 @@ const styles = StyleSheet.create({
   itemInvisible: {
     flex: 1,
     backgroundColor: "transparent",
+    paddingHorizontal: 15,
+    margin: 5,
+    flex: 1,
   },
   flatList: {
     marginTop: 10,

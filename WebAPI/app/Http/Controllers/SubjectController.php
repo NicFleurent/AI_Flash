@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Subject;
@@ -18,8 +19,8 @@ class SubjectController extends Controller
         $user_id = $user->id;
 
         $subjects = Subject::where('user_id', $user_id)
-                    ->withCount('collections') 
-                    ->get();
+            ->withCount('collections')
+            ->get();
 
         return response()->json($subjects);
     }
@@ -31,11 +32,17 @@ class SubjectController extends Controller
             $subject_name = $data['subject_name'] ?? '';
             $user_id = $data['user_id'] ?? '';
 
-            if (!empty($subject_name) && !empty($user_id)){
-                DB::table('subjects')->insert(['name' => $subject_name, 'user_id' => $user_id]);
+            if (!empty($subject_name) && !empty($user_id)) {
+                $id = DB::table('subjects')->insertGetId([
+                    'name' => $subject_name,
+                    'user_id' => $user_id
+                ]);
+
+                $subject = DB::table('subjects')->where('id', $id)->first();
 
                 return response()->json([
-                    'message' => 'Matière créée avec succès'
+                    'message' => 'Matière créée avec succès',
+                    'data' => $subject
                 ], 200);
             }
         } catch (\Throwable $e) {
@@ -53,7 +60,7 @@ class SubjectController extends Controller
             $subject_name = $data['subject_name'] ?? '';
             $subject_id = $data['subject_id'] ?? '';
 
-            if (!empty($subject_name) && !empty($subject_id)){
+            if (!empty($subject_name) && !empty($subject_id)) {
                 DB::table('subjects')
                     ->where('id', $subject_id)
                     ->update(['name' => $subject_name]);
@@ -75,7 +82,7 @@ class SubjectController extends Controller
             $data = $request->all();
             $subject_id = $data['subject_id'] ?? '';
 
-            if (!empty($subject_id)){
+            if (!empty($subject_id)) {
                 DB::table('collections')->where('subject_id', $subject_id)->delete();
                 DB::table('subjects')->where('id', $subject_id)->delete();
 

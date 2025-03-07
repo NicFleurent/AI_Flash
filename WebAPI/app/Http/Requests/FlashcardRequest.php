@@ -24,6 +24,7 @@ class FlashcardRequest extends FormRequest
         return [
             'front_face' => 'required|string',
             'back_face' => 'required|string',
+            'last_revision_date' => 'required|date',
             'next_revision_date' => 'required|date',
             'forgetting_curve_stage' => 'required|int',
             'collection_id' => 'required|integer|exists:collections,id',

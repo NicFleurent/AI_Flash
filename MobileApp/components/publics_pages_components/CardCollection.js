@@ -130,7 +130,8 @@ const CardCollection = ({
   isPublic,
   onArrowPress,
   onPenPress, 
-  isStudy
+  isStudy,
+  isEditable,
 }) => {
   const { height } = useWindowDimensions();
   const { t } = useTranslation();
@@ -172,13 +173,13 @@ const CardCollection = ({
                 color="#1DB954"
                 icon={faBolt}
               />
-            :
+            : isEditable &&
               <FontAwesomeIcon
                 style={styles.icon}
                 size={24}
                 color="#1DB954"
                 icon={faPenToSquare}
-              />
+              />              
             }
           </TouchableOpacity>
 
