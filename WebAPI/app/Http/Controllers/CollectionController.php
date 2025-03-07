@@ -71,7 +71,8 @@ class CollectionController extends Controller
                 DB::table('collections')->insert(['name' => $collection_name, 'subject_id' => $subject_id]);
 
                 return response()->json([
-                    'message' => 'Collection créée avec succès'
+                    'message' => 'Collection créée avec succès',
+                    'data' => DB::table('collections')->orderBy('id', 'desc')->first()
                 ], 200);
             }
         } catch (\Throwable $e) {

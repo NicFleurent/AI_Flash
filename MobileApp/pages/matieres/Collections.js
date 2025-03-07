@@ -190,7 +190,7 @@ const Collections = ({ route }) => {
 
           <TouchableOpacity
             style={styles.floatingInput}
-            onPress={() => [setTypeModal("add"), setVisible(true)]}
+            onPress={() => navigation.navigate("CollectionsCreate", { screen: "NewCollectionChooseOptions", params: { id: id } })}
           >
             <FontAwesomeIcon icon={faPlus} size={20} color="black" />
           </TouchableOpacity>
