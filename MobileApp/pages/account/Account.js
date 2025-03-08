@@ -133,7 +133,18 @@ const Account = () => {
     try {
       const response = await deleteUser();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:t(response.message)}})
+      navigation.reset({
+        index:0,
+        routes:[
+          {
+            name:'Auth',
+            params:{
+              screen:'Intro',
+              params:{success:t(response.data.message)}
+            }
+          }
+        ]
+      })
 
     } catch (error) {
       Toast.show({
