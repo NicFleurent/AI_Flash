@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, RefreshControl, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -21,12 +21,14 @@ const Home = () => {
 
   const [totalCount, setTotalCount] = useState(0)
   const [collections, setCollections] = useState([])
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=>{
     const setUser = async () => {
       const user = await getLocalUser();
       setFirstname(user.firstname)
     }
+    setIsLoading(true);
     setUser();
     getCollections();
     getFlashcardsCount();
@@ -45,6 +47,9 @@ const Home = () => {
         text2: t('home.today_collection_failed'),
       });
     }
+    finally{
+      setIsLoading(false);
+    }
   }
   const getFlashcardsCount = async () => {
     try {
@@ -57,6 +62,9 @@ const Home = () => {
         text1: t('ERROR'),
         text2: t('home.today_card_count_failed'),
       });
+    }
+    finally{
+      setIsLoading(false);
     }
   }
 
@@ -141,7 +149,7 @@ const Home = () => {
       >
         <View>
           <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
-          <Text style={styles.flashStudyCount}>Aucune cartes à étudier</Text>
+          <Text style={styles.flashStudyCount}>{t('home.no_card_to_study')}</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
@@ -163,6 +171,12 @@ const Home = () => {
           />
         }
       />
+      
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
 
       <Toast position='top' bottomOffset={20} />
     </View>
@@ -213,5 +227,14 @@ const styles = {
     backgroundColor: "transparent",
   },
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Home

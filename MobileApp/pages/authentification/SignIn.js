@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
@@ -20,6 +20,7 @@ const SignIn = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeText = (value, setInput) => {
     setInput(value);
@@ -31,6 +32,7 @@ const SignIn = () => {
   const handleSignin = async () => {
     if (validateForm()) {
       try {
+        setIsLoading(true);
         const response = await signin(
           email, 
           firstname,
@@ -39,8 +41,14 @@ const SignIn = () => {
           passwordConfirm
         );
 
-        navigation.navigate("Menu", {
-          screen: "Home",
+        navigation.reset({
+          index:0,
+          routes:[
+            {
+              name:'Menu',
+              params:{screen:'Home'}
+            }
+          ]
         })
 
       } catch (error) {
@@ -49,6 +57,9 @@ const SignIn = () => {
           text1: t('ERROR'),
           text2: t(error.message),
         });
+      }
+      finally{
+        setIsLoading(false)
       }
     }
     else
@@ -59,6 +70,10 @@ const SignIn = () => {
     let tempErrors = [];
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const numberRegex = /\d/;
+    const letterRegex = /[a-zA-Z]/;
+    const majNimRegex = /(?=.*[a-z])(?=.*[A-Z])/;
+    const specialCaracterRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (firstname === "")
       tempErrors.errorFirstname = t('input.error.firstname_required');
@@ -72,6 +87,17 @@ const SignIn = () => {
 
     if(password === "")
       tempErrors.errorPassword = t('input.error.password_required');
+    else if(password.length < 7)
+      tempErrors.errorPassword = t('auth.register_error_password_min');
+    else if (!letterRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_letters');
+    else if (!majNimRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_mixed');
+    else if (!numberRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_numbers');
+    else if (!specialCaracterRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_symbols');
+
     if (password != passwordConfirm)
       tempErrors.errorPasswordConfirm = t('input.error.passwordConfirm_required');
 
@@ -144,6 +170,13 @@ const SignIn = () => {
           </View>
         </View>
       </ScrollView>
+      
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
+
       <Toast position='top' bottomOffset={20} />
     </View>
   )
@@ -190,5 +223,14 @@ const styles = {
     width: '90%',
   }
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default SignIn

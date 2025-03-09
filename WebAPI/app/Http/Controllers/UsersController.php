@@ -53,7 +53,6 @@ class UsersController extends Controller
         'password' => Hash::make($request->password),
       ]);
 
-
       return $this->success([
         'user' => $user,
         'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
@@ -141,7 +140,6 @@ class UsersController extends Controller
 
       return $this->success(null, 'account.updatePassword_success');
     } catch (\Throwable $e) {
-      Log::debug($e);
       return $this->error(
         null,
         "account.updatePassword_error",
@@ -156,7 +154,7 @@ class UsersController extends Controller
       $user = Auth::user();
       $user->currentAccessToken()->delete();
       $user->delete();
-      
+  
       return $this->success(null, 'account.delete_success');
     } catch (\Throwable $e) {
       Log::debug($e);

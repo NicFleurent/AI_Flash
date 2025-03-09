@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useSelector } from 'react-redux';
 
 const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle, isSmall}) => {
   const [isLongText, setIsLongText] = useState(false);
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
   useEffect(()=>{
     if(label.length >= 15){
@@ -18,6 +20,7 @@ const CustomButton = ({label, type, icon, onPress, onLongPress, additionnalStyle
       type == "green-full" && styles.greenFullContainer, 
       type == "white-outline" && styles.whiteOutlineContainer,
       type == "red-full" && styles.redFullContainer,
+      isTablet && styles.containerTablet,
       isSmall && styles.smallContainer,
       additionnalStyle
     ]}
@@ -52,11 +55,14 @@ const styles = {
   container:{
     flexDirection:'row',
     width:'100%',
-    height:60,
+    height:50,
     justifyContent:'center',
     alignItems:'center',
     borderRadius:30,
     paddingHorizontal:30
+  },
+  containerTablet:{
+    height:60,
   },
   smallContainer:{
     height:40,
@@ -71,10 +77,10 @@ const styles = {
   },
   txtButton:{
     fontWeight:'bold',
-    fontSize:20
+    fontSize:18
   },
   txtButtonLongText:{
-    fontSize:18
+    fontSize:16
   },
   smallTxt:{
     fontSize:14

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +6,6 @@ import CustomInput from '../../components/CustomInput';
 import { login } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
-import { saveLocalUser } from '../../api/secureStore';
 import { useSelector } from 'react-redux';
 
 const LogIn = () => {
@@ -17,6 +16,7 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   const onChangeText = (value, setInput)=>{
     setInput(value);
@@ -28,6 +28,7 @@ const LogIn = () => {
   const handleLogin = async ()=>{
     if(validateForm()){
       try {
+        setIsLoading(true);
         const response = await login(email, password);
   
         navigation.reset({
@@ -46,6 +47,9 @@ const LogIn = () => {
           text1: t('ERROR'),
           text2: t(error.message),
         });
+      }
+      finally{
+        setIsLoading(false)
       }
     }
     else
@@ -113,6 +117,13 @@ const LogIn = () => {
           </View>
         </View>
       </ScrollView>
+
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
+
       <Toast position='top' bottomOffset={20} />
     </View>
   )
@@ -158,5 +169,14 @@ const styles = {
     width:'90%',
   }
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default LogIn

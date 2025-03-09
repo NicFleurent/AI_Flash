@@ -59,15 +59,8 @@ const AddCollectionByAi = () => {
             const response = await sendPdf(file);
 
             if (response && response.message && response.answer) {
-                // Toast.show({
-                //     type: 'success',
-                //     text1: t('SUCCESS'),
-                //     text2: response.message,
-                // });
-                // console.log("Response - " + response.answer)
-
+                
                 const parseAnswer = JSON.parse(response.answer)
-                // console.log("ParsedANSWER - " + parseAnswer)
 
                 setFlashCards(Object.entries(parseAnswer))
             }

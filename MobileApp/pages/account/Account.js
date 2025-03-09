@@ -1,17 +1,18 @@
-import { View,Platform, Text } from 'react-native'
+import { View,Platform, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faLanguage, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser, updateUserPassword } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
 import CustomModal from '../../components/CustomModal';
+import LanguagesModal from '../../components/LanguagesModal';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ const Account = () => {
   const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [isModalUpdatePwdVisible, setIsModalUpdatePwdVisible] = useState(false);
+  const [isModalLanguageVisible, setIsModalLanguageVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -33,6 +35,8 @@ const Account = () => {
   const [newPassword, setNewPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [errorsPassword, setErrorsPassword] = useState([]);
+  
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=>{
     getUser();
@@ -60,9 +64,9 @@ const Account = () => {
 
   const handleSave = async () => {
     try {
-      const response = await updateUser(email, firstname, lastname);
-
       setIsModalUpdateVisible(false);
+      setIsLoading(true);
+      const response = await updateUser(email, firstname, lastname);
 
       if(response){
         Toast.show({
@@ -72,12 +76,14 @@ const Account = () => {
       }
 
     } catch (error) {
-      setIsModalUpdateVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
+    }
+    finally{
+      setIsLoading(false)
     }
   }
 
@@ -104,6 +110,8 @@ const Account = () => {
 
   const handleLogout = async () => {
     try {
+      setIsModalLogoutVisible(false);
+      setIsLoading(true);
       const response = await logout();
 
       navigation.reset({
@@ -120,17 +128,21 @@ const Account = () => {
       })
 
     } catch (error) {
-      setIsModalLogoutVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
     }
+    finally{
+      setIsLoading(false)
+    }
   }
 
   const handleDelete = async () => {
     try {
+      setIsModalDeleteVisible(false);
+      setIsLoading(true);
       const response = await deleteUser();
 
       navigation.reset({
@@ -147,21 +159,24 @@ const Account = () => {
       })
 
     } catch (error) {
-      setIsModalDeleteVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
     }
+    finally{
+      setIsLoading(false)
+    }
   }
 
   const handleChangePassword = async () => {
     if(validatePassword()){
       try {
+        setIsModalUpdatePwdVisible(false);
+        setIsLoading(true);
         const response = await updateUserPassword(password, newPassword, passwordConfirmation);
 
-        setIsModalUpdatePwdVisible(false);
         setPassword("");
         setNewPassword("");
         setPasswordConfirmation("");
@@ -171,7 +186,6 @@ const Account = () => {
           text1: t(response.message)
         });
       } catch (error) {
-        setIsModalUpdatePwdVisible(false);
         setPassword("");
         setNewPassword("");
         setPasswordConfirmation("");
@@ -180,6 +194,9 @@ const Account = () => {
           text1: t('ERROR'),
           text2: t(error.message)
         });
+      }
+      finally{
+        setIsLoading(false)
       }
     }
   }
@@ -209,6 +226,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setFirstname)}
             isPassword={false}
             error={errors.errorFirstname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.lastname')}
@@ -216,6 +234,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setLastname)}
             isPassword={false}
             error={errors.errorLastname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.email')}
@@ -224,6 +243,7 @@ const Account = () => {
             isPassword={false}
             error={errors.errorEmail}
             keyboardType='email-address'
+            removeBottomMarginErrror={true}
           />
         </View>
 
@@ -232,14 +252,21 @@ const Account = () => {
             type="white-outline"
             label={t('button.save')}
             onPress={openUpdateAlert}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faSave}
+          />
+          <CustomButton
+            type="white-outline"
+            label={t('account.languages')}
+            onPress={()=>setIsModalLanguageVisible(true)}
+            additionnalStyle={{ marginBottom: 15 }}
+            icon={faLanguage}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
             onPress={()=>setIsModalLogoutVisible(true)}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faArrowRightFromBracket}
           />
           <CustomButton
@@ -326,6 +353,16 @@ const Account = () => {
           }
         ]}
       />
+      <LanguagesModal
+        visible={isModalLanguageVisible}
+        setVisible={setIsModalLanguageVisible}
+      />
+            
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
       
       <Toast position='top' bottomOffset={20} />
     </View>
@@ -360,5 +397,14 @@ const styles = {
   },
   iosMargin:{ marginTop: Platform.OS === "ios" ? 20 : 0 }
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Account

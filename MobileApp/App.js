@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
+import { getLocalData } from "./api/asyncStorage.js";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
@@ -20,13 +21,23 @@ import Study from './pages/Study';
 import NewCollectionChooseOptions from "./pages/collections/NewCollectionChooseOptions";
 import AddCollectionByMyself from "./pages/collections/AddCollectionByMyself";
 import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
+import Flashcards from "./pages/flashcards/Flashcards";
 
 export default function App() {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
     isUserLoggedIn();
+  },[])
+
+  
+  useEffect(()=>{
+    const getParams = async () =>{
+      const language = await getLocalData("language");
+      i18n.changeLanguage(language.value);
+    }
+    getParams()
   },[])
 
   const isUserLoggedIn = async ()=>{
@@ -92,6 +103,26 @@ export default function App() {
     }
   });
 
+  const flashcardsStack = createNativeStackNavigator({
+    initialRouteName:"Flashcards",
+    screenOptions:{
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 32,
+        fontWeight: "bold"
+      },
+      headerTitleAlign: 'left',
+    },
+    screens:{
+      Flashcards: {
+        screen: Flashcards,
+      },
+    }
+  });
+
   const bottomTabs = createBottomTabNavigator({
     initialRouteName: "Home",
     screenOptions: ({ route }) => ({
@@ -134,13 +165,13 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: "Accueil",
+          title: t('home.title'),
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: "Votre compte",
+          title: t('account.title'),
         },
       },
       Explore: {
@@ -199,6 +230,12 @@ export default function App() {
           headerShown:false
         }
       },
+      FlashcardsShow:{
+        screen: flashcardsStack,
+        options:{
+          headerShown:false
+        }
+      }
     },
   });
 

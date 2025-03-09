@@ -1,0 +1,144 @@
+{
+  "APP_NAME": "AI Flash",
+  "APP_CATCHPHRASE": "Flashcards for simplified studying",
+  "ERROR": "Error",
+  "SUCCESS": "Success",
+  "COLLECTIONS": "Collections",
+  "FLASHCARDS": "Flashcards",
+  "button": {
+    "goBack": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "add": "Create",
+    "cancel": "Cancel",
+    "save": "Save",
+    "yes": "Yes",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  },
+  "input": {
+    "firstname": "First name",
+    "lastname": "Last name",
+    "email": "Email address",
+    "password": "Password",
+    "newPassword": "New password",
+    "passwordConfirm": "Confirm password",
+    "error": {
+      "firstname_required": "First name is required",
+      "lastname_required": "Last name is required",
+      "email_required": "Email address is required",
+      "email_invalid": "Invalid email address",
+      "password_required": "Password is required",
+      "passwordConfirm_required": "Passwords do not match"
+    }
+  },
+  "secureStore": {
+    "error": {
+      "save": "Error while saving",
+      "get": "Error while retrieving",
+      "delete": "Error while deleting"
+    }
+  },
+  "asyncStorage": {
+    "error": {
+      "save": "Error while saving",
+      "get": "Error while retrieving",
+      "delete": "Error while deleting"
+    }
+  },
+  "auth": {
+    "connection": "Connection",
+    "login": "Log in",
+    "signin": "Sign in",
+    "register": "Register",
+    "logout": "Log out",
+    "deleteAccount": "Delete account",
+    "changePassword": "Change password",
+    "invalid_credentials": "Invalid email or password",
+    "error_signup": "Account creation failed",
+    "successful_logout": "Successfully logged out",
+    "error_logout": "Log out failed",
+    "successful_update": "Account updated successfully",
+    "error_update": "Update failed",
+    "successful_update_password": "Password updated successfully",
+    "successful_delete": "Account deleted successfully",
+    "error_delete": "Deletion failed"
+  },
+  "account": {
+    "title": "Your account",
+    "logout_confirm": "Are you sure you want to log out?",
+    "logout_success": "Successfully logged out",
+    "logout_error": "Log out failed",
+    "update": "Save",
+    "update_confirm": "Do you want to save these new details?",
+    "update_success": "Account updated successfully",
+    "update_error": "Update failed",
+    "delete_confirm": "Are you sure you want to delete your account?",
+    "languages": "Languages",
+    "delete_success": "Account deleted successfully",
+    "delete_error": "Failed to delete account",
+    "updatePassword_success": "Your password has been changed",
+    "updatePassword_error": "Password update failed"
+  },
+  "language_modal": {
+    "title": "Languages",
+    "warning": "Warning, changing the language will restart the application"
+  },
+  "home": {
+    "title": "Home",
+    "hello": "Hello",
+    "today": "Today",
+    "remaining_flashcards": "flashcards remaining",
+    "flash_study": "Quick study",
+    "no_card_to_study": "No cards to study",
+    "detailed_studies": "Detailed studies",
+    "no_studies_today": "No studies to do today"
+  },
+  "study": {
+    "remembered": "I remembered",
+    "forgotten": "I forgot"
+  },
+  "subject": {
+    "title": "Your subjects",
+    "description": "Description",
+    "input": {
+      "title_modal_add": "Add a subject",
+      "title_modal_edit": "Edit a subject",
+      "title_modal_delete": "Delete a subject",
+      "modal_delete": "Are you sure you want to delete the subject ",
+      "title_input": "Subject name"
+    },
+    "error": {
+      "title_input_required": "Subject name is required",
+      "title_input_required_collections": "Subject name is required"
+    },
+    "collections": {
+      "title": "Your collections for this subject",
+      "input": {
+        "title_modal_add": "Add a collection",
+        "title_modal_edit": "Edit a collection",
+        "title_modal_delete": "Delete a collection",
+        "modal_delete": "Are you sure you want to delete the collection ",
+        "title_modal": "Edit a subject",
+        "title_input": "Subject name"
+      }
+    }
+  },
+  "explore": {
+    "title": "Explore",
+    "find": "Search",
+    "bottom_sheet": {
+      "copy": "Copy",
+      "add": "Add",
+      "copy_made": "Copy completed",
+      "copy_made_description": "Collection copied! You can now review it",
+      "choose": "Would you like to add it to an existing subject or create a new one?",
+      "add_to_existing_subject": "Add to an existing subject",
+      "create_new_subject": "Create a new subject",
+      "select_subject": "Select subject",
+      "add_subject": "New subject",
+      "subject_name": "Subject name",
+      "author": "Created by"
+    }
+  }
+}
