@@ -57,6 +57,7 @@
     "invalid_credentials":"Le courriel ou le mot de passe n'est pas valide",
     "login_error":"La connexion à échouée",
     "register_error":"L'inscription à échouée",
+    "register_error_email_taken":"Cette adresse courriel est déjà prise",
     "register_error_password_min":"Le mot de passe doit contenir au moins 7 caractères",
     "register_error_password_letters":"Le mot de passe doit contenir au moins une lettre",
     "register_error_password_mixed":"Le mot de passe doit avoir des majuscules et minuscules",
@@ -84,7 +85,7 @@
     "languages":"Langues",
     "delete_success":"Le compte a été supprimé",
     "delete_error":"Le compte n'a pas pu être supprimé",
-    "updatePassword_success":"Votre mot de passe a été modifier",
+    "updatePassword_success":"Votre mot de passe a été modifié",
     "updatePassword_error":"La modification de mot de passe a échouée",
     "updatePassword_wrongPassword_error":"Le mot de passe n'est pas valide"
   },

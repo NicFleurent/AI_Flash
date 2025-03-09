@@ -43,4 +43,12 @@ class RegisterRequest extends FormRequest
             'password.symbols' => 'auth.register_error_password_symbols',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'auth.register_error_email_taken',
+        ];
+    }
+
 }

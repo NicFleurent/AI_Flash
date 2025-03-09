@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
@@ -20,6 +20,7 @@ const SignIn = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeText = (value, setInput) => {
     setInput(value);
@@ -31,6 +32,7 @@ const SignIn = () => {
   const handleSignin = async () => {
     if (validateForm()) {
       try {
+        setIsLoading(true);
         const response = await signin(
           email, 
           firstname,
@@ -39,8 +41,14 @@ const SignIn = () => {
           passwordConfirm
         );
 
-        navigation.navigate("Menu", {
-          screen: "Home",
+        navigation.reset({
+          index:0,
+          routes:[
+            {
+              name:'Menu',
+              params:{screen:'Home'}
+            }
+          ]
         })
 
       } catch (error) {
@@ -49,6 +57,9 @@ const SignIn = () => {
           text1: t('ERROR'),
           text2: t(error.message),
         });
+      }
+      finally{
+        setIsLoading(false)
       }
     }
     else
@@ -159,6 +170,13 @@ const SignIn = () => {
           </View>
         </View>
       </ScrollView>
+      
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
+
       <Toast position='top' bottomOffset={20} />
     </View>
   )
@@ -205,5 +223,14 @@ const styles = {
     width: '90%',
   }
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default SignIn

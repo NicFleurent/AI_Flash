@@ -11,8 +11,7 @@ import { getLocalData, saveLocalData } from "../api/asyncStorage";
 
 const LanguagesModal = ({
   visible,
-  setVisible,
-  onSave
+  setVisible
 }) => {
   const { t, i18n } = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
