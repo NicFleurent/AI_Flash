@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons"; 
 
-const FLashCard = ({ title, description, isEditable, handleEdit }) => {
+const FLashCard = ({ title, description, isEditable, handleEdit, handleDelete }) => {
   const iconColor = "#1DB954";
+  const deleteIconColor = "#FF0000"; 
   const iconSize = 24;
 
   return (
@@ -13,11 +14,19 @@ const FLashCard = ({ title, description, isEditable, handleEdit }) => {
         <Text style={styles.title}>{title}</Text>
         {isEditable && (
           <View style={styles.iconContainer}>
-            <TouchableOpacity onPress={handleEdit}>
+            <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
               <FontAwesomeIcon
                 size={iconSize}
                 color={iconColor}
                 icon={faPenToSquare}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleDelete} style={styles.iconButton}>
+              <FontAwesomeIcon
+                size={iconSize}
+                color={deleteIconColor}
+                icon={faTrash}
               />
             </TouchableOpacity>
           </View>
@@ -49,19 +58,23 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center", 
-    position: "relative", 
+    justifyContent: "center",
+    position: "relative",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333333",
     marginBottom: 8,
-    textAlign: "center", 
+    textAlign: "center",
   },
   iconContainer: {
-    position: "absolute", 
-    right: 0, 
+    position: "absolute",
+    right: 0,
+    flexDirection: "row", 
+  },
+  iconButton: {
+    marginLeft: 10, 
   },
   containerCircle: {
     flexDirection: "row",

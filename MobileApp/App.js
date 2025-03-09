@@ -20,6 +20,7 @@ import Study from './pages/Study';
 import NewCollectionChooseOptions from "./pages/collections/NewCollectionChooseOptions";
 import AddCollectionByMyself from "./pages/collections/AddCollectionByMyself";
 import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
+import Flashcards from "./pages/flashcards/Flashcards";
 
 export default function App() {
   const {t} = useTranslation();
@@ -88,6 +89,26 @@ export default function App() {
       },
       SignIn: {
         screen: SignIn,
+      },
+    }
+  });
+
+  const flashcardsStack = createNativeStackNavigator({
+    initialRouteName:"Flashcards",
+    screenOptions:{
+      headerStyle: {
+        backgroundColor: "#000000",
+      },
+      headerTintColor: "#ffffff",
+      headerTitleStyle: {
+        fontSize: 32,
+        fontWeight: "bold"
+      },
+      headerTitleAlign: 'left',
+    },
+    screens:{
+      Flashcards: {
+        screen: Flashcards,
       },
     }
   });
@@ -199,6 +220,12 @@ export default function App() {
           headerShown:false
         }
       },
+      FlashcardsShow:{
+        screen: flashcardsStack,
+        options:{
+          headerShown:false
+        }
+      }
     },
   });
 
