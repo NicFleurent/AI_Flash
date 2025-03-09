@@ -51,7 +51,6 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
 
     try {
       const response = await createSubject(matiere);
-      console.log("Matière créée avec succès :", response.data.id);
 
       const user = await getLocalUser();
       const collectionIdData = await getFromStorage("collection_id");
