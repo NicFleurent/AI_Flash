@@ -130,7 +130,6 @@ const Flashcards = ({ route }) => {
                     />
                 </View>
 
-                {/* Overlay pour la BottomSheet */}
                 <View style={styles.overlay}>
                     <EditDeleteCardRemoteBottomSheet
                         ref={bottomSheetRef}
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
         flex: 1,
-        paddingHorizontal: 20,
     },
     title: {
         fontSize: 20,

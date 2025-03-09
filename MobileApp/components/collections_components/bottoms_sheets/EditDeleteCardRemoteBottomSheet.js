@@ -4,7 +4,6 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
-import Toast from 'react-native-toast-message';
 import CustomInput from '../../CustomInput';
 import CustomButton from '../../CustomButton';
 import { updateFlashcard } from '../../../api/flashcard';
@@ -26,7 +25,10 @@ const EditDeleteCardRemoteBottomSheet = forwardRef(({ onEditFlashCard, initialDa
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setSnapPoints(["90%", "95%"]);
+      // Ajouter un léger délai pour s'assurer que le clavier est complètement affiché
+      setTimeout(() => {
+        setSnapPoints(["90%", "95%"]);
+      }, 100); // Délai de 100ms
     });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
@@ -58,12 +60,6 @@ const EditDeleteCardRemoteBottomSheet = forwardRef(({ onEditFlashCard, initialDa
         };
 
         const response = await updateFlashcard(initialData.id, updatedData);
-
-        Toast.show({
-          type: 'success',
-          text1: t('SUCCESS'),
-          text2: t('bottom_sheet_add_flashcard.flashcard_updated'),
-        });
 
         onEditFlashCard?.(response);
         ref.current?.close();
@@ -115,7 +111,6 @@ const EditDeleteCardRemoteBottomSheet = forwardRef(({ onEditFlashCard, initialDa
               onPress={handleEdit}
               disabled={isUpdating}
             />
-            <Toast position='top' bottomOffset={20} />
           </View>
         </BottomSheetView>
       </KeyboardAwareScrollView>

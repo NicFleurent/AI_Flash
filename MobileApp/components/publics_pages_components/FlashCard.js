@@ -11,7 +11,7 @@ const FLashCard = ({ title, description, isEditable, handleEdit, handleDelete })
   return (
     <View style={styles.card}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text ellipsizeMode="tail" numberOfLines={1} style={styles.title}>{title}</Text>
         {isEditable && (
           <View style={styles.iconContainer}>
             <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginBottom: 8,
     textAlign: "center",
+    width:"60%",
+    marginRight: 10,
   },
   iconContainer: {
     position: "absolute",

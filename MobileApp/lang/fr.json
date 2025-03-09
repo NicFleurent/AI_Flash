@@ -184,7 +184,7 @@
         "delete": "Supprimer"
       },
       "delete_success": "La flashcard a été supprimée avec succès.",
-      "delete_error": "La suppression de la flashcard a échoué.",
+      "delete_error": "La suppression de la flashcard a échouée.",
       "deleting": "Suppression en cours..."
     }
   }
