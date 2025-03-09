@@ -20,8 +20,8 @@ class CollectionController extends Controller
         Log::debug($data);
 
         $collections = Collection::where('subject_id', $subject_id)
-                        ->withCount('flashcards') 
-                        ->get();
+            ->withCount('flashcards')
+            ->get();
 
         Log::debug($collections);
 
@@ -65,10 +65,16 @@ class CollectionController extends Controller
             $subject_id = $data['subject_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
 
-            DB::table('collections')->insert(['name' => $collection_name, 'subject_id' => $subject_id]);
+            $collectionId = DB::table('collections')->insertGetId([
+                'name' => $collection_name,
+                'subject_id' => $subject_id,
+            ]);
+
+            $collection = DB::table('collections')->where('id', $collectionId)->first();
 
             return response()->json([
-                'message' => 'subject.collections.error.create.success'
+                'message' => 'subject.collections.error.create.success',
+                'data' => $collection
             ], 200);
         } catch (\Throwable $e) {
             return response()->json([

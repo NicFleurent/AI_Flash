@@ -23,7 +23,6 @@ const AddCollectionByMyself = ({ route }) => {
     const { t } = useTranslation();
     const navigation = useNavigation();
 
-    // Fonction pour valider le formulaire
     const validerFormulaire = () => {
         const nouvellesErreurs = {};
         if (!collectionName.trim()) nouvellesErreurs.collectionName = t('add_collection_by_myself.collection_name_required');
@@ -76,33 +75,22 @@ const AddCollectionByMyself = ({ route }) => {
 
     const createCollectionAndFlashcards = async (subjectId, collectionName, flashcardsData) => {
         setIsLoading(true);
-
+        
         try {
             const collectionResponse = await createCollection(subjectId, collectionName);
-
+            console.log(collectionResponse);
             if (collectionResponse && collectionResponse.data) {
                 const collectionId = collectionResponse.data.id;
-
+                
+                
                 for (const flashcard of flashcardsData) {
                     await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
-
-                Toast.show({
-                    type: 'success',
-                    text1: t('SUCCESS'),
-                    text2: t('add_collection_by_myself.collection_and_flashcards_created'),
-                });
 
                 navigation.navigate("Subjects");
             }
         } catch (error) {
             console.log('Error: ' + error);
-
-            Toast.show({
-                type: 'error',
-                text1: t('ERROR'),
-                text2: error.message,
-            });
         } finally {
             setIsLoading(false);
         }
