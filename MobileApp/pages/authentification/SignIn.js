@@ -59,6 +59,10 @@ const SignIn = () => {
     let tempErrors = [];
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const numberRegex = /\d/;
+    const letterRegex = /[a-zA-Z]/;
+    const majNimRegex = /(?=.*[a-z])(?=.*[A-Z])/;
+    const specialCaracterRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (firstname === "")
       tempErrors.errorFirstname = t('input.error.firstname_required');
@@ -72,6 +76,17 @@ const SignIn = () => {
 
     if(password === "")
       tempErrors.errorPassword = t('input.error.password_required');
+    else if(password.length < 7)
+      tempErrors.errorPassword = t('auth.register_error_password_min');
+    else if (!letterRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_letters');
+    else if (!majNimRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_mixed');
+    else if (!numberRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_numbers');
+    else if (!specialCaracterRegex.test(password))
+      tempErrors.errorPassword = t('auth.register_error_password_symbols');
+
     if (password != passwordConfirm)
       tempErrors.errorPasswordConfirm = t('input.error.passwordConfirm_required');
 
