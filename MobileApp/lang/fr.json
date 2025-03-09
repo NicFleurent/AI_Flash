@@ -5,6 +5,9 @@
   "SUCCESS":"Succès",
   "COLLECTIONS": "Collections",
   "FLASHCARDS": "Flashcards",
+  "switch":{
+      "public":"Public"
+   },
   "button":{
     "goBack":"Retour",
     "next":"Suivant",
