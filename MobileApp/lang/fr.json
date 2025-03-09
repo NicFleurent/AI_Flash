@@ -47,7 +47,10 @@
       "register":"S'inscrire",
       "logout":"Déconnexion",
       "deleteAccount":"Supprimer le compte",
-      "changePassword":"Modifier mot de passe"
+      "changePassword":"Modifier mot de passe",
+      "invalid_credentials":"Le courriel ou le mot de passe n'est pas valide",
+      "login_error":"La connexion à échouée",
+      "register_error":"L'inscription à échouée"
     },
     "account":{
       "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
@@ -61,7 +64,8 @@
       "delete_success":"Le compte a été supprimé",
       "delete_error":"Le compte n'a pas pu être supprimé",
       "updatePassword_success":"Votre mot de passe a été modifier",
-      "updatePassword_error":"La modification de mot de passe a échouée"
+      "updatePassword_error":"La modification de mot de passe a échouée",
+      "updatePassword_wrongPassword_error":"Le mot de passe n'est pas valide"
     },
     "home":{
       "hello":"Bonjour",
@@ -69,11 +73,15 @@
       "remaining_flashcards":"flashcards restantes",
       "flash_study":"Étude rapide",
       "detailed_studies":"Études détaillées",
-      "no_studies_today":"Aucune étude à faire aujourd'hui"
+      "no_studies_today":"Aucune étude à faire aujourd'hui",
+      "today_collection_failed":"Erreur lors de l'affichage des collections",
+      "today_card_count_failed":"Erreur lors de l'affichage du total des flashcards",
+      "today_card_failed":"Erreur lors de l'affichage des flashcards"
     },
     "study":{
       "remembered":"Je m'en souvenais",
-      "forgotten":"J'avais oublié"
+      "forgotten":"J'avais oublié",
+      "flashcard_error":"La sauvegarde de l'étude à échouée"
     },
     "subject":{
       "title":"Vos matières",

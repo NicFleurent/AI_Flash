@@ -44,7 +44,7 @@ const LogIn = () => {
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
-          text2: error.message,
+          text2: t(error.message),
         });
       }
     }

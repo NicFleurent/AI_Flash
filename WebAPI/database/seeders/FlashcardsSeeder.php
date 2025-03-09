@@ -22,8 +22,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 0,
         'collection_id' => 2,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Polymorphisme',
@@ -32,8 +30,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 2,
         'collection_id' => 3,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Héritage en POO',
@@ -42,8 +38,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 4,
         'collection_id' => 4,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'JavaScript',
@@ -52,8 +46,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 2,
         'collection_id' => 5,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Python',
@@ -62,8 +54,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 3,
         'collection_id' => 5,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'HTML',
@@ -72,8 +62,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 5,
         'collection_id' => 5,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'CSS',
@@ -82,8 +70,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 1,
         'collection_id' => 5,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'DNS',
@@ -92,8 +78,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(5),
         'forgetting_curve_stage' => 1,
         'collection_id' => 6,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Système binaire',
@@ -102,8 +86,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(1),
         'forgetting_curve_stage' => 1,
         'collection_id' => 6,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'TCP/IP',
@@ -112,8 +94,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(2),
         'forgetting_curve_stage' => 1,
         'collection_id' => 7,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'SSH',
@@ -122,8 +102,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(3),
         'forgetting_curve_stage' => 1,
         'collection_id' => 7,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Cloud Computing',
@@ -132,8 +110,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 1,
         'collection_id' => 8,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Machine Virtuelle',
@@ -142,8 +118,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(5),
         'forgetting_curve_stage' => 1,
         'collection_id' => 8,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Différence entre HTTP et HTTPS',
@@ -152,8 +126,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(3),
         'forgetting_curve_stage' => 1,
         'collection_id' => 8,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'SQL',
@@ -162,8 +134,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 1,
         'collection_id' => 9,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Kali Linux',
@@ -172,8 +142,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(3),
         'forgetting_curve_stage' => 1,
         'collection_id' => 9,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Phishing',
@@ -182,8 +150,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(3),
         'forgetting_curve_stage' => 1,
         'collection_id' => 9,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Pare-feu',
@@ -192,8 +158,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 1,
         'collection_id' => 9,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Réseaux neuronaux',
@@ -202,8 +166,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(5),
         'forgetting_curve_stage' => 1,
         'collection_id' => 10,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Intelligence Artificielle',
@@ -212,8 +174,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(1),
         'forgetting_curve_stage' => 1,
         'collection_id' => 10,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Machine Learning',
@@ -222,8 +182,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 1,
         'collection_id' => 10,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Big Data',
@@ -232,8 +190,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(5),
         'forgetting_curve_stage' => 1,
         'collection_id' => 10,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Éthique de Kant',
@@ -242,8 +198,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(5),
         'forgetting_curve_stage' => 1,
         'collection_id' => 11,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Métaphysique',
@@ -252,8 +206,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 1,
         'collection_id' => 12,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Épistémologie',
@@ -262,8 +214,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto'),
         'forgetting_curve_stage' => 1,
         'collection_id' => 12,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Logique',
@@ -272,8 +222,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(3),
         'forgetting_curve_stage' => 1,
         'collection_id' => 12,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
       [
         'front_face' => 'Éthique',
@@ -282,8 +230,6 @@ class FlashcardsSeeder extends Seeder
         'next_revision_date' => Carbon::now('America/Toronto')->addDays(4),
         'forgetting_curve_stage' => 1,
         'collection_id' => 12,
-        'created_at' => now(),
-        'updated_at' => now(),
       ],
     ]);
   }
