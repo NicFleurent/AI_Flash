@@ -67,15 +67,16 @@ const Account = () => {
       if(response){
         Toast.show({
           type: 'success',
-          text1: t('account.update_success')
+          text1: t(response.message)
         });
       }
 
     } catch (error) {
+      setIsModalUpdateVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.update_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -105,7 +106,6 @@ const Account = () => {
     try {
       const response = await logout();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:response.data.message}})
       navigation.reset({
         index:0,
         routes:[
@@ -113,17 +113,18 @@ const Account = () => {
             name:'Auth',
             params:{
               screen:'Intro',
-              params:{success:t('account.logout_success')}
+              params:{success:t(response.message)}
             }
           }
         ]
       })
 
     } catch (error) {
+      setIsModalLogoutVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.logout_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -132,13 +133,25 @@ const Account = () => {
     try {
       const response = await deleteUser();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:t('account.delete_success')}})
+      navigation.reset({
+        index:0,
+        routes:[
+          {
+            name:'Auth',
+            params:{
+              screen:'Intro',
+              params:{success:t(response.message)}
+            }
+          }
+        ]
+      })
 
     } catch (error) {
+      setIsModalDeleteVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.delete_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -155,13 +168,17 @@ const Account = () => {
 
         Toast.show({
           type: 'success',
-          text1: t('account.updatePassword_success')
+          text1: t(response.message)
         });
       } catch (error) {
+        setIsModalUpdatePwdVisible(false);
+        setPassword("");
+        setNewPassword("");
+        setPasswordConfirmation("");
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
-          text2: t('account.updatePassword_error')
+          text2: t(error.message)
         });
       }
     }
