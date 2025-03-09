@@ -56,7 +56,7 @@
     "changePassword":"Modifier mot de passe",
     "invalid_credentials":"Le courriel ou le mot de passe n'est pas valide",
     "login_error":"La connexion à échouée",
-    "register_error":"L'inscription à échouée"
+    "register_error":"L'inscription à échouée",
     "error_signup":"La création de compte à échouée",
     "successful_logout":"Déconnection réussie",
     "error_logout":"La déconnexion à échouée",
@@ -95,7 +95,7 @@
     "flash_study":"Étude rapide",
     "no_card_to_study":"Aucune cartes à étudier",
     "detailed_studies":"Études détaillées",
-    "no_studies_today":"Aucune étude à faire aujourd'hui"
+    "no_studies_today":"Aucune étude à faire aujourd'hui",
     "today_collection_failed":"Erreur lors de l'affichage des collections",
     "today_card_count_failed":"Erreur lors de l'affichage du total des flashcards",
     "today_card_failed":"Erreur lors de l'affichage des flashcards"
@@ -118,7 +118,7 @@
     },
     "error":{
       "title_input_required":"Le nom de la matière est requis",
-      "title_input_required_collections":"Le nom de la matière est requis"
+      "title_input_required_collections":"Le nom de la matière est requis",
       "create": {
         "success": "Matière créée avec succès",
         "error": "Erreur lors de la création de la matière"
