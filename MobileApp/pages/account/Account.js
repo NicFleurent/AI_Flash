@@ -198,6 +198,7 @@ const Account = () => {
 
     return Object.keys(tempErrors).length === 0;
   }
+  
   return (
     <View style={[styles.container]}>
       <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, useWindowDimensions, Modal, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, useWindowDimensions, Modal, TextInput, TouchableOpacity, Switch } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowRight, faWarning, faX } from "@fortawesome/free-solid-svg-icons";
 import CustomInput from "./CustomInput";
@@ -24,7 +24,9 @@ const CustomModal = ({
   isCancel,
   onPressCancel,
   modalTitle,
-  deleteMessage
+  deleteMessage,
+  isPublic,
+  setIsPublic
 }) => {
   const { t } = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
@@ -66,6 +68,19 @@ const CustomModal = ({
                   />
                 }
 
+                {isPublic !== undefined && (
+                  <View style={styles.switchContainer}>
+                    <Text style={styles.isPublicTxt}>{t('switch.public')}</Text>
+                    <Switch
+                        value={isPublic}
+                        onValueChange={setIsPublic}
+                        trackColor={{ false: 'lightgray', true: '#8EDCAA' }}
+                        thumbColor={isPublic ? '#1DB954' : 'gray'}
+                        style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
+                      />
+                  </View>
+                )}
+
                 <View style={styles.buttonsContainer}>
                   {isCancel &&
                     <CustomButton
@@ -84,6 +99,7 @@ const CustomModal = ({
                       additionnalStyle={{width:'35%', marginRight:10}}
                     /> 
                   }
+
                   <CustomButton
                     type="green-full"
                     label={t('button.save')}
@@ -208,6 +224,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     justifyContent: 'space-between'
+  },
+  
+  switchContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingRight: 10,
+    marginBottom:20
+  },
+  isPublicTxt: {
+    color:"white",
+    marginRight: 20,
+    fontSize: 16,
+    fontWeight: '700'
   },
 });
 
