@@ -5,7 +5,7 @@ export const saveLocalUser = async (user) => {
         user_json = JSON.stringify(user);
         await SecureStore.setItemAsync("user", user_json);
       } catch (e) {
-        console.error("Erreur lors de la sauvegarde", e);
+        console.error("secureStore.error.save");
       }
 };
 
@@ -17,7 +17,7 @@ export const getLocalUser = async () => {
       return user;
     }
   } catch (e) {
-    console.error("Erreur lors de la récupération", e);
+    console.error("secureStore.error.get");
   }
 };
 
@@ -25,7 +25,7 @@ export const deleteLocalUser = async () => {
   try {
     await SecureStore.deleteItemAsync("user");
   } catch (e) {
-    console.error("Erreur lors de la suppression", e);
+    console.error("secureStore.error.delete");
   }
 }
 

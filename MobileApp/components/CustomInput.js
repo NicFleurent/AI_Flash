@@ -12,6 +12,7 @@ const CustomInput = ({
   isPassword,
   error,
   removeBottomMargin,
+  removeBottomMarginErrror,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -20,6 +21,7 @@ const CustomInput = ({
       style={[
         styles.container,
         removeBottomMargin && styles.removeBottomMargin,
+        (error && removeBottomMarginErrror) && styles.removeBottomMargin
       ]}
     >
       <View style={styles.floatingLabelContainer}>
@@ -57,7 +59,7 @@ const styles = {
     marginBottom: 20,
   },
   removeBottomMargin: {
-    marginBottom: 0,
+    marginBottom: 5,
   },
   floatingLabelContainer: {
     height: 70,

@@ -141,7 +141,7 @@ const Home = () => {
       >
         <View>
           <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
-          <Text style={styles.flashStudyCount}>Aucune cartes à étudier</Text>
+          <Text style={styles.flashStudyCount}>{t('home.no_card_to_study')}</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faBolt} size={40} color='black'/>

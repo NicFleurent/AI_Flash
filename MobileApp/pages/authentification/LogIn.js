@@ -6,7 +6,6 @@ import CustomInput from '../../components/CustomInput';
 import { login } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
-import { saveLocalUser } from '../../api/secureStore';
 import { useSelector } from 'react-redux';
 
 const LogIn = () => {
