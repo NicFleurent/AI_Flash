@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
+import { getLocalData } from "./api/asyncStorage.js";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
@@ -23,11 +24,20 @@ import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
 import Flashcards from "./pages/flashcards/Flashcards";
 
 export default function App() {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [landingPage, setLandingPage] = useState("Auth");
 
   useEffect(()=>{
     isUserLoggedIn();
+  },[])
+
+  
+  useEffect(()=>{
+    const getParams = async () =>{
+      const language = await getLocalData("language");
+      i18n.changeLanguage(language.value);
+    }
+    getParams()
   },[])
 
   const isUserLoggedIn = async ()=>{
@@ -155,13 +165,13 @@ export default function App() {
       Home: {
         screen: Home,
         options: {
-          title: "Accueil",
+          title: t('home.title'),
         },
       },
       Account: {
         screen: Account,
         options: {
-          title: "Votre compte",
+          title: t('account.title'),
         },
       },
       Explore: {

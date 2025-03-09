@@ -19,45 +19,66 @@ class UsersController extends Controller
 
   public function login(LoginRequest $request)
   {
-    $request->validated($request->all());
+    try {
+      $request->validated($request->all());
 
-    if (!Auth::attempt($request->only('email', 'password'))) {
-      return $this->error('', 'Le courriel ou le mot de passe n\'est pas valide', 401);
+      if (!Auth::attempt($request->only('email', 'password'))) {
+        return $this->error('', 'auth.invalid_credentials', 401);
+      }
+
+      $user = Auth::user();
+
+      return $this->success([
+        'user' => $user,
+        'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
+      ]);
+    } catch (\Throwable $e) {
+      return $this->error(
+        null,
+        "auth.login_error",
+        422
+      ); 
     }
-
-    $user = Auth::user();
-
-    return $this->success([
-      'user' => $user,
-      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
-    ]);
   }
 
   public function register(RegisterRequest $request)
   {
-    $request->validated($request->all());
+    try {
+      $request->validated($request->all());
 
-    $user = User::create([
-      'email' => $request->email,
-      'firstname' => $request->firstname,
-      'lastname' => $request->lastname,
-      'password' => Hash::make($request->password),
-    ]);
+      $user = User::create([
+        'email' => $request->email,
+        'firstname' => $request->firstname,
+        'lastname' => $request->lastname,
+        'password' => Hash::make($request->password),
+      ]);
 
-
-    return $this->success([
-      'user' => $user,
-      'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
-    ]);
+      return $this->success([
+        'user' => $user,
+        'token' => $user->createToken('API Token of ' . $user->email)->plainTextToken
+      ]);
+    } catch (\Throwable $e) {
+      return $this->error(
+        null,
+        "auth.register_error",
+        422
+      ); 
+    }
   }
 
   public function logout()
   {
-    Auth::user()->currentAccessToken()->delete();
-
-    return $this->success([
-      'message' => __('auth.successful_logout')
-    ]);
+    try{
+      Auth::user()->currentAccessToken()->delete();
+      
+      return $this->success(null,'account.logout_success');
+    } catch (\Throwable $e) {
+      return $this->error(
+        null,
+        "account.logout_error",
+        422
+      );  
+    }
   }
 
   public function refreshToken()
@@ -73,52 +94,75 @@ class UsersController extends Controller
 
   public function update(UserUpdateRequest $request)
   {
-    $user = Auth::user();
+    try {
+      $user = Auth::user();
 
-    if ($user->email != $request->email) {
-      $user->email = $request->email;
-    }
-    if ($user->firstname != $request->firstname) {
-      $user->firstname = $request->firstname;
-    }
-    if ($user->lastname != $request->lastname) {
-      $user->lastname = $request->lastname;
-    }
+      if ($user->email != $request->email) {
+        $user->email = $request->email;
+      }
+      if ($user->firstname != $request->firstname) {
+        $user->firstname = $request->firstname;
+      }
+      if ($user->lastname != $request->lastname) {
+        $user->lastname = $request->lastname;
+      }
 
-    $user->save();
+      $user->save();
 
-    return $this->success([
-      'user' => $user,
-      'message' => __('auth.successful_update')
-    ]);
+      return $this->success(
+        ['user' => $user], 
+        'account.update_success'
+      );
+    } catch (\Throwable $e) {
+      return $this->error(
+        null,
+        "account.update_error",
+        422
+      );  
+    }
   }
 
   public function updatePassword(UserUpdatePasswordRequest $request)
   {
-    $user = Auth::user();
+    try {
+      $user = Auth::user();
 
-    if (!Hash::check($request->old_password, $user->password)) {
-      return response()->json(['error' => __('auth.password')], 422);
+      if (!Hash::check($request->old_password, $user->password)) {
+        return $this->error(
+          null,
+          "account.updatePassword_wrongPassword_error",
+          422
+        ); 
+      }
+
+      $user->password = Hash::make($request->new_password);
+      $user->save();
+
+      return $this->success(null, 'account.updatePassword_success');
+    } catch (\Throwable $e) {
+      return $this->error(
+        null,
+        "account.updatePassword_error",
+        422
+      ); 
     }
-
-    $user->password = Hash::make($request->new_password);
-    $user->save();
-
-    return response()->json(['message' => __('auth.successful_update_password')], 200);
   }
 
   public function destroy()
   {
-    $user = Auth::user();
     try {
+      $user = Auth::user();
       $user->currentAccessToken()->delete();
       $user->delete();
-      
-
-      return response()->json(['message' => __('auth.successful_delete')], 200);
+  
+      return $this->success(null, 'account.delete_success');
     } catch (\Throwable $e) {
       Log::debug($e);
-      return response()->json(['error' => __('auth.error_delete')], 422);
+      return $this->error(
+        null,
+        "account.delete_error",
+        422
+      ); 
     }
   }
 

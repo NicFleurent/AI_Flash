@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { getCollectionTodayFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
 import { useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 const Study = ({route}) => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const Study = ({route}) => {
   const [displayNextButton, setDisplayNextButton] = useState(false);
   const [displayFinalButton, setDisplayFinalButton] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [currentCard, setCurrentCard] = useState(0);
+  const [currentCard, setCurrentCard] = useState(-1);
   const [flipDuration, setFlipDuration] = useState(0);
 
   const [flashcards, setFlashcards] = useState();
@@ -30,17 +31,29 @@ const Study = ({route}) => {
   
   useEffect(()=>{
     const getFlashcards = async () => {
-      if(route.params.source_page === 'Home'){
-        if(route.params.study_type === t('home.flash_study')){
-          const data = await getTodayFlashcards();
-          setFlashcards(data.flashcards);
-        }
-        else{
-          if(route.params.collection){
-            const data = await getCollectionTodayFlashCards(route.params.collection);
+      try {
+        if(route.params.source_page === 'Home'){
+          if(route.params.study_type === t('home.flash_study')){
+            const data = await getTodayFlashcards();
             setFlashcards(data.flashcards);
+            setCurrentCard(0);
+            setTimeout(()=>setFlipDuration(300), 100)
+          }
+          else{
+            if(route.params.collection){
+              const data = await getCollectionTodayFlashCards(route.params.collection);
+              setFlashcards(data.flashcards);
+              setCurrentCard(0);
+              setTimeout(()=>setFlipDuration(300), 100)
+            }
           }
         }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('home.today_card_failed'),
+        });
       }
     }
     getFlashcards();
@@ -60,23 +73,40 @@ const Study = ({route}) => {
   },[currentCard])
   
   const handlePress = () => {
-    setFlipDuration(300)
     setTimeout(()=>setIsFlipped(!isFlipped), 100)
     setTimeout(cardFlipped, 500)
   };
 
   const cardFlipped = () => {
-    setDisplayButton(true);
+    if(!displayFinalButton && ! displayNextButton)
+      setDisplayButton(true);
   }
 
   const handleRemembered = (id) => {
-    updateRememberedFlashcard(id);
-    displayTransitionButton();
+    try {
+      updateRememberedFlashcard(id);
+      displayTransitionButton();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t(error.message),
+      });
+    }
+    
   }
 
   const handleForgotten = (id) => {
-    updateForgottenFlashcard(id);
-    displayTransitionButton();
+    try {
+      updateForgottenFlashcard(id);
+      displayTransitionButton();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t(error.message),
+      });
+    }
   }
 
   const displayTransitionButton = () => {
@@ -92,7 +122,8 @@ const Study = ({route}) => {
 
   const switchCard = () => {
     setFlipDuration(0);
-    setTimeout(()=>setCurrentCard(prev => prev += 1), 100)
+    setCurrentCard(prev => prev += 1)
+    setTimeout(()=>setFlipDuration(300), 200)
     setDisplayNextButton(false)
   }
 
@@ -164,6 +195,7 @@ const Study = ({route}) => {
           )}
         </View>
       </View>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }

@@ -5,13 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '../../components/CustomButton';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faLanguage, faPenToSquare, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser, updateUserPassword } from '../../api/user';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
 import CustomModal from '../../components/CustomModal';
+import LanguagesModal from '../../components/LanguagesModal';
 
 const Account = () => {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ const Account = () => {
   const [isModalUpdateVisible, setIsModalUpdateVisible] = useState(false);
   const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
   const [isModalUpdatePwdVisible, setIsModalUpdatePwdVisible] = useState(false);
+  const [isModalLanguageVisible, setIsModalLanguageVisible] = useState(false);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -67,15 +69,16 @@ const Account = () => {
       if(response){
         Toast.show({
           type: 'success',
-          text1: t('account.update_success')
+          text1: t(response.message)
         });
       }
 
     } catch (error) {
+      setIsModalUpdateVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.update_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -105,7 +108,6 @@ const Account = () => {
     try {
       const response = await logout();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:response.data.message}})
       navigation.reset({
         index:0,
         routes:[
@@ -113,17 +115,18 @@ const Account = () => {
             name:'Auth',
             params:{
               screen:'Intro',
-              params:{success:t('account.logout_success')}
+              params:{success:t(response.message)}
             }
           }
         ]
       })
 
     } catch (error) {
+      setIsModalLogoutVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.logout_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -132,13 +135,25 @@ const Account = () => {
     try {
       const response = await deleteUser();
 
-      navigation.navigate("Auth", {screen: "Intro", params:{success:t('account.delete_success')}})
+      navigation.reset({
+        index:0,
+        routes:[
+          {
+            name:'Auth',
+            params:{
+              screen:'Intro',
+              params:{success:t(response.message)}
+            }
+          }
+        ]
+      })
 
     } catch (error) {
+      setIsModalDeleteVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
-        text2: t('account.delete_error'),
+        text2: t(error.message),
       });
     }
   }
@@ -155,13 +170,17 @@ const Account = () => {
 
         Toast.show({
           type: 'success',
-          text1: t('account.updatePassword_success')
+          text1: t(response.message)
         });
       } catch (error) {
+        setIsModalUpdatePwdVisible(false);
+        setPassword("");
+        setNewPassword("");
+        setPasswordConfirmation("");
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
-          text2: t('account.updatePassword_error')
+          text2: t(error.message)
         });
       }
     }
@@ -191,6 +210,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setFirstname)}
             isPassword={false}
             error={errors.errorFirstname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.lastname')}
@@ -198,6 +218,7 @@ const Account = () => {
             onChangeText={(value) => onChangeText(value, setLastname)}
             isPassword={false}
             error={errors.errorLastname}
+            removeBottomMarginErrror={true}
           />
           <CustomInput
             label={t('input.email')}
@@ -206,6 +227,7 @@ const Account = () => {
             isPassword={false}
             error={errors.errorEmail}
             keyboardType='email-address'
+            removeBottomMarginErrror={true}
           />
         </View>
 
@@ -214,14 +236,21 @@ const Account = () => {
             type="white-outline"
             label={t('button.save')}
             onPress={openUpdateAlert}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faSave}
+          />
+          <CustomButton
+            type="white-outline"
+            label={t('account.languages')}
+            onPress={()=>setIsModalLanguageVisible(true)}
+            additionnalStyle={{ marginBottom: 15 }}
+            icon={faLanguage}
           />
           <CustomButton
             type="white-outline"
             label={t('auth.logout')}
             onPress={()=>setIsModalLogoutVisible(true)}
-            additionnalStyle={{ marginBottom: 20 }}
+            additionnalStyle={{ marginBottom: 15 }}
             icon={faArrowRightFromBracket}
           />
           <CustomButton
@@ -307,6 +336,10 @@ const Account = () => {
             error:errorsPassword.errorPasswordConfirm
           }
         ]}
+      />
+      <LanguagesModal
+        visible={isModalLanguageVisible}
+        setVisible={setIsModalLanguageVisible}
       />
       
       <Toast position='top' bottomOffset={20} />

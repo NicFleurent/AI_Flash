@@ -9,6 +9,7 @@ import { getLocalUser } from '../api/secureStore';
 import { useSelector } from 'react-redux';
 import { getTodayCollections } from '../api/collection';
 import { getTodayFlashcardsCount } from '../api/flashcard';
+import Toast from 'react-native-toast-message';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -26,18 +27,38 @@ const Home = () => {
       const user = await getLocalUser();
       setFirstname(user.firstname)
     }
-    const getCollections = async () => {
-      const data = await getTodayCollections();
-      setCollections(data.collections);
-    }
-    const getFlashcardsCount = async () => {
-      const data = await getTodayFlashcardsCount();
-      setTotalCount(data.flashcard_count);
-    }
     setUser();
     getCollections();
     getFlashcardsCount();
   },[])
+
+  
+  const getCollections = async () => {
+    try {
+      const data = await getTodayCollections();
+      setCollections(data.collections);
+      return true;
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t('home.today_collection_failed'),
+      });
+    }
+  }
+  const getFlashcardsCount = async () => {
+    try {
+      const data = await getTodayFlashcardsCount();
+      setTotalCount(data.flashcard_count);
+      return true;
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t('home.today_card_count_failed'),
+      });
+    }
+  }
 
   useEffect(()=>{
     navigation.setOptions({
@@ -91,11 +112,11 @@ const Home = () => {
     )
   };
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    const resultCollection = await getCollections();
+    const resultCount = await getFlashcardsCount();
+    setRefreshing(false);
   };
 
   return (
@@ -120,7 +141,7 @@ const Home = () => {
       >
         <View>
           <Text style={styles.flashStudyTitle}>{t('home.flash_study')}</Text>
-          <Text style={styles.flashStudyCount}>Aucune cartes à étudier</Text>
+          <Text style={styles.flashStudyCount}>{t('home.no_card_to_study')}</Text>
         </View>
         <View>
           <FontAwesomeIcon icon={faBolt} size={40} color='black'/>
@@ -142,6 +163,8 @@ const Home = () => {
           />
         }
       />
+
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }

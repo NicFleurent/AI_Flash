@@ -42,10 +42,12 @@ class FlashcardController extends Controller
         $today = Carbon::now('America/Toronto')->toDateString();
 
         $flashcards_count = Flashcard::whereIn('collection_id', $collections_id)
-            ->whereDate('next_revision_date', '<=', $today)
-            ->whereDate('last_revision_date', '<', $today)
-            ->whereNot('forgetting_curve_stage', 5)
-            ->orWhere('forgetting_curve_stage', 0)
+            ->where(function ($query) use ($today) {
+                $query->whereDate('next_revision_date', '<=', $today)
+                        ->whereDate('last_revision_date', '<', $today)
+                        ->whereNot('forgetting_curve_stage', 5)
+                        ->orWhere('forgetting_curve_stage', 0);
+            })
             ->count();
 
         return response()->json(['flashcard_count' => $flashcards_count], 200);
@@ -62,10 +64,12 @@ class FlashcardController extends Controller
 
         $flashcards = Flashcard::select('id', 'front_face', 'back_face')
             ->whereIn('collection_id', $collections_id)
-            ->whereDate('next_revision_date', '<=', $today)
-            ->whereDate('last_revision_date', '<', $today)
-            ->whereNot('forgetting_curve_stage', 5)
-            ->orWhere('forgetting_curve_stage', 0)
+            ->where(function ($query) use ($today) {
+                $query->whereDate('next_revision_date', '<=', $today)
+                        ->whereDate('last_revision_date', '<', $today)
+                        ->whereNot('forgetting_curve_stage', 5)
+                        ->orWhere('forgetting_curve_stage', 0);
+            })
             ->inRandomOrder()
             ->limit(25)
             ->get();
@@ -79,10 +83,12 @@ class FlashcardController extends Controller
 
         $flashcards = Flashcard::select('id', 'front_face', 'back_face')
             ->where('collection_id', $collection_id)
-            ->whereDate('next_revision_date', '<=', $today)
-            ->whereDate('last_revision_date', '<', $today)
-            ->whereNot('forgetting_curve_stage', 5)
-            ->orWhere('forgetting_curve_stage', 0)
+            ->where(function ($query) use ($today) {
+                $query->whereDate('next_revision_date', '<=', $today)
+                        ->whereDate('last_revision_date', '<', $today)
+                        ->whereNot('forgetting_curve_stage', 5)
+                        ->orWhere('forgetting_curve_stage', 0);
+            })
             ->inRandomOrder()
             ->limit(25)
             ->get();
@@ -159,14 +165,13 @@ class FlashcardController extends Controller
 
             return response()->json([
                 'success' => true,
-                'code' => 991,
-                'message' => 'Flashcard updated',
+                'message' => 'study.flashcard_success',
                 'data' => $flashcard
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => __('flashcard.error'),
+                'message' => 'study.flashcard_error',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -187,14 +192,13 @@ class FlashcardController extends Controller
 
             return response()->json([
                 'success' => true,
-                'code' => 991,
-                'message' => 'Flashcard updated',
+                'message' => 'study.flashcard_success',
                 'data' => $flashcard
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => __('flashcard.error'),
+                'message' => 'study.flashcard_error',
                 'error' => $e->getMessage()
             ], 500);
         }
