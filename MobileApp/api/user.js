@@ -104,15 +104,17 @@ export const refreshToken = async () => {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    
+
     const data = await response.json();
 
     if(response.status === 200){
       saveUser(data)
       return data;
     }
-    else
+    else{
       throw new Error(data.message);
+    }
+      
 
   } catch (error) {
     throw new Error(error.message);

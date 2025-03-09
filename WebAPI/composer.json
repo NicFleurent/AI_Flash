@@ -10,9 +10,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "openai-php/client": "^0.10.3",
+        "openai-php/laravel": "^0.11.0",
         "smalot/pdfparser": "^2.11"
     },
     "require-dev": {

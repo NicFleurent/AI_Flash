@@ -5,16 +5,19 @@ import FlipCard from '../components/flip_card/FlipCard';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { getCollectionTodayFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
+import { useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 const Study = ({route}) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [progress, setProgress] = useState(0);
   const [displayButton, setDisplayButton] = useState(false);
   const [displayNextButton, setDisplayNextButton] = useState(false);
   const [displayFinalButton, setDisplayFinalButton] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [currentCard, setCurrentCard] = useState(0);
+  const [currentCard, setCurrentCard] = useState(-1);
   const [flipDuration, setFlipDuration] = useState(0);
 
   const [flashcards, setFlashcards] = useState();
@@ -28,17 +31,29 @@ const Study = ({route}) => {
   
   useEffect(()=>{
     const getFlashcards = async () => {
-      if(route.params.source_page === 'Home'){
-        if(route.params.study_type === t('home.flash_study')){
-          const data = await getTodayFlashcards();
-          setFlashcards(data.flashcards);
-        }
-        else{
-          if(route.params.collection){
-            const data = await getCollectionTodayFlashCards(route.params.collection);
+      try {
+        if(route.params.source_page === 'Home'){
+          if(route.params.study_type === t('home.flash_study')){
+            const data = await getTodayFlashcards();
             setFlashcards(data.flashcards);
+            setCurrentCard(0);
+            setTimeout(()=>setFlipDuration(300), 100)
+          }
+          else{
+            if(route.params.collection){
+              const data = await getCollectionTodayFlashCards(route.params.collection);
+              setFlashcards(data.flashcards);
+              setCurrentCard(0);
+              setTimeout(()=>setFlipDuration(300), 100)
+            }
           }
         }
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('home.today_card_failed'),
+        });
       }
     }
     getFlashcards();
@@ -58,23 +73,40 @@ const Study = ({route}) => {
   },[currentCard])
   
   const handlePress = () => {
-    setFlipDuration(300)
     setTimeout(()=>setIsFlipped(!isFlipped), 100)
     setTimeout(cardFlipped, 500)
   };
 
   const cardFlipped = () => {
-    setDisplayButton(true);
+    if(!displayFinalButton && ! displayNextButton)
+      setDisplayButton(true);
   }
 
   const handleRemembered = (id) => {
-    updateRememberedFlashcard(id);
-    displayTransitionButton();
+    try {
+      updateRememberedFlashcard(id);
+      displayTransitionButton();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t(error.message),
+      });
+    }
+    
   }
 
   const handleForgotten = (id) => {
-    updateForgottenFlashcard(id);
-    displayTransitionButton();
+    try {
+      updateForgottenFlashcard(id);
+      displayTransitionButton();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t(error.message),
+      });
+    }
   }
 
   const displayTransitionButton = () => {
@@ -90,7 +122,8 @@ const Study = ({route}) => {
 
   const switchCard = () => {
     setFlipDuration(0);
-    setTimeout(()=>setCurrentCard(prev => prev += 1), 100)
+    setCurrentCard(prev => prev += 1)
+    setTimeout(()=>setFlipDuration(300), 200)
     setDisplayNextButton(false)
   }
 
@@ -115,51 +148,54 @@ const Study = ({route}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        {displayButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('study.remembered')}
-              onPress={()=>handleRemembered(flashcards[currentCard].id)}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-            <CustomButton
-              type="white-outline"
-              label={t('study.forgotten')}
-              onPress={()=>handleForgotten(flashcards[currentCard].id)}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
-        {displayNextButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('button.next')}
-              onPress={switchCard}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
-        {displayFinalButton && (
-          <>
-            <CustomButton
-              type="green-full"
-              label={t('button.finish')}
-              onPress={()=>navigation.reset({
-                index:0,
-                routes:[
-                  {
-                    name:'Menu',
-                    params:{screen:route.params.source_page}
-                  }
-                ]
-              })}
-              additionnalStyle={{ marginTop: 20 }}
-            />
-          </>
-        )}
+        <View style={isTablet && styles.buttonContainerTablet}>
+          {displayButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('study.remembered')}
+                onPress={()=>handleRemembered(flashcards[currentCard].id)}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+              <CustomButton
+                type="white-outline"
+                label={t('study.forgotten')}
+                onPress={()=>handleForgotten(flashcards[currentCard].id)}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+          {displayNextButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('button.next')}
+                onPress={switchCard}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+          {displayFinalButton && (
+            <>
+              <CustomButton
+                type="green-full"
+                label={t('button.finish')}
+                onPress={()=>navigation.reset({
+                  index:0,
+                  routes:[
+                    {
+                      name:'Menu',
+                      params:{screen:route.params.source_page}
+                    }
+                  ]
+                })}
+                additionnalStyle={{ marginTop: 20 }}
+              />
+            </>
+          )}
+        </View>
       </View>
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }
@@ -189,6 +225,7 @@ const styles = {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    width:'100%'
   },
   buttonContainer: {
     flex: 2,
@@ -196,24 +233,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  card: {
-    backgroundColor: '#1DB954',
-    width:'100%',
+  buttonContainerTablet:{
+    width:'50%'
   },
-  face: {
-    backgroundColor: 'red',
-    height:250,
-    width:'100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  back:{
-    backgroundColor: 'blue',
-    height:250,
-    width:300,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
 }
 
 export default Study

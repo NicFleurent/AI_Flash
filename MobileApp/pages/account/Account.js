@@ -69,11 +69,12 @@ const Account = () => {
       if(response){
         Toast.show({
           type: 'success',
-          text1: t(response.data.message)
+          text1: t(response.message)
         });
       }
 
     } catch (error) {
+      setIsModalUpdateVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
@@ -114,13 +115,14 @@ const Account = () => {
             name:'Auth',
             params:{
               screen:'Intro',
-              params:{success:t(response.data.message)}
+              params:{success:t(response.message)}
             }
           }
         ]
       })
 
     } catch (error) {
+      setIsModalLogoutVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
@@ -140,13 +142,14 @@ const Account = () => {
             name:'Auth',
             params:{
               screen:'Intro',
-              params:{success:t(response.data.message)}
+              params:{success:t(response.message)}
             }
           }
         ]
       })
 
     } catch (error) {
+      setIsModalDeleteVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
@@ -170,6 +173,10 @@ const Account = () => {
           text1: t(response.message)
         });
       } catch (error) {
+        setIsModalUpdatePwdVisible(false);
+        setPassword("");
+        setNewPassword("");
+        setPasswordConfirmation("");
         Toast.show({
           type: 'error',
           text1: t('ERROR'),

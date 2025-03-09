@@ -1,10 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-const FLashCard = ({ title, description }) => {
+const FLashCard = ({ title, description, isEditable, handleEdit }) => {
+  const iconColor = "#1DB954";
+  const iconSize = 24;
+
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+        {isEditable && (
+          <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={handleEdit}>
+              <FontAwesomeIcon
+                size={iconSize}
+                color={iconColor}
+                icon={faPenToSquare}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+
       <View style={styles.containerCircle}>
         <View style={styles.circle}></View>
         <View style={styles.circle}></View>
@@ -25,7 +44,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, // Pour Android
+    elevation: 3,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center", 
+    position: "relative", 
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+    marginBottom: 8,
+    textAlign: "center", 
+  },
+  iconContainer: {
+    position: "absolute", 
+    right: 0, 
   },
   containerCircle: {
     flexDirection: "row",
@@ -37,13 +73,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     margin: 2,
     backgroundColor: "white",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333333",
-    marginBottom: 8,
-    textAlign: "center",
   },
   description: {
     fontSize: 14,

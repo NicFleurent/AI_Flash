@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, FlatList, RefreshControl } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import { getLocalUser } from '../api/secureStore';
 import { useSelector } from 'react-redux';
 import { getTodayCollections } from '../api/collection';
 import { getTodayFlashcardsCount } from '../api/flashcard';
+import Toast from 'react-native-toast-message';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -26,18 +27,38 @@ const Home = () => {
       const user = await getLocalUser();
       setFirstname(user.firstname)
     }
-    const getCollections = async () => {
-      const data = await getTodayCollections();
-      setCollections(data.collections);
-    }
-    const getFlashcardsCount = async () => {
-      const data = await getTodayFlashcardsCount();
-      setTotalCount(data.flashcard_count);
-    }
     setUser();
     getCollections();
     getFlashcardsCount();
   },[])
+
+  
+  const getCollections = async () => {
+    try {
+      const data = await getTodayCollections();
+      setCollections(data.collections);
+      return true;
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t('home.today_collection_failed'),
+      });
+    }
+  }
+  const getFlashcardsCount = async () => {
+    try {
+      const data = await getTodayFlashcardsCount();
+      setTotalCount(data.flashcard_count);
+      return true;
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t('home.today_card_count_failed'),
+      });
+    }
+  }
 
   useEffect(()=>{
     navigation.setOptions({
@@ -49,18 +70,39 @@ const Home = () => {
     navigation.navigate("Study", {source_page:'Home',study_type:t('home.flash_study')});
   }
 
-  const renderItem = ({ item }) => {
-    return (
-      <CardCollection
-        nameMatiere={item.name}
-        numberFlashcard={item.flashcards_count}
-        nameAuthor={item.subject}
-        onArrowPress={()=>alert("Diriger vers page librairie")}
-        onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
-        isStudy={true}
-      />
-    );
-  };
+  const formattedData = useMemo(() => {
+      const numColumns = 2;
+      const numberOfFullRows = Math.floor(collections.length / numColumns);
+      let numberOfElementsLastRow = collections.length - numberOfFullRows * numColumns;
+      const dataCopy = [...collections];
+  
+      if (numberOfElementsLastRow !== 0) {
+        for (let i = numberOfElementsLastRow; i < numColumns; i++) {
+          dataCopy.push({ id: `blank-${i}`, empty: true });
+        }
+      }
+  
+      return dataCopy;
+    }, [collections]);
+
+  const renderItem = useCallback(
+    ({ item }) => {
+      if (item.empty) {
+        return <View style={styles.itemInvisible} />;
+      }
+      return (
+        <CardCollection
+          nameMatiere={item.name}
+          numberFlashcard={item.flashcards_count}
+          nameAuthor={item.subject.name}
+          onArrowPress={()=>alert("Diriger vers page librairie")}
+          onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
+          isStudy={true}
+        />
+      );
+    },
+    []
+  );
 
   const listeVide = () => {
     return (
@@ -70,11 +112,11 @@ const Home = () => {
     )
   };
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    const resultCollection = await getCollections();
+    const resultCount = await getFlashcardsCount();
+    setRefreshing(false);
   };
 
   return (
@@ -108,7 +150,7 @@ const Home = () => {
       }
       <Text style={styles.titleText}>{t('home.detailed_studies')}</Text>
       <FlatList 
-        data={collections} 
+        data={formattedData} 
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatListContainer}
@@ -121,6 +163,8 @@ const Home = () => {
           />
         }
       />
+
+      <Toast position='top' bottomOffset={20} />
     </View>
   )
 }
@@ -159,7 +203,15 @@ const styles = {
     fontSize:20,
     marginTop:20,
     textAlign:'center'
-  }
+  },
+  itemInvisible: {
+    flex: 1,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    margin: 5,
+    flex: 1,
+    backgroundColor: "transparent",
+  },
 }
 
 export default Home

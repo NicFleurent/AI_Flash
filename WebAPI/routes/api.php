@@ -3,6 +3,7 @@
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\OpenAIController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\PdfController;
 use Illuminate\Http\Request;
@@ -47,5 +48,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
   Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
+  Route::put('/collections/{collection}/toggle-visibility', [CollectionController::class, 'toggleCollectionVisibility'])->name('toggleCollectionVisibility');
+  Route::post('/collections/copy', [CollectionController::class, 'copyCollection'])->name('copyCollection');
+  Route::get('/collections/public', [CollectionController::class, 'getPublicCollections'])->name('getPublicCollections');
+  Route::post('getAIflashcards', [OpenAIController::class, 'getAIflashcards'])->name('getAIflashcards');
 
 });
