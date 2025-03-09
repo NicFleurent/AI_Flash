@@ -23,6 +23,7 @@ const Collections = ({ route }) => {
   const [name_modal, setNameModal] = useState("")
   const [error, setError] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
 
   const onChangeText = (value, setInput) => {
     setInput(value);
@@ -143,6 +144,10 @@ const Collections = ({ route }) => {
     }
   }
 
+  const handleItemPress = (item) => {
+    setSelectItem(item);
+  };
+
   useEffect(() => {
     getUserCollections();
   }, []);
@@ -152,8 +157,9 @@ const Collections = ({ route }) => {
       <CardCollection
         nameMatiere={item.name}
         isPublic={true}
+        isEditable={true}
         numberFlashcard={item.flashcards_count}
-        // onArrowPress={() => navigation.navigate("Collections", item)}
+        onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item } })}
         onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id)]}
       />
     );

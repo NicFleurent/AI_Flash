@@ -163,22 +163,25 @@
       }
     }
   },
-  "explore":{
-    "title": "Explorez",
-    "find": "Rechercher",
-    "bottom_sheet":{
-      "copy": "Copier",
-      "add": "Ajouter",
-      "copy_made": "Copie effectuée",
-      "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
-      "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
-      "add_to_existing_subject": "Ajouter à une matière existante",
-      "create_new_subject": "Créer une nouvelle matière",
-      "select_subject":"Sélectionner la matière",
-      "add_subject": "Nouvelle matière",
-      "subject_name": "Nom de la matière",
-      "author": "Créée par"
-    },
+    "explore":{
+      "title": "Explorez",
+      "find": "Rechercher",
+      "bottom_sheet":{
+        "copy": "Copier",
+        "add": "Ajouter",
+        "copy_made": "Copie effectuée",
+        "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
+        "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
+        "add_to_existing_subject": "Ajouter à une matière existante",
+        "create_new_subject": "Créer une nouvelle matière",
+        "select_subject":"Sélectionner la matière",
+        "add_subject": "Nouvelle matière",
+        "subject_name": "Nom de la matière",
+        "author": "Créée par",
+        "error_while_retrieving_subjects": "Erreur lors de la récupération des matières :",
+        "error_while_copying_the_collection": "Erreur lors de la copie de la collection :"
+      }
+    }, 
     "add_collection_by_myself":{
         "collection_name_required": "Le nom de la collection est requis.",
         "success": "Succès",
@@ -201,6 +204,22 @@
       "choose_how_to_generate": "Comment voulez-vous générer vos cartes?",
       "by_myself": "Par moi-même",
       "from_document": "À partir d'un document"
+    },
+    "flashcards": {
+      "title": "Cartes mémoire",
+      "loading": "Chargement en cours...",
+      "error": "Impossible de charger les flashcards. Veuillez réessayer.",
+      "retry": "Réessayer",
+      "empty": "Aucune flashcard disponible.",
+      "study": "Étudier",
+      "delete_confirmation": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer cette flashcard ?",
+        "cancel": "Annuler",
+        "delete": "Supprimer"
+      },
+      "delete_success": "La flashcard a été supprimée avec succès.",
+      "delete_error": "La suppression de la flashcard a échouée.",
+      "deleting": "Suppression en cours..."
     }
   }    
-}
