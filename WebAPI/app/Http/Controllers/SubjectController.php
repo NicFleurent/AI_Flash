@@ -32,10 +32,16 @@ class SubjectController extends Controller
             $subject_name = $data['subject_name'] ?? '';
             $user_id = $data['user_id'] ?? '';
 
-            DB::table('subjects')->insert(['name' => $subject_name, 'user_id' => $user_id]);
+            $subjectId = DB::table('subjects')->insertGetId([
+                'name' => $subject_name,
+                'user_id' => $user_id,
+            ]);
+
+            $subject = DB::table('subjects')->where('id', $subjectId)->first();
 
             return response()->json([
-                'message' => 'subject.error.create.success'
+                'message' => 'subject.error.create.success',
+                'data' => $subject
             ], 200);
         } catch (\Throwable $e) {
             return response()->json([
