@@ -28,4 +28,12 @@ class RegisterRequest extends FormRequest
           'password' => ['required', 'confirmed']
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'auth.register_error_email_taken',
+        ];
+    }
+
 }

@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../components/CustomButton';
 import FlipCard from '../components/flip_card/FlipCard';
@@ -19,7 +19,7 @@ const Study = ({route}) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState(-1);
   const [flipDuration, setFlipDuration] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [flashcards, setFlashcards] = useState();
 
   useEffect(()=>{
@@ -32,6 +32,7 @@ const Study = ({route}) => {
   useEffect(()=>{
     const getFlashcards = async () => {
       try {
+        setIsLoading(true);
         if(route.params.source_page === 'Home'){
           if(route.params.study_type === t('home.flash_study')){
             const data = await getTodayFlashcards();
@@ -54,6 +55,9 @@ const Study = ({route}) => {
           text1: t('ERROR'),
           text2: t('home.today_card_failed'),
         });
+      }
+      finally{
+        setIsLoading(false);
       }
     }
     getFlashcards();
@@ -195,6 +199,13 @@ const Study = ({route}) => {
           )}
         </View>
       </View>
+            
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
+
       <Toast position='top' bottomOffset={20} />
     </View>
   )
@@ -237,5 +248,14 @@ const styles = {
     width:'50%'
   },
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Study

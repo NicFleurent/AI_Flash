@@ -1,4 +1,4 @@
-import { View,Platform, Text } from 'react-native'
+import { View,Platform, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
@@ -35,6 +35,8 @@ const Account = () => {
   const [newPassword, setNewPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [errorsPassword, setErrorsPassword] = useState([]);
+  
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=>{
     getUser();
@@ -62,9 +64,9 @@ const Account = () => {
 
   const handleSave = async () => {
     try {
-      const response = await updateUser(email, firstname, lastname);
-
       setIsModalUpdateVisible(false);
+      setIsLoading(true);
+      const response = await updateUser(email, firstname, lastname);
 
       if(response){
         Toast.show({
@@ -74,12 +76,14 @@ const Account = () => {
       }
 
     } catch (error) {
-      setIsModalUpdateVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
+    }
+    finally{
+      setIsLoading(false)
     }
   }
 
@@ -106,6 +110,8 @@ const Account = () => {
 
   const handleLogout = async () => {
     try {
+      setIsModalLogoutVisible(false);
+      setIsLoading(true);
       const response = await logout();
 
       navigation.reset({
@@ -122,17 +128,21 @@ const Account = () => {
       })
 
     } catch (error) {
-      setIsModalLogoutVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
     }
+    finally{
+      setIsLoading(false)
+    }
   }
 
   const handleDelete = async () => {
     try {
+      setIsModalDeleteVisible(false);
+      setIsLoading(true);
       const response = await deleteUser();
 
       navigation.reset({
@@ -149,21 +159,24 @@ const Account = () => {
       })
 
     } catch (error) {
-      setIsModalDeleteVisible(false);
       Toast.show({
         type: 'error',
         text1: t('ERROR'),
         text2: t(error.message),
       });
     }
+    finally{
+      setIsLoading(false)
+    }
   }
 
   const handleChangePassword = async () => {
     if(validatePassword()){
       try {
+        setIsModalUpdatePwdVisible(false);
+        setIsLoading(true);
         const response = await updateUserPassword(password, newPassword, passwordConfirmation);
 
-        setIsModalUpdatePwdVisible(false);
         setPassword("");
         setNewPassword("");
         setPasswordConfirmation("");
@@ -173,7 +186,6 @@ const Account = () => {
           text1: t(response.message)
         });
       } catch (error) {
-        setIsModalUpdatePwdVisible(false);
         setPassword("");
         setNewPassword("");
         setPasswordConfirmation("");
@@ -182,6 +194,9 @@ const Account = () => {
           text1: t('ERROR'),
           text2: t(error.message)
         });
+      }
+      finally{
+        setIsLoading(false)
       }
     }
   }
@@ -341,6 +356,12 @@ const Account = () => {
         visible={isModalLanguageVisible}
         setVisible={setIsModalLanguageVisible}
       />
+            
+      {isLoading && (
+        <View style={loadingStyles.overlay}>
+          <ActivityIndicator size="large" color="#1DB954" />
+        </View>
+      )}
       
       <Toast position='top' bottomOffset={20} />
     </View>
@@ -375,5 +396,14 @@ const styles = {
   },
   iosMargin:{ marginTop: Platform.OS === "ios" ? 20 : 0 }
 }
+
+const loadingStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Account
