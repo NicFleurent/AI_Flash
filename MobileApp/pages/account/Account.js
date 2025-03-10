@@ -1,4 +1,4 @@
-import { View,Platform, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { View,Platform, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
@@ -218,73 +218,75 @@ const Account = () => {
   
   return (
     <View style={[styles.container]}>
-      <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>
-        <View style={[styles.containerInputs, isTablet && styles.containerInputsTablet]}>
-          <CustomInput
-            label={t('input.firstname')}
-            value={firstname}
-            onChangeText={(value) => onChangeText(value, setFirstname)}
-            isPassword={false}
-            error={errors.errorFirstname}
-            removeBottomMarginErrror={true}
-          />
-          <CustomInput
-            label={t('input.lastname')}
-            value={lastname}
-            onChangeText={(value) => onChangeText(value, setLastname)}
-            isPassword={false}
-            error={errors.errorLastname}
-            removeBottomMarginErrror={true}
-          />
-          <CustomInput
-            label={t('input.email')}
-            value={email}
-            onChangeText={(value) => onChangeText(value, setEmail)}
-            isPassword={false}
-            error={errors.errorEmail}
-            keyboardType='email-address'
-            removeBottomMarginErrror={true}
-          />
-        </View>
+      <ScrollView contentContainerStyle={styles.scrollView} >
+        <View style={[styles.containerForm,styles.iosMargin, isTablet && styles.containerFormTablet]}>
+          <View style={[styles.containerInputs, isTablet && styles.containerInputsTablet]}>
+            <CustomInput
+              label={t('input.firstname')}
+              value={firstname}
+              onChangeText={(value) => onChangeText(value, setFirstname)}
+              isPassword={false}
+              error={errors.errorFirstname}
+              removeBottomMarginErrror={true}
+            />
+            <CustomInput
+              label={t('input.lastname')}
+              value={lastname}
+              onChangeText={(value) => onChangeText(value, setLastname)}
+              isPassword={false}
+              error={errors.errorLastname}
+              removeBottomMarginErrror={true}
+            />
+            <CustomInput
+              label={t('input.email')}
+              value={email}
+              onChangeText={(value) => onChangeText(value, setEmail)}
+              isPassword={false}
+              error={errors.errorEmail}
+              keyboardType='email-address'
+              removeBottomMarginErrror={true}
+            />
+          </View>
 
-        <View style={styles.containerButtons}>
-          <CustomButton
-            type="white-outline"
-            label={t('button.save')}
-            onPress={openUpdateAlert}
-            additionnalStyle={{ marginBottom: 15 }}
-            icon={faSave}
-          />
-          <CustomButton
-            type="white-outline"
-            label={t('account.languages')}
-            onPress={()=>setIsModalLanguageVisible(true)}
-            additionnalStyle={{ marginBottom: 15 }}
-            icon={faLanguage}
-          />
-          <CustomButton
-            type="white-outline"
-            label={t('auth.logout')}
-            onPress={()=>setIsModalLogoutVisible(true)}
-            additionnalStyle={{ marginBottom: 15 }}
-            icon={faArrowRightFromBracket}
-          />
-          <CustomButton
-            type="red-full"
-            label={t('auth.deleteAccount')}
-            onPress={()=>setIsModalDeleteVisible(true)}
-            additionnalStyle={{ marginBottom: 20 }}
-            icon={faUserXmark}
-          />
-          <CustomButton
-            type="white-outline"
-            label={t('auth.changePassword')}
-            onPress={()=>setIsModalUpdatePwdVisible(true)}
-            additionnalStyle={{ marginBottom: 20 }}
-            icon={faPenToSquare}
-          />
+          <View style={styles.containerButtons}>
+            <CustomButton
+              type="white-outline"
+              label={t('button.save')}
+              onPress={openUpdateAlert}
+              additionnalStyle={{ marginBottom: 15 }}
+              icon={faSave}
+            />
+            <CustomButton
+              type="white-outline"
+              label={t('account.languages')}
+              onPress={()=>setIsModalLanguageVisible(true)}
+              additionnalStyle={{ marginBottom: 15 }}
+              icon={faLanguage}
+            />
+            <CustomButton
+              type="white-outline"
+              label={t('auth.logout')}
+              onPress={()=>setIsModalLogoutVisible(true)}
+              additionnalStyle={{ marginBottom: 15 }}
+              icon={faArrowRightFromBracket}
+            />
+            <CustomButton
+              type="red-full"
+              label={t('auth.deleteAccount')}
+              onPress={()=>setIsModalDeleteVisible(true)}
+              additionnalStyle={{ marginBottom: 20 }}
+              icon={faUserXmark}
+            />
+            <CustomButton
+              type="white-outline"
+              label={t('auth.changePassword')}
+              onPress={()=>setIsModalUpdatePwdVisible(true)}
+              additionnalStyle={{ marginBottom: 20 }}
+              icon={faPenToSquare}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
 
       <AlertModal
         isVisible={isModalUpdateVisible}
@@ -373,8 +375,12 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: 'black'
+  },
+  scrollView:{
+    flex:1,
+    alignItems:'center'
   },
   containerForm: {
     flex: 4,

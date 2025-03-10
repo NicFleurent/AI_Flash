@@ -41,12 +41,6 @@ class RegisterRequest extends FormRequest
             'password.mixed' => 'auth.register_error_password_mixed',
             'password.numbers' => 'auth.register_error_password_numbers',
             'password.symbols' => 'auth.register_error_password_symbols',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
             'email.unique' => 'auth.register_error_email_taken',
         ];
     }
