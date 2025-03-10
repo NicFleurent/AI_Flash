@@ -6,8 +6,10 @@ import { deleteFlashcard, getFlashCards } from '../../api/flashcard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import EditDeleteCardRemoteBottomSheet from '../../components/collections_components/bottoms_sheets/EditDeleteCardRemoteBottomSheet';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const Flashcards = ({ route }) => {
+    const navigation = useNavigation();
     const { t } = useTranslation();
     const { item } = route.params;
     const bottomSheetRef = useRef(null);
@@ -126,7 +128,9 @@ const Flashcards = ({ route }) => {
                         type="green-full"
                         label={t("flashcards.study")}
                         additionnalStyle={{ marginTop: 20 }}
-                        onPress={() => {}}
+                        onPress={()=>{
+                            navigation.navigate("Study", {source_page:'Flashcards',study_type:item.name,collection:item})
+                        }}
                     />
                 </View>
 

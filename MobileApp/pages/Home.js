@@ -6,15 +6,18 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import CardCollection from '../components/publics_pages_components/CardCollection';
 import { getLocalUser } from '../api/secureStore';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTodayCollections } from '../api/collection';
 import { getTodayFlashcardsCount } from '../api/flashcard';
 import Toast from 'react-native-toast-message';
+import { setNeedsRefresh } from '../stores/sliceTodayFlashcards';
 
 const Home = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {t} = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
+  const needsRefresh = useSelector((state) => state.todayFlashcards.needsRefresh)
   
   const [refreshing, setRefreshing] = useState(false);
   const [firstname, setFirstname] = useState("");
@@ -34,7 +37,13 @@ const Home = () => {
     getFlashcardsCount();
   },[])
 
-  
+  useEffect(()=>{
+    if(needsRefresh){
+      onRefresh()
+      dispatch(setNeedsRefresh(false));
+    }
+  },[needsRefresh])
+
   const getCollections = async () => {
     try {
       const data = await getTodayCollections();
@@ -103,7 +112,7 @@ const Home = () => {
           nameMatiere={item.name}
           numberFlashcard={item.flashcards_count}
           nameAuthor={item.subject.name}
-          onArrowPress={()=>alert("Diriger vers page librairie")}
+          onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item } })}
           onPenPress={()=>navigation.navigate("Study", {source_page:'Home',study_type:item.name,collection:item.id})}
           isStudy={true}
         />
