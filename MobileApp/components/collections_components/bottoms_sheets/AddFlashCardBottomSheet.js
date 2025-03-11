@@ -6,8 +6,9 @@ import styles from "../../publics_pages_components/bottom_sheets/style/ModalStyl
 import CustomInput from '../../CustomInput';
 import CustomButton from '../../CustomButton';
 import { useTranslation } from 'react-i18next';
+import { createFlashcard } from '../../../api/flashcard';
 
-const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, initialData, collectionId }, ref) => {
+const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, initialData, collectionId, isRemoteAddFlashcard = false }, ref) => {
   const { width, height } = useWindowDimensions();
   const [face, setFace] = useState(initialData?.front_face || "");
   const [enDos, setEnDos] = useState(initialData?.back_face || "");
@@ -51,7 +52,10 @@ const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, i
 
   const handleAdd = () => {
       if (validerFormulaire()) {
-        if (initialData) {
+        if(isRemoteAddFlashcard){
+            createFlashcard();    
+        }
+        else if (initialData) {
           onEditFlashCard?.({ 
             ...initialData, 
             front_face: face, 

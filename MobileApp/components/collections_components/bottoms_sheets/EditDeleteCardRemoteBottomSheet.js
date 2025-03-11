@@ -25,10 +25,9 @@ const EditDeleteCardRemoteBottomSheet = forwardRef(({ onEditFlashCard, initialDa
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      // Ajouter un léger délai pour s'assurer que le clavier est complètement affiché
       setTimeout(() => {
         setSnapPoints(["90%", "95%"]);
-      }, 100); // Délai de 100ms
+      }, 100); 
     });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
