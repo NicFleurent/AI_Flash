@@ -1,18 +1,20 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import React, { forwardRef, useState, useEffect } from 'react';
-import { Text, useWindowDimensions, View, Keyboard } from 'react-native';
+import { Text, useWindowDimensions, View, Keyboard, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from "../../publics_pages_components/bottom_sheets/style/ModalStyle";
 import CustomInput from '../../CustomInput';
 import CustomButton from '../../CustomButton';
 import { useTranslation } from 'react-i18next';
+import { createFlashcard } from '../../../api/flashcard';
 
-const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, initialData, collectionId }, ref) => {
+const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, initialData, collectionId, isRemoteAddFlashcard = false }, ref) => {
   const { width, height } = useWindowDimensions();
   const [face, setFace] = useState(initialData?.front_face || "");
   const [enDos, setEnDos] = useState(initialData?.back_face || "");
   const [erreurs, setErreurs] = useState({});
   const [snapPoints, setSnapPoints] = useState(["50%"]);
+  const [isAdding, setIsAdding] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -49,9 +51,31 @@ const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, i
       return Object.keys(nouvellesErreurs).length === 0;
   };
 
-  const handleAdd = () => {
+  const handleAdd = async ()  => {
       if (validerFormulaire()) {
-        if (initialData) {
+        if(isRemoteAddFlashcard){
+            try{
+                setIsAdding(true);
+                const formattedDate = new Date();
+                const options = { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const dateDuJour = new Intl.DateTimeFormat('en-CA', options).format(formattedDate);
+                const flashcard = { 
+                    id: Date.now(),
+                    front_face: face,
+                    back_face: enDos,
+                    last_revision_date: dateDuJour,
+                    next_revision_date: dateDuJour, 
+                    forgetting_curve_stage: 0, 
+                    collection_id: collectionId 
+                }
+                await createFlashcard(flashcard);
+            }catch(e){
+                console.log("Erreur lors de l'ajout en remote : "+e);
+            }finally{
+                setIsAdding(false);
+            }
+        }
+        else if (initialData) {
           onEditFlashCard?.({ 
             ...initialData, 
             front_face: face, 
@@ -118,6 +142,11 @@ const AddFlashCardBottomSheet = forwardRef(({ onAddFlashCard, onEditFlashCard, i
                   </View>
               </BottomSheetView>
           </KeyboardAwareScrollView>
+          {isAdding && (
+            <View style={styles.overlay}>
+                <ActivityIndicator size="large" color="#1DB954" />
+            </View>
+      )}
       </BottomSheet>
   );
 });

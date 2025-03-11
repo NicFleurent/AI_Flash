@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import FLashCard from '../../components/publics_pages_components/FlashCard';
@@ -6,6 +6,7 @@ import { deleteFlashcard, getFlashCards } from '../../api/flashcard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import EditDeleteCardRemoteBottomSheet from '../../components/collections_components/bottoms_sheets/EditDeleteCardRemoteBottomSheet';
 import { useTranslation } from 'react-i18next';
+import AddFlashCardBottomSheet from '../../components/collections_components/bottoms_sheets/AddFlashCardBottomSheet';
 import { useNavigation } from '@react-navigation/native';
 
 const Flashcards = ({ route }) => {
@@ -18,6 +19,7 @@ const Flashcards = ({ route }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectItem, setSelectItem] = useState({});
+    const addFlashcardRef = useRef(null);
 
     const handleEditFlashCard = (updatedCard) => {
         setFlashcards((prevFlashcards) =>
@@ -26,6 +28,14 @@ const Flashcards = ({ route }) => {
             )
         );
     };
+
+    const handleAddFlashCard = (card) => {
+        //setFlashCards([...flashCards, card]);
+    };
+
+    const openBottomSheet = useCallback(() => {
+        addFlashcardRef.current?.expand();
+    }, []);
 
     const handleDeleteFlashCard = async (id) => {
         setIsDeleting(true);
@@ -112,6 +122,18 @@ const Flashcards = ({ route }) => {
             <SafeAreaView style={styles.container}>
                 <Text style={styles.title}>{item.name}</Text>
 
+                <View style={styles.button}>
+                    <CustomButton
+                        type="white-outline"
+                        label={t('add_collection_by_myself.new_card')}
+                        additionnalStyle={{ marginVertical: 10 }}
+                        onPress={() =>{
+                            openBottomSheet();
+                        }}
+                    />
+                </View>
+                
+
                 <FlatList
                     scrollEnabled={true}
                     style={styles.flatList}
@@ -142,6 +164,15 @@ const Flashcards = ({ route }) => {
                     />
                 </View>
 
+                <View style={styles.overlay}>
+                    <AddFlashCardBottomSheet
+                        ref={addFlashcardRef}
+                        onAddFlashCard={handleAddFlashCard}
+                        isRemoteAddFlashcard = {true}
+                        collectionId={item.id}
+                    />
+                </View>
+
                 {isDeleting && (
                     <View style={styles.deletingOverlay}>
                         <ActivityIndicator size="large" color="#ffffff" />
@@ -167,6 +198,9 @@ const styles = StyleSheet.create({
     },
     flatList: {
         flex: 1,
+        paddingHorizontal: 20,
+    },
+    button: {
         paddingHorizontal: 20,
     },
     buttonContainer: {
