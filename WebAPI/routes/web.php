@@ -1,7 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminUserController;
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [AdminUserController::class, 'login']);
+Route::get('/login', [AdminUserController::class, 'login'])->name('login');
+Route::post('/connexion', [AdminUserController::class, 'connexion'])->name('connexion');
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::post('/logout', [AdminUserController::class, 'logout'])->name('logout');
+    Route::get('/admin/dashboard', [AdminUserController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/edit/{id}', [AdminUserController::class, 'edit'])->name('admin.edit');
+    Route::patch('/admin/update/{user}', [AdminUserController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/delete/{id}',[AdminUserController::class, 'delete'])->name('admin.delete');
 });
