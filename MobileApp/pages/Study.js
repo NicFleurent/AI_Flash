@@ -4,12 +4,14 @@ import CustomButton from '../components/CustomButton';
 import FlipCard from '../components/flip_card/FlipCard';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { getCollectionTodayFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
-import { useSelector } from 'react-redux';
+import { getCollectionTodayFlashCards, getFlashCards, getTodayFlashcards, updateForgottenFlashcard, updateRememberedFlashcard } from '../api/flashcard';
+import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
+import { setNeedsRefresh } from '../stores/sliceTodayFlashcards';
 
 const Study = ({route}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {t} = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
   const [progress, setProgress] = useState(0);
@@ -49,7 +51,14 @@ const Study = ({route}) => {
             }
           }
         }
+        if(route.params.source_page === 'Flashcards'){
+          const data = await getFlashCards(route.params.collection.id)
+          setFlashcards(data);
+          setCurrentCard(0);
+          setTimeout(()=>setFlipDuration(300), 100)
+        }
       } catch (error) {
+        console.log(error)
         Toast.show({
           type: 'error',
           text1: t('ERROR'),
@@ -88,6 +97,7 @@ const Study = ({route}) => {
 
   const handleRemembered = (id) => {
     try {
+      dispatch(setNeedsRefresh(true));
       updateRememberedFlashcard(id);
       displayTransitionButton();
     } catch (error) {
@@ -102,6 +112,7 @@ const Study = ({route}) => {
 
   const handleForgotten = (id) => {
     try {
+      dispatch(setNeedsRefresh(true));
       updateForgottenFlashcard(id);
       displayTransitionButton();
     } catch (error) {
@@ -184,15 +195,7 @@ const Study = ({route}) => {
               <CustomButton
                 type="green-full"
                 label={t('button.finish')}
-                onPress={()=>navigation.reset({
-                  index:0,
-                  routes:[
-                    {
-                      name:'Menu',
-                      params:{screen:route.params.source_page}
-                    }
-                  ]
-                })}
+                onPress={()=>navigation.goBack()}
                 additionnalStyle={{ marginTop: 20 }}
               />
             </>
@@ -233,13 +236,13 @@ const styles = {
     borderRadius: 10
   },
   flashcardView: {
-    flex: 4,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     width:'100%'
   },
   buttonContainer: {
-    flex: 2,
+    flex: 3,
     paddingHorizontal:20,
     justifyContent: 'center',
     alignItems: 'center',
