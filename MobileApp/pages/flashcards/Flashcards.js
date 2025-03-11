@@ -32,7 +32,6 @@ const Flashcards = ({ route }) => {
     };
 
     const openBottomSheet = useCallback(() => {
-        //setEditingCard(card);
         addFlashcardRef.current?.expand();
     }, []);
 
@@ -165,7 +164,8 @@ const Flashcards = ({ route }) => {
                     <AddFlashCardBottomSheet
                         ref={addFlashcardRef}
                         onAddFlashCard={handleAddFlashCard}
-                        //collectionId={id}
+                        isRemoteAddFlashcard = {true}
+                        collectionId={item.id}
                     />
                 </View>
 
