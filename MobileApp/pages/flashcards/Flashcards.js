@@ -29,9 +29,7 @@ const Flashcards = ({ route }) => {
         );
     };
 
-    const handleAddFlashCard = (card) => {
-        //setFlashCards([...flashCards, card]);
-    };
+    const handleAddFlashCard = (card) => {};
 
     const openBottomSheet = useCallback(() => {
         addFlashcardRef.current?.expand();

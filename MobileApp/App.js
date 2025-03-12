@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
-import { getLocalData } from "./api/asyncStorage.js";
+import { getLocalData, saveLocalData } from "./api/asyncStorage.js";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
@@ -22,13 +22,17 @@ import NewCollectionChooseOptions from "./pages/collections/NewCollectionChooseO
 import AddCollectionByMyself from "./pages/collections/AddCollectionByMyself";
 import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
 import Flashcards from "./pages/flashcards/Flashcards";
+import OnboardingUn from "./pages/onboarding/OnboardingUn.js";
+import OnboardingDeux from "./pages/onboarding/OnboardingDeux.js";
+import OnboardingTrois from "./pages/onboarding/OnboardingTrois.js";
+import SplashScreen from "./pages/onboarding/SplashScreen.js";
 
 export default function App() {
   const {t, i18n} = useTranslation();
-  const [landingPage, setLandingPage] = useState("Auth");
+  const [landingPage, setLandingPage] = useState("OnboardingShow");
 
   useEffect(()=>{
-    isUserLoggedIn();
+    isFirstInstall();
   },[])
 
   
@@ -49,6 +53,21 @@ export default function App() {
       setLandingPage("Auth");
     }
   }
+
+  const isFirstInstall = async ()=>{
+    try {
+      const response = await getLocalData("firstInstall");
+      if(response){
+        await isUserLoggedIn();
+      }else{
+        const response = await saveLocalData("firstInstall", "true");
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   const collectionsStack =createNativeStackNavigator({
     initialRouteName:"NewCollectionChooseOptions",
@@ -99,6 +118,27 @@ export default function App() {
       },
       SignIn: {
         screen: SignIn,
+      },
+    }
+  });
+
+  const onboardingStack = createNativeStackNavigator({
+    initialRouteName:"SplashScreen",
+    screenOptions:{
+      headerShown:false
+    },
+    screens:{
+      SplashScreen:{
+        screen: SplashScreen,
+      },
+      OnboardingUn: {
+        screen: OnboardingUn,
+      },
+      OnboardingDeux: {
+        screen: OnboardingDeux,
+      },
+      OnboardingTrois: {
+        screen: OnboardingTrois,
       },
     }
   });
@@ -234,6 +274,12 @@ export default function App() {
         screen: flashcardsStack,
         options:{
           headerShown:false
+        }
+      },
+      OnboardingShow:{
+        screen: onboardingStack,
+        options:{
+          headerShown: false
         }
       }
     },
