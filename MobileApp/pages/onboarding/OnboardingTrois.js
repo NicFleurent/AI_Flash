@@ -17,13 +17,19 @@ const OnboardingTrois = () => {
         <Text style={styles.title}>{t('onboarding.page_three.title')}</Text>
         <Text style={styles.subtitle}>{t('onboarding.page_three.subtitle')}</Text>
         <TouchableOpacity onPress={() => {
-            navigation.replace("Auth", { screen: "LogIn" });
+            navigation.replace("Auth", { screen: "Intro" });
         }} style={styles.nextButton}>
           <Text style={styles.nextButtonText}>{t('onboarding.page_three.finish_button')}</Text>
         </TouchableOpacity>
-        <Text style={styles.loginText}>
-          {t('onboarding.page_three.login_text')} <TouchableOpacity onPress={()=>{navigation.replace("Auth", { screen: "LogIn" })}}><Text style={styles.loginLink}>{t('onboarding.page_three.login_link')}</Text></TouchableOpacity>
-        </Text>
+        <View style={styles.loginTextContainer}>
+          <Text style={styles.loginText}>
+            {t('onboarding.page_three.login_text')} 
+          </Text>
+          <TouchableOpacity onPress={()=>{navigation.replace("Auth", { screen: "LogIn" })}}>
+            <Text style={styles.loginLink}>{" "+t('onboarding.page_three.login_link')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.containerCircle}>
@@ -75,6 +81,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  loginTextContainer:{
+    flexDirection:"row"
   },
   loginText: {
     color: 'white',

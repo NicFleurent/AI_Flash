@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
-import { getLocalData, saveLocalData } from "./api/asyncStorage.js";
+import {getLocalData, saveLocalData } from "./api/asyncStorage.js";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
@@ -25,49 +25,46 @@ import Flashcards from "./pages/flashcards/Flashcards";
 import OnboardingUn from "./pages/onboarding/OnboardingUn.js";
 import OnboardingDeux from "./pages/onboarding/OnboardingDeux.js";
 import OnboardingTrois from "./pages/onboarding/OnboardingTrois.js";
-import SplashScreen from "./pages/onboarding/SplashScreen.js";
+import SplashScreen from "./pages/SplashScreen.js";
 
 export default function App() {
   const {t, i18n} = useTranslation();
-  const [landingPage, setLandingPage] = useState("OnboardingShow");
+  const [landingPage, setLandingPage] = useState("SplashScreen");
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
-    isFirstInstall();
-  },[])
-
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        const language = await getLocalData("language");
+        if (language?.value) {
+          i18n.changeLanguage(language.value);
+        }
   
-  useEffect(()=>{
-    const getParams = async () =>{
-      const language = await getLocalData("language");
-      i18n.changeLanguage(language.value);
-    }
-    getParams()
-  },[])
-
-  const isUserLoggedIn = async ()=>{
+        const isFirstInstallation = await getLocalData("firstInstall");
+        if (isFirstInstallation === false) {
+          await isUserLoggedIn();
+        } else {
+          await saveLocalData("firstInstall", false);
+          setLandingPage("OnboardingShow");
+        }
+      } catch (error) {
+        console.error("Initialization error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    initializeApp();
+  }, []);
+  
+  const isUserLoggedIn = async () => {
     try {
       const response = await refreshToken();
       setLandingPage("Menu");
     } catch (error) {
-      console.log(error)
       setLandingPage("Auth");
     }
-  }
-
-  const isFirstInstall = async ()=>{
-    try {
-      const response = await getLocalData("firstInstall");
-      if(response){
-        await isUserLoggedIn();
-      }else{
-        const response = await saveLocalData("firstInstall", "true");
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  };
 
   const collectionsStack =createNativeStackNavigator({
     initialRouteName:"NewCollectionChooseOptions",
@@ -123,14 +120,11 @@ export default function App() {
   });
 
   const onboardingStack = createNativeStackNavigator({
-    initialRouteName:"SplashScreen",
+    initialRouteName:"OnboardingUn",
     screenOptions:{
       headerShown:false
     },
     screens:{
-      SplashScreen:{
-        screen: SplashScreen,
-      },
       OnboardingUn: {
         screen: OnboardingUn,
       },
@@ -281,7 +275,13 @@ export default function App() {
         options:{
           headerShown: false
         }
-      }
+      },
+      SplashScreen:{
+        screen: SplashScreen,
+        options:{
+          headerShown:false
+        }
+      },
     },
   });
 

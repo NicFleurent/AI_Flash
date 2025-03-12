@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Text, View, StyleSheet, SafeAreaView } from 'react-native';
 
 const SplashScreen = () => {
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>IA Flash</Text>
       <View style={styles.containerSecond}>
         <Image 
-          source={require('../../assets/aiFlash_logo_green.png')} 
+          source={require('../assets/aiFlash_logo_green.png')} 
           style={styles.image} 
           resizeMode="contain"
         />

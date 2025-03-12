@@ -19,9 +19,15 @@ const OnboardingUn = () => {
         <TouchableOpacity onPress={() => navigation.navigate("OnboardingDeux")} style={styles.nextButton}>
           <Text style={styles.nextButtonText}>{t('onboarding.page_one.next_button')}</Text>
         </TouchableOpacity>
-        <Text style={styles.loginText}>
-          {t('onboarding.page_one.login_text')} <TouchableOpacity onPress={()=>{navigation.replace("Auth", { screen: "LogIn" })}}><Text style={styles.loginLink}>{t('onboarding.page_three.login_link')}</Text></TouchableOpacity>
-        </Text>
+        <View style={styles.loginTextContainer}>
+          <Text style={styles.loginText}>
+            {t('onboarding.page_one.login_text')} 
+          </Text>
+          <TouchableOpacity onPress={()=>{navigation.replace("Auth", { screen: "LogIn" })}}>
+            <Text style={styles.loginLink}>{" "+t('onboarding.page_one.login_link')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.containerCircle}>
@@ -42,8 +48,7 @@ const styles = StyleSheet.create({
   overlay: {
     backgroundColor: '#191414',
     padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderRadius: 10,
     width: '90%',
     alignItems: 'center',
     marginBottom: 40,
@@ -73,6 +78,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  loginTextContainer:{
+    flexDirection:"row"
   },
   loginText: {
     color: 'white',
