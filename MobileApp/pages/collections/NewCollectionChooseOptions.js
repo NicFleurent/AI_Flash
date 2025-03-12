@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 const NewCollectionChooseOptions = ({ route }) => {
   const navigation = useNavigation();
-  const { id } = route.params || {};
+  const { item } = route.params || {};
+  const { setChangeNewCollections } = route.params || {};
   const { t } = useTranslation();
 
   return (
@@ -18,14 +19,14 @@ const NewCollectionChooseOptions = ({ route }) => {
         label={t("new_collection_choose_options.by_myself")}
         additionnalStyle={{ marginBottom: 30 }}
         onPress={() => {
-          navigation.navigate("AddCollectionByMyself", { id: id });
+          navigation.navigate("AddCollectionByMyself", { id: item.id });
         }}
       />
       <CustomButton
         type="green-full"
         label={t("new_collection_choose_options.from_document")}
         onPress={() => {
-          navigation.navigate("AddCollectionByAi", { id: id });
+          navigation.navigate("AddCollectionByAi", { item: item, setChangeNewCollections: setChangeNewCollections });
         }}
       />
     </View>

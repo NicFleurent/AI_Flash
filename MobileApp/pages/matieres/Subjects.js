@@ -10,23 +10,25 @@ import CustomModal from '../../components/CustomModal'
 import CardCollection from '../../components/publics_pages_components/CardCollection';
 import CustomInput from "../../components/CustomInput";
 import FLashCard from "../../components/publics_pages_components/FlashCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setValueS } from "../../stores/sliceChangeSubject";
 
 // const { height } = useWindowDimensions();
 
 const Subjects = () => {
     const navigation = useNavigation();
     const { t } = useTranslation();
+    const dispatch = useDispatch()
 
     const [subjects, setSubjects] = useState([]);
-    const [flashCards, setFlashCards] = useState([]);
     const [visible, setVisible] = useState(false)
     const [input, setInput] = useState("")
     const [id, setId] = useState("")
     const [type_modal, setTypeModal] = useState("")
-    const [name_modal, setNameModal] = useState("")
     const [error, setError] = useState([]);
     const [isError, setIsError] = useState(false)
-    const [change, setChange] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const subjectChange = useSelector((state) => state.changeSubjectSlice.value)
 
     const onChangeText = (value, setInput) => {
         setInput(value);
@@ -143,15 +145,31 @@ const Subjects = () => {
     }
 
     useEffect(() => {
-        getUserSubjects()
-        setInput("")
+        try {
+            setIsLoading(true)
+            getUserSubjects()
+            setInput("")
+        } catch (error) {
+            console.log("Erreru - ", error)
+        } finally {
+            setIsLoading(false);
+        }
     }, [])
 
     useEffect(() => {
-        getUserSubjects()
-        setChange(false)
-        setInput("")
-    }, [change])
+        if (subjectChange){
+            try {
+                setIsLoading(true)
+                getUserSubjects()
+                setInput("")
+                dispatch(setValueS(false))
+            } catch (error) {
+                console.log("Erreru - ", error)
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    }, [subjectChange])
 
     const renderItem = ({ item }) => {
         return (
@@ -160,76 +178,14 @@ const Subjects = () => {
                 isPublic={false}
                 isEditable={true}
                 numberCollection={item.collections_count}
-                onArrowPress={() => navigation.navigate("Collections", { 'item': item, 'change': change, 'setChange': setChange })}
+                onArrowPress={() => navigation.navigate("Collections", { item })}
                 onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}
             />
         )
     }
 
-    // const renderItem = ({ item }) => {
-    //     return (
-    //         <FLashCard 
-    //             title={item[0]}
-    //             description={item[1]}
-    //         />
-    //     )
-    // }
-
-    // const envoyer = async () => {
-    //     try {
-    //         const response = await getAIflashcards(input);
-
-    //         if (response && response.message && response.answer) {
-    //             Toast.show({
-    //                 type: 'success',
-    //                 text1: t('SUCCESS'),
-    //                 text2: response.message,
-    //             });
-    //             console.log("Response - " + response.answer)
-
-    //             const parseAnswer = JSON.parse(response.answer)
-    //             console.log("ParsedANSWER - " + parseAnswer)
-
-    //             setFlashCards(Object.entries(parseAnswer))
-    //         }
-
-    //         setInput("")
-    //         setVisible(false)
-
-    //     } catch (error) {
-    //         console.log('Error: ' + error)
-
-    //         Toast.show({
-    //             type: 'error',
-    //             text1: t('ERROR'),
-    //             text2: error.message,
-    //         });
-    //     }
-    // }
-
     return (
         <SafeAreaView style={styles.container}>
-            {/* 
-                <CustomInput
-                    label={"Posez votre question"}
-                    value={input}
-                    onChangeText={setInput}
-                    isPassword={false}
-                    error={error.errorInput}
-                />
-
-                <Button title="Envoyer" onPress={() => envoyer()}/>
-
-                <FlatList
-                    style={styles.flatList}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    data={flashCards}
-                    numColumns={1}
-                    contentContainerStyle={styles.flatListContent}
-                /> 
-            */}
-
             <FlatList
                 style={styles.flatList}
                 renderItem={renderItem}
@@ -246,7 +202,6 @@ const Subjects = () => {
                 setInput={(value) => onChangeText(value, setInput)}
                 error={error}
                 setError={setError}
-                name_modal={name_modal}
                 type_modal={type_modal}
                 setTypeModal={setTypeModal}
                 onPressCreate={create}
@@ -258,14 +213,20 @@ const Subjects = () => {
 
             <TouchableOpacity
                 style={styles.floatingInput}
-                onPress={() => [setTypeModal("add"), setVisible(true), setNameModal("matiere")]}
+                onPress={() => [setTypeModal("add"), setVisible(true)]}
             >
                 <FontAwesomeIcon icon={faPlus} size={20} color="black" />
             </TouchableOpacity>
 
             <Toast position='top' bottomOffset={20} />
 
-            <StatusBar style="auto" />
+            {isLoading && (
+                <ActivityIndicator
+                    style={styles.overlay}
+                    size="large"
+                    color="#1DB954"
+                />
+            )}
         </SafeAreaView>
     )
 }
@@ -304,5 +265,15 @@ const styles = StyleSheet.create({
         right: 20,
         backgroundColor: 'green',
         borderRadius: 100,
-    }
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

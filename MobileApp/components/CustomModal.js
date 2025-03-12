@@ -17,7 +17,6 @@ const CustomModal = ({
   setError,
   setTypeModal,
   type_modal,
-  name_modal,
   onPressCreate,
   onPressDelete,
   onPressEdit,

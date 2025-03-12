@@ -188,7 +188,8 @@
     }, 
     "add_collection_by_ai":{
         "add_file": "Ajouter un fichier",
-        "button": "Générer des cartes"
+        "button": "Générer des cartes",
+        "success": "Collection générée par IA avec succès"
     },
     "add_collection_by_myself":{
         "collection_name_required": "Le nom de la collection est requis.",

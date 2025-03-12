@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useRef, useState, useMemo, useEffect } from 'react';
 import { View, StyleSheet, useWindowDimensions, Text, TouchableOpacity, ActivityIndicator, ScrollView, FlatList, Alert } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import AddFlashCardBottomSheet from '../../components/collections_components/bottoms_sheets/AddFlashCardBottomSheet';
@@ -14,12 +14,16 @@ import Toast from 'react-native-toast-message';
 import { createCollection } from '../../api/collection';
 import { createFlashcard } from '../../api/flashcard';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setValueC } from '../../stores/sliceChangeCollections';
 
-const AddCollectionByAi = ({route}) => {
+const AddCollectionByAi = ({ route }) => {
     const { t } = useTranslation()
-    const { id } = route.params || {};    
+    const dispatch = useDispatch()
+    const { item } = route.params || {};
+    const { setChangeNewCollections } = route.params || {};
     const navigation = useNavigation();
-    
+
     const { width, height } = useWindowDimensions();
     const [file, setFile] = useState(null);
     const [collectionName, setCollectionName] = useState("");
@@ -30,6 +34,7 @@ const AddCollectionByAi = ({route}) => {
     const [flashCards, setFlashCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [erreurs, setErreurs] = useState({});
+    const [change, setChange] = useState(false)
 
     const pickFile = async () => {
         try {
@@ -98,12 +103,12 @@ const AddCollectionByAi = ({route}) => {
                     front_face: key,
                     back_face: value,
                     last_revision_date: dateDuJour,
-                    next_revision_date: dateDuJour, 
+                    next_revision_date: dateDuJour,
                     forgetting_curve_stage: 0
                 }));
 
+                console.log("Object entries " +  objectkeys)
                 setFlashCards(objectkeys)
-                console.log("Object entries ",  objectkeys)
             }
 
             setVisibleFlatlist(true)
@@ -117,7 +122,7 @@ const AddCollectionByAi = ({route}) => {
 
     const handleSaveCollection = () => {
         if (validerFormulaire()) {
-            createCollectionAndFlashcards(id, collectionName, flashCards);
+            createCollectionAndFlashcards(item.id, collectionName, flashCards);
         }
     };
 
@@ -147,35 +152,32 @@ const AddCollectionByAi = ({route}) => {
     };
 
     const openBottomSheet = useCallback((card) => {
-        console.log("Openning")
         setEditingCard(card);
         console.log(editingCard)
-            addFlashcardRef.current?.expand();
-        }, []);
+        addFlashcardRef.current?.expand();
+    }, []);
 
-        const createCollectionAndFlashcards = async (subjectId, collectionName, flashcardsData) => {
-                setIsLoading(true);
-                
-                try {
-                    const collectionResponse = await createCollection(subjectId, collectionName);
-                    console.log(collectionResponse);
-                    if (collectionResponse && collectionResponse.data) {
-                        const collectionId = collectionResponse.data.id;
-                        
-                        
-                        for (const flashcard of flashcardsData) {
-                            await createFlashcard({ ...flashcard, collection_id: collectionId });
-                        }
-        
-                        navigation.navigate("Menu", {screen: "Subjects"});
-                    }
-                } catch (error) {
-                    console.log('Error: ' + error);
-                } finally {
-                    setIsLoading(false);
+    const createCollectionAndFlashcards = async (subjectId, collectionName, flashcardsData) => {
+        setIsLoading(true);
+
+        try {
+            const collectionResponse = await createCollection(subjectId, collectionName);
+            if (collectionResponse && collectionResponse.data) {
+                const collectionId = collectionResponse.data.id;
+
+
+                for (const flashcard of flashcardsData) {
+                    await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
-            };
-
+            }
+            dispatch(setValueC(true))
+            navigation.popTo("Collections", { item });
+        } catch (error) {
+            console.log('Error: ' + error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const renderItem = ({ item }) => {
         return (
@@ -204,25 +206,25 @@ const AddCollectionByAi = ({route}) => {
                     <Text style={styles.errorText}>{erreurs.collectionName}</Text>
                 )}
 
-                
+
 
                 {
                     visibleFlalist &&
                     <>
-                    <CustomButton
-                    type="white-outline"
-                    label={t('add_collection_by_myself.new_card')}
-                    additionnalStyle={{ marginTop: 10 }}
-                    onPress={() => openBottomSheet()}
-                />
-                    <FlatList
-                        style={styles.flatList}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        data={flashCards}
-                        numColumns={1}
-                        contentContainerStyle={styles.flatListContent}
-                    />
+                        <CustomButton
+                            type="white-outline"
+                            label={t('add_collection_by_myself.new_card')}
+                            additionnalStyle={{ marginTop: 10 }}
+                            onPress={() => openBottomSheet()}
+                        />
+                        <FlatList
+                            style={styles.flatList}
+                            renderItem={renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                            data={flashCards}
+                            numColumns={1}
+                            contentContainerStyle={styles.flatListContent}
+                        />
                     </>
                 }
 
@@ -266,8 +268,6 @@ const AddCollectionByAi = ({route}) => {
                     />
                 }
 
-                
-
                 {isLoading && (
                     <ActivityIndicator
                         style={styles.overlay}
@@ -276,12 +276,11 @@ const AddCollectionByAi = ({route}) => {
                     />
                 )}
 
-
                 <AddFlashCardBottomSheet
                     ref={addFlashcardRef}
                     onAddFlashCard={handleAddFlashCard}
                     onEditFlashCard={handleEditFlashCard}
-                    collectionId={id}
+                    collectionId={item.id}
                     initialData={editingCard}
                 />
             </View>
@@ -290,7 +289,6 @@ const AddCollectionByAi = ({route}) => {
     );
 };
 
-// Styles
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",

@@ -1,5 +1,5 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, FlatList, View, ScrollView, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from 'react'
+import { SafeAreaView, StatusBar, StyleSheet, Text, FlatList, View, ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -7,25 +7,29 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../components/CustomModal'
 import CardCollection from '../../components/publics_pages_components/CardCollection';
-import { getCollections, createCollection, updateCollection, deleteCollection, toggleCollectionVisibility } from "../../api/collection";
+import { getCollections, createCollection, updateCollection, deleteCollection } from "../../api/collection";
+import { useDispatch, useSelector } from "react-redux";
+import { setValueC } from "../../stores/sliceChangeCollections";
+import { setValueS } from "../../stores/sliceChangeSubject";
 
 const Collections = ({ route }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const dispatch = useDispatch()
 
-  const { id } = route.params?.item
-  const { setChange } = route.params
+  const { item } = route.params || {}
   const [collections, setCollections] = useState([]);
   const [visible, setVisible] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
   const [input, setInput] = useState("")
   const [collection_id, setCollectionId] = useState("")
   const [type_modal, setTypeModal] = useState("")
-  const [name_modal, setNameModal] = useState("")
   const [error, setError] = useState([]);
   const [isError, setIsError] = useState(false);
   const [selectItem, setSelectItem] = useState({});
-
+  const [isLoading, setIsLoading] = useState(false);
+  const collectionsChange = useSelector((state) => state.changeCollectionsSlice.value)
+  
   const onChangeText = (value, setInput) => {
     setInput(value);
 
@@ -47,7 +51,7 @@ const Collections = ({ route }) => {
 
   const getUserCollections = async () => {
     try {
-      const response = await getCollections(id);
+      const response = await getCollections(item.id);
       setCollections(response);
     } catch (error) {
       console.log(error);
@@ -57,7 +61,7 @@ const Collections = ({ route }) => {
   const create = async () => {
     if (validateForm()) {
       try {
-        const response = await createCollection(id, input);
+        const response = await createCollection(item.id, input);
 
         if (response && response.message) {
           Toast.show({
@@ -70,7 +74,7 @@ const Collections = ({ route }) => {
 
         setInput("")
         setVisible(false)
-        setChange(true)
+        dispatch(setValueS(true))
       } catch (error) {
         console.log('Error: ' + error)
 
@@ -88,7 +92,7 @@ const Collections = ({ route }) => {
   const edit = async () => {
     if (validateForm()) {
       try {
-        const response = await updateCollection(collection_id, input);
+        const response = await updateCollection(collection_id, input, isPublic);
 
         if (response && response.message) {
           Toast.show({
@@ -134,6 +138,7 @@ const Collections = ({ route }) => {
       setInput("")
       setVisible(false)
       setCollectionId(null)
+      dispatch(setValueS(true))
     } catch (error) {
       console.log('Error: ' + error)
 
@@ -150,48 +155,45 @@ const Collections = ({ route }) => {
   };
 
   useEffect(() => {
-    getUserCollections();
+    try {
+      setIsLoading(true)
+      getUserCollections();
+    } catch (error) {
+      console.log("Erreru - ", error)
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    getUserCollections();
-  }, []);
-
-  const visibility = async (collection_id) => {
-    try {
-      const response = await toggleCollectionVisibility(collectionId);
-
-      // If the toggle was successful, update the collection list
-      if (response && response.message) {
-        Toast.show({
-          type: 'success',
-          text1: t('SUCCESS'),
-          text2: t(response.message)
-        });
-
-        // Update the visibility in the collection list by modifying the `isPublic` state
-        const updatedCollections = collections.map((collection) =>
-          collection.id === collectionId ? { ...collection, is_public: !collection.is_public } : collection
-        );
-        setCollections(updatedCollections);
+    if (collectionsChange) {
+      try {
+          setIsLoading(true);
+          Toast.show({
+            type: 'success',
+            text1: t('SUCCESS'),
+            text2: t('add_collection_by_ai.success'),
+          });
+          
+          getUserCollections();
+          dispatch(setValueC(false))
+          dispatch(setValueS(true))
+      } catch (error) {
+        console.log("Erreru - ", error)
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: t('ERROR'),
-        text2: t(error.message)
-      });
     }
-  }
+  }, [collectionsChange]);
 
   const renderItem = ({ item }) => {
     return (
       <CardCollection
         nameMatiere={item.name}
-        isPublic={item.is_public}
+        isPublic={true}
         isEditable={true}
         numberFlashcard={item.flashcards_count}
-        onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item } })}
+        onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item, setChangeNewCollections: setChangeNewCollections } })}
         onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id), setIsPublic(item.is_public)]}
       />
     );
@@ -200,48 +202,55 @@ const Collections = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView> */}
-        <View>
-          <Text style={styles.titre}>{t("subject.collections.title")}</Text>
+      <View>
+        <Text style={styles.titre}>{t("subject.collections.title")}</Text>
 
-          <FlatList
-            style={styles.flatList}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => item.id}
-            data={collections}
-            numColumns={2}
-            contentContainerStyle={styles.flatListContent}
-          />
+        <FlatList
+          style={styles.flatList}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => item.id}
+          data={collections}
+          numColumns={2}
+          contentContainerStyle={styles.flatListContent}
+        />
 
-          <CustomModal
-            visible={visible}
-            setVisible={setVisible}
-            input={input}
-            isPublic={true}
-            // setIsPublic={() => toggleCollectionVisibility(collection_id)}
-            setInput={(value) => onChangeText(value, setInput)}
-            error={error}
-            setError={setError}
-            name_modal={name_modal}
-            type_modal={type_modal}
-            setTypeModal={setTypeModal}
-            onPressCreate={create}
-            onPressEdit={edit}
-            onPressDelete={drop}
-            modalTitle={t("subject.collections.input.title_modal_"+type_modal)}
-            deleteMessage={t("subject.collections.input.modal_delete")}
-          />
+        <CustomModal
+          visible={visible}
+          setVisible={setVisible}
+          input={input}
+          isPublic={isPublic === 0 ? false : true}
+          setIsPublic={(value) => setIsPublic(value ? 1 : 0)}
+          setInput={(value) => onChangeText(value, setInput)}
+          error={error}
+          setError={setError}
+          type_modal={type_modal}
+          setTypeModal={setTypeModal}
+          onPressCreate={create}
+          onPressEdit={edit}
+          onPressDelete={drop}
+          modalTitle={t("subject.collections.input.title_modal_" + type_modal)}
+          deleteMessage={t("subject.collections.input.modal_delete")}
+        />
 
-          <TouchableOpacity
-            style={styles.floatingInput}
-            onPress={() => navigation.navigate("CollectionsCreate", { screen: "NewCollectionChooseOptions", params: { id: id } })}
-          >
-            <FontAwesomeIcon icon={faPlus} size={20} color="black" />
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.floatingInput}
+          onPress={() => navigation.navigate("CollectionsCreate", { screen: "NewCollectionChooseOptions", params: { item: item } })}
+        >
+          <FontAwesomeIcon icon={faPlus} size={20} color="black" />
+        </TouchableOpacity>
 
-          <Toast position='top' bottomOffset={20} />
+        <Toast position='top' bottomOffset={20} />
 
-          <StatusBar style="auto" />
-        </View>
+        <StatusBar style="auto" />
+      </View>
+
+      {isLoading && (
+        <ActivityIndicator
+          style={styles.overlay}
+          size="large"
+          color="#1DB954"
+        />
+      )}
       {/* </ScrollView> */}
     </SafeAreaView>
   );
@@ -288,5 +297,15 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: 'green',
     borderRadius: 100,
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

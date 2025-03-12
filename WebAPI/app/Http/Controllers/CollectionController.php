@@ -89,10 +89,11 @@ class CollectionController extends Controller
             $data = $request->all();
             $collection_id = $data['collection_id'] ?? '';
             $collection_name = $data['collection_name'] ?? '';
+            $collection_isPublic = $data['collection_isPublic'] ?? '';
 
             DB::table('collections')
                 ->where('id', $collection_id)
-                ->update(['name' => $collection_name]);
+                ->update(['name' => $collection_name, 'is_public' => $collection_isPublic]);
 
             return response()->json([
                 'message' => 'subject.collections.error.update.success'
@@ -126,9 +127,14 @@ class CollectionController extends Controller
 
     public function toggleCollectionVisibility(Request $request, Collection $collection)
     {
+        Log::debug("IN TOGGLE");
         try {
+            Log::debug('Collection Before:', ['collection' => $collection]);
+
             $collection->is_public = !$collection->is_public;
             $collection->save();
+
+            Log::debug('Collection After:', ['collection' => $collection]);
 
             return response()->json([
                 'message' => 'Visibilité de la collection mise à jour avec succès',

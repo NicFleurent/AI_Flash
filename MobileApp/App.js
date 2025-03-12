@@ -212,7 +212,7 @@ export default function App() {
       Collections: {
         screen: Collections,
         options: ({route}) => ({
-          title: route.params?.name || "Collections",
+          title: route.params?.item.name || route.params?.name || "Collections",
         }),
       },
       Menu: {
