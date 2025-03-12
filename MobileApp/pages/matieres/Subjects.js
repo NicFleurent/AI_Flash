@@ -158,6 +158,7 @@ const Subjects = () => {
             <CardCollection
                 nameMatiere={item.name}
                 isPublic={false}
+                isEditable={true}
                 numberCollection={item.collections_count}
                 onArrowPress={() => navigation.navigate("Collections", { 'item': item, 'change': change, 'setChange': setChange })}
                 onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setId(item.id)]}

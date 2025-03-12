@@ -60,7 +60,7 @@ const CustomModal = ({
                 )) ||
 
                   <CustomInput
-                    label={t("subject.input.title_input_" + name_modal)}
+                    label={t("subject.input.title_input")}
                     value={input}
                     onChangeText={setInput}
                     isPassword={false}
@@ -119,7 +119,7 @@ const CustomModal = ({
                 </Text>
 
                 <CustomInput
-                  label={t("subject.input.title_input_" + name_modal)}
+                  label={t("subject.input.title_input")}
                   value={input}
                   onChangeText={setInput}
                   isPassword={false}

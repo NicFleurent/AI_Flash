@@ -25,7 +25,7 @@ const NewCollectionChooseOptions = ({ route }) => {
         type="green-full"
         label={t("new_collection_choose_options.from_document")}
         onPress={() => {
-          navigation.navigate("AddCollectionByAi");
+          navigation.navigate("AddCollectionByAi", { id: id });
         }}
       />
     </View>

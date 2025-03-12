@@ -149,7 +149,7 @@
         "title_modal_delete":"Supprimer une collection",
         "modal_delete":"Voulez-vous vraiment supprimer la collection ",
         "title_modal":"Modifier une matière",
-        "title_input":"Nom de la matière"
+        "title_input":"Nom de la collection"
       },
       "error": {
         "create": {
@@ -186,6 +186,10 @@
         "error_while_copying_the_collection": "Erreur lors de la copie de la collection :"
       }
     }, 
+    "add_collection_by_ai":{
+        "add_file": "Ajouter un fichier",
+        "button": "Générer des cartes"
+    },
     "add_collection_by_myself":{
         "collection_name_required": "Le nom de la collection est requis.",
         "success": "Succès",

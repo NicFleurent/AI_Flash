@@ -119,8 +119,7 @@
         "title_modal_edit": "Edit a collection",
         "title_modal_delete": "Delete a collection",
         "modal_delete": "Are you sure you want to delete the collection ",
-        "title_modal": "Edit a subject",
-        "title_input": "Subject name"
+        "title_input": "Collection name"
       }
     }
   },
@@ -140,5 +139,9 @@
       "subject_name": "Subject name",
       "author": "Created by"
     }
-  }
+  },
+  "add_collection_by_ai":{
+    "add_file": "Add a file",
+      "button": "Generatae flashcards"
+    }
 }

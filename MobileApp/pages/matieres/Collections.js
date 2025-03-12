@@ -7,7 +7,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../components/CustomModal'
 import CardCollection from '../../components/publics_pages_components/CardCollection';
-import { getCollections, createCollection, updateCollection, deleteCollection } from "../../api/collection";
+import { getCollections, createCollection, updateCollection, deleteCollection, toggleCollectionVisibility } from "../../api/collection";
 
 const Collections = ({ route }) => {
   const navigation = useNavigation();
@@ -17,6 +17,7 @@ const Collections = ({ route }) => {
   const { setChange } = route.params
   const [collections, setCollections] = useState([]);
   const [visible, setVisible] = useState(false)
+  const [isPublic, setIsPublic] = useState(false)
   const [input, setInput] = useState("")
   const [collection_id, setCollectionId] = useState("")
   const [type_modal, setTypeModal] = useState("")
@@ -152,15 +153,46 @@ const Collections = ({ route }) => {
     getUserCollections();
   }, []);
 
+  useEffect(() => {
+    getUserCollections();
+  }, []);
+
+  const visibility = async (collection_id) => {
+    try {
+      const response = await toggleCollectionVisibility(collectionId);
+
+      // If the toggle was successful, update the collection list
+      if (response && response.message) {
+        Toast.show({
+          type: 'success',
+          text1: t('SUCCESS'),
+          text2: t(response.message)
+        });
+
+        // Update the visibility in the collection list by modifying the `isPublic` state
+        const updatedCollections = collections.map((collection) =>
+          collection.id === collectionId ? { ...collection, is_public: !collection.is_public } : collection
+        );
+        setCollections(updatedCollections);
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: t(error.message)
+      });
+    }
+  }
+
   const renderItem = ({ item }) => {
     return (
       <CardCollection
         nameMatiere={item.name}
-        isPublic={true}
+        isPublic={item.is_public}
         isEditable={true}
         numberFlashcard={item.flashcards_count}
         onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item } })}
-        onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id)]}
+        onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id), setIsPublic(item.is_public)]}
       />
     );
   };
@@ -184,6 +216,8 @@ const Collections = ({ route }) => {
             visible={visible}
             setVisible={setVisible}
             input={input}
+            isPublic={true}
+            // setIsPublic={() => toggleCollectionVisibility(collection_id)}
             setInput={(value) => onChangeText(value, setInput)}
             error={error}
             setError={setError}
@@ -200,7 +234,6 @@ const Collections = ({ route }) => {
           <TouchableOpacity
             style={styles.floatingInput}
             onPress={() => navigation.navigate("CollectionsCreate", { screen: "NewCollectionChooseOptions", params: { id: id } })}
-            // onPress={() => [setTypeModal("add"), setVisible(true), setNameModal("collection")]}
           >
             <FontAwesomeIcon icon={faPlus} size={20} color="black" />
           </TouchableOpacity>

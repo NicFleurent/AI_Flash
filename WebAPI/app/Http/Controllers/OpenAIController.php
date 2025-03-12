@@ -41,6 +41,7 @@ class OpenAIController extends Controller
 
             $content = $responseBody['choices'][0]['message']['content'];
             $content = preg_replace('/^```python|\n?```$/', '', $content);
+            $content = preg_replace('/^```json|\n?```$/', '', $content);
             Log::debug("Content " . $content);
 
             return $content;
