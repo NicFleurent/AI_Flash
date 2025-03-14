@@ -67,7 +67,7 @@
     "register_error_password_numbers":"Le mot de passe doit contenir au moins un chiffre",
     "register_error_password_symbols":"Le mot de passe doit avoir un caractère spécial",
     "error_signup":"La création de compte à échouée",
-    "successful_logout":"Déconnection réussie",
+    "successful_logout":"Déconnexion réussie",
     "error_logout":"La déconnexion à échouée",
     "successful_update":"Le compte a été mis à jour",
     "error_update":"La modification a échouée",
