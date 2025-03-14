@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     marginTop: 10,
+    paddingHorizontal: 20,
   },
   fontIcon: {
     color: "green",

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Provider } from 'react-redux';
 import { refreshToken } from './api/user';
-import { getLocalData } from "./api/asyncStorage.js";
+import {getLocalData, saveLocalData } from "./api/asyncStorage.js";
 import Account from "./pages/account/Account";
 import Explore from "./pages/publics_pages/Explore";
 import store from './stores/store';
@@ -22,33 +22,49 @@ import NewCollectionChooseOptions from "./pages/collections/NewCollectionChooseO
 import AddCollectionByMyself from "./pages/collections/AddCollectionByMyself";
 import AddCollectionByAi from "./pages/collections/AddCollectionByAi";
 import Flashcards from "./pages/flashcards/Flashcards";
+import OnboardingUn from "./pages/onboarding/OnboardingUn.js";
+import OnboardingDeux from "./pages/onboarding/OnboardingDeux.js";
+import OnboardingTrois from "./pages/onboarding/OnboardingTrois.js";
+import SplashScreen from "./pages/SplashScreen.js";
 
 export default function App() {
   const {t, i18n} = useTranslation();
-  const [landingPage, setLandingPage] = useState("Auth");
+  const [landingPage, setLandingPage] = useState("SplashScreen");
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
-    isUserLoggedIn();
-  },[])
-
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        const language = await getLocalData("language");
+        if (language?.value) {
+          i18n.changeLanguage(language.value);
+        }
   
-  useEffect(()=>{
-    const getParams = async () =>{
-      const language = await getLocalData("language");
-      i18n.changeLanguage(language.value);
-    }
-    getParams()
-  },[])
-
-  const isUserLoggedIn = async ()=>{
+        const isFirstInstallation = await getLocalData("firstInstall");
+        if (isFirstInstallation === false) {
+          await isUserLoggedIn();
+        } else {
+          await saveLocalData("firstInstall", false);
+          setLandingPage("OnboardingShow");
+        }
+      } catch (error) {
+        console.error("Initialization error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    initializeApp();
+  }, []);
+  
+  const isUserLoggedIn = async () => {
     try {
       const response = await refreshToken();
       setLandingPage("Menu");
     } catch (error) {
-      console.log(error)
       setLandingPage("Auth");
     }
-  }
+  };
 
   const collectionsStack =createNativeStackNavigator({
     initialRouteName:"NewCollectionChooseOptions",
@@ -99,6 +115,24 @@ export default function App() {
       },
       SignIn: {
         screen: SignIn,
+      },
+    }
+  });
+
+  const onboardingStack = createNativeStackNavigator({
+    initialRouteName:"OnboardingUn",
+    screenOptions:{
+      headerShown:false
+    },
+    screens:{
+      OnboardingUn: {
+        screen: OnboardingUn,
+      },
+      OnboardingDeux: {
+        screen: OnboardingDeux,
+      },
+      OnboardingTrois: {
+        screen: OnboardingTrois,
       },
     }
   });
@@ -235,7 +269,19 @@ export default function App() {
         options:{
           headerShown:false
         }
-      }
+      },
+      OnboardingShow:{
+        screen: onboardingStack,
+        options:{
+          headerShown: false
+        }
+      },
+      SplashScreen:{
+        screen: SplashScreen,
+        options:{
+          headerShown:false
+        }
+      },
     },
   });
 
