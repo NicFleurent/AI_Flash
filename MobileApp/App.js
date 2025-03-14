@@ -121,6 +121,9 @@ export default function App() {
         screen: Flashcards,
       },
     }
+
+
+    
   });
 
   const bottomTabs = createBottomTabNavigator({
