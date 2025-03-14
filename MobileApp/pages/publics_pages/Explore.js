@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { StatusBar, StyleSheet, FlatList, View, Platform } from "react-native";
+import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator } from "react-native"; // Ajoutez ActivityIndicator ici
 import CardCollection from "../../components/publics_pages_components/CardCollection";
 import CustomInput from "../../components/CustomInput";
 import { useWindowDimensions } from "react-native";
@@ -12,6 +12,7 @@ import AlertModal from "../../components/AlertModal";
 import { useTranslation } from "react-i18next";
 import { getPublicCollections } from "../../api/collection";
 import { saveToStorage } from "../../api/secureStore";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Explore = () => {
   const [search, onChangeSearch] = useState("");
@@ -23,6 +24,7 @@ const Explore = () => {
   const createSubjectRef = useRef(null);
   const [collections, setCollections] = useState([]);
   const [selectItem, setSelectItem] = useState({});
+  const [isLoading, setIsLoading] = useState(true); // Ajoutez un état pour le chargement
 
   useEffect(() => {
     const setPublicCollections = async () => {
@@ -31,11 +33,32 @@ const Explore = () => {
         setCollections(result);
       } catch (error) {
         console.error(error.message);
+      } finally {
+        setIsLoading(false); 
       }
     };
 
     setPublicCollections();
   }, []);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const setPublicCollections = async () => {
+  //       setIsLoading(true); 
+  //       try {
+  //         const result = await getPublicCollections();
+  //         setCollections(result);
+  //       } catch (error) {
+  //         console.error(error.message);
+  //       } finally {
+  //         setIsLoading(false); 
+  //       }
+  //     };
+  
+  //     setPublicCollections();
+      
+  //   }, [])
+  // );
 
   const filteredCollections = useMemo(() => {
     if (!search) return collections; 
@@ -134,6 +157,12 @@ const Explore = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
+        {isLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
+
         <View style={{ marginTop: Platform.OS === "ios" ? 20 : 0 }}>
           <CustomInput
             label={t("explore.find")}
@@ -214,6 +243,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     pointerEvents: "box-none",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", 
+    zIndex: 9999, 
   },
 });
 
