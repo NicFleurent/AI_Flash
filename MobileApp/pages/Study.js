@@ -38,6 +38,9 @@ const Study = ({route}) => {
         if(route.params.source_page === 'Home'){
           if(route.params.study_type === t('home.flash_study')){
             const data = await getTodayFlashcards();
+            if(!data.flashcards){
+              navigation.popTo('Home', {error: t('home.today_card_failed')})
+            }
             setFlashcards(data.flashcards);
             setCurrentCard(0);
             setTimeout(()=>setFlipDuration(300), 100)
@@ -45,6 +48,9 @@ const Study = ({route}) => {
           else{
             if(route.params.collection){
               const data = await getCollectionTodayFlashCards(route.params.collection);
+              if(data.flashcards.length === 0){
+                navigation.popTo("Menu", { screen: "Home", params: {error: t('home.today_card_failed')}});
+              }
               setFlashcards(data.flashcards);
               setCurrentCard(0);
               setTimeout(()=>setFlipDuration(300), 100)
@@ -58,12 +64,7 @@ const Study = ({route}) => {
           setTimeout(()=>setFlipDuration(300), 100)
         }
       } catch (error) {
-        console.log(error)
-        Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: t('home.today_card_failed'),
-        });
+        navigation.popTo('Home', {error: t('home.today_card_failed')})
       }
       finally{
         setIsLoading(false);

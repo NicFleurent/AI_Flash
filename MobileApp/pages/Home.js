@@ -12,7 +12,7 @@ import { getTodayFlashcardsCount } from '../api/flashcard';
 import Toast from 'react-native-toast-message';
 import { setNeedsRefresh } from '../stores/sliceTodayFlashcards';
 
-const Home = () => {
+const Home = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {t} = useTranslation();
@@ -39,10 +39,23 @@ const Home = () => {
 
   useEffect(()=>{
     if(needsRefresh){
-      onRefresh()
-      dispatch(setNeedsRefresh(false));
+      const refreshData = async () => {
+        await onRefresh();  // Attend que le refresh soit terminé
+        dispatch(setNeedsRefresh(false));
+      };
+      refreshData();
     }
   },[needsRefresh])
+
+  useEffect(()=>{
+    if(route.params?.error){
+      Toast.show({
+        type: 'error',
+        text1: t('ERROR'),
+        text2: route.params.error,
+      });
+    }
+  },[route?.params])
 
   const getCollections = async () => {
     try {
@@ -131,9 +144,10 @@ const Home = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    const resultCollection = await getCollections();
     const resultCount = await getFlashcardsCount();
+    const resultCollection = await getCollections();
     setRefreshing(false);
+    return true;
   };
 
   return (
