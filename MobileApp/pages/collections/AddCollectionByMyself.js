@@ -87,8 +87,7 @@ const AddCollectionByMyself = ({ route }) => {
                     await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
 
-                //navigation.navigate("Subjects");
-                navigation.navigate("Menu", { screen: "Subjects" });
+                navigation.navigate("Subjects");
             }
         } catch (error) {
             console.log('Error: ' + error);

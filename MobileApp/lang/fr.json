@@ -1,133 +1,133 @@
 {
   "APP_NAME": "AI Flash",
   "APP_CATCHPHRASE": "Des flashcards pour une étude simplifiée",
-  "ERROR": "Erreur",
-  "SUCCESS": "Succès",
+  "ERROR":"Erreur",
+  "SUCCESS":"Succès",
   "COLLECTIONS": "Collections",
   "FLASHCARDS": "Flashcards",
-  "switch": {
-    "public": "Public"
+  "switch":{
+      "public":"Public"
+   },
+  "button":{
+    "goBack":"Retour",
+    "next":"Suivant",
+    "finish":"Terminer",
+    "add":"Créer",
+    "cancel":"Annuler",
+    "save":"Enregistrer",
+    "yes":"Oui",
+    "delete":"Supprimer",
+    "confirm":"Confirmer"
   },
-  "button": {
-    "goBack": "Retour",
-    "next": "Suivant",
-    "finish": "Terminer",
-    "add": "Créer",
-    "cancel": "Annuler",
-    "save": "Enregistrer",
-    "yes": "Oui",
-    "delete": "Supprimer",
-    "confirm": "Confirmer"
-  },
-  "input": {
-    "firstname": "Prénom",
-    "lastname": "Nom",
-    "email": "Adresse courriel",
-    "password": "Mot de passe",
-    "newPassword": "Nouveau mot de passe",
-    "passwordConfirm": "Confirmer le mot de passe",
-    "error": {
-      "firstname_required": "Le prénom est requis",
-      "lastname_required": "Le nom est requis",
-      "email_required": "L'adresse courriel est requise",
-      "email_invalid": "L'adresse courriel n'est pas valide",
-      "password_required": "Le mot de passe est requis",
-      "passwordConfirm_required": "Les mots de passe ne correspondent pas"
+  "input":{
+    "firstname":"Prénom",
+    "lastname":"Nom",
+    "email":"Adresse courriel",
+    "password":"Mot de passe",
+    "newPassword":"Nouveau mot de passe",
+    "passwordConfirm":"Confirmer le mot de passe",
+    "error":{
+      "firstname_required":"Le prénom est requis",
+      "lastname_required":"Le nom est requis",
+      "email_required":"L'adresse courriel est requise",
+      "email_invalid":"L'adresse courriel n'est pas valide",
+      "password_required":"Le mot de passe est requis",
+      "passwordConfirm_required":"Les mots de passe ne correspondent pas"
     }
   },
-  "secureStore": {
-    "error": {
-      "save": "Erreur lors de la sauvegarde",
-      "get": "Erreur lors de la récupération",
-      "delete": "Erreur lors de la suppression"
+  "secureStore":{
+    "error":{
+      "save":"Erreur lors de la sauvegarde",
+      "get":"Erreur lors de la récupération",
+      "delete":"Erreur lors de la suppression"
     }
   },
-  "asyncStorage": {
-    "error": {
-      "save": "Erreur lors de la sauvegarde",
-      "get": "Erreur lors de la récupération",
-      "delete": "Erreur lors de la suppression"
+  "asyncStorage":{
+    "error":{
+      "save":"Erreur lors de la sauvegarde",
+      "get":"Erreur lors de la récupération",
+      "delete":"Erreur lors de la suppression"
     }
   },
-  "auth": {
-    "connection": "Connexion",
-    "login": "Se connecter",
-    "signin": "Inscription",
-    "register": "S'inscrire",
-    "logout": "Déconnexion",
-    "deleteAccount": "Supprimer le compte",
-    "changePassword": "Modifier mot de passe",
-    "invalid_credentials": "Le courriel ou le mot de passe n'est pas valide",
-    "login_error": "La connexion à échouée",
-    "register_error": "L'inscription à échouée",
-    "register_error_email_taken": "Cette adresse courriel est déjà prise",
-    "register_error_password_min": "Le mot de passe doit contenir au moins 7 caractères",
-    "register_error_password_letters": "Le mot de passe doit contenir au moins une lettre",
-    "register_error_password_mixed": "Le mot de passe doit avoir des majuscules et minuscules",
-    "register_error_password_numbers": "Le mot de passe doit contenir au moins un chiffre",
-    "register_error_password_symbols": "Le mot de passe doit avoir un caractère spécial",
-    "error_signup": "La création de compte à échouée",
-    "successful_logout": "Déconnection réussie",
-    "error_logout": "La déconnexion à échouée",
-    "successful_update": "Le compte a été mis à jour",
-    "error_update": "La modification a échouée",
-    "successful_update_password": "Le mot de passe a été mis à jour",
-    "successful_delete": "Le compte a été supprimé",
-    "error_delete": "La suppression a échouée"
+  "auth":{
+    "connection":"Connexion",
+    "login":"Se connecter",
+    "signin":"Inscription",
+    "register":"S'inscrire",
+    "logout":"Déconnexion",
+    "deleteAccount":"Supprimer le compte",
+    "changePassword":"Modifier mot de passe",
+    "invalid_credentials":"Le courriel ou le mot de passe n'est pas valide",
+    "login_error":"La connexion à échouée",
+    "register_error":"L'inscription à échouée",
+    "register_error_email_taken":"Cette adresse courriel est déjà prise",
+    "register_error_password_min":"Le mot de passe doit contenir au moins 7 caractères",
+    "register_error_password_letters":"Le mot de passe doit contenir au moins une lettre",
+    "register_error_password_mixed":"Le mot de passe doit avoir des majuscules et minuscules",
+    "register_error_password_numbers":"Le mot de passe doit contenir au moins un chiffre",
+    "register_error_password_symbols":"Le mot de passe doit avoir un caractère spécial",
+    "error_signup":"La création de compte à échouée",
+    "successful_logout":"Déconnexion réussie",
+    "error_logout":"La déconnexion à échouée",
+    "successful_update":"Le compte a été mis à jour",
+    "error_update":"La modification a échouée",
+    "successful_update_password":"Le mot de passe a été mis à jour",
+    "successful_delete":"Le compte a été supprimé",
+    "error_delete":"La suppression a échouée"
   },
-  "account": {
-    "title": "Votre compte",
-    "logout_confirm": "Voulez-vous vraiment vous déconnecter?",
-    "logout_success": "Déconnection réussie",
-    "logout_error": "La déconnection a échouée",
-    "update": "Enregistrer",
-    "update_confirm": "Voulez-vous enregistrer ces nouvelles informations?",
-    "update_success": "Le compte a été mis à jour",
-    "update_error": "La modification a échouée",
-    "delete_confirm": "Voulez-vous vraiment supprimer votre compte?",
-    "languages": "Langues",
-    "delete_success": "Le compte a été supprimé",
-    "delete_error": "Le compte n'a pas pu être supprimé",
-    "updatePassword_success": "Votre mot de passe a été modifié",
-    "updatePassword_error": "La modification de mot de passe a échouée",
-    "updatePassword_wrongPassword_error": "Le mot de passe n'est pas valide"
+  "account":{
+    "title":"Votre compte",
+    "logout_confirm":"Voulez-vous vraiment vous déconnecter?",
+    "logout_success":"Déconnection réussie",
+    "logout_error":"La déconnection a échouée",
+    "update":"Enregistrer",
+    "update_confirm":"Voulez-vous enregistrer ces nouvelles informations?",
+    "update_success":"Le compte a été mis à jour",
+    "update_error":"La modification a échouée",
+    "delete_confirm":"Voulez-vous vraiment supprimer votre compte?",
+    "languages":"Langues",
+    "delete_success":"Le compte a été supprimé",
+    "delete_error":"Le compte n'a pas pu être supprimé",
+    "updatePassword_success":"Votre mot de passe a été modifié",
+    "updatePassword_error":"La modification de mot de passe a échouée",
+    "updatePassword_wrongPassword_error":"Le mot de passe n'est pas valide"
   },
-  "language_modal": {
-    "title": "Langues",
-    "warning": "Attention, changer la langue redémarrera l'application"
+  "language_modal":{
+    "title":"Langues",
+    "warning":"Attention, changer la langue redémarrera l'application"
   },
-  "home": {
-    "title": "Accueil",
-    "hello": "Bonjour",
-    "today": "Aujourd'hui",
-    "remaining_flashcards": "flashcards restantes",
-    "flash_study": "Étude rapide",
-    "no_card_to_study": "Aucune cartes à étudier",
-    "detailed_studies": "Études détaillées",
-    "no_studies_today": "Aucune étude à faire aujourd'hui",
-    "today_collection_failed": "Erreur lors de l'affichage des collections",
-    "today_card_count_failed": "Erreur lors de l'affichage du total des flashcards",
-    "today_card_failed": "Erreur lors de l'affichage des flashcards"
+  "home":{
+    "title":"Accueil",
+    "hello":"Bonjour",
+    "today":"Aujourd'hui",
+    "remaining_flashcards":"flashcards restantes",
+    "flash_study":"Étude rapide",
+    "no_card_to_study":"Aucune cartes à étudier",
+    "detailed_studies":"Études détaillées",
+    "no_studies_today":"Aucune étude à faire aujourd'hui",
+    "today_collection_failed":"Erreur lors de l'affichage des collections",
+    "today_card_count_failed":"Erreur lors de l'affichage du total des flashcards",
+    "today_card_failed":"Erreur lors de l'affichage des flashcards"
   },
-  "study": {
-    "remembered": "Je m'en souvenais",
-    "forgotten": "J'avais oublié",
-    "flashcard_error": "La sauvegarde de l'étude à échouée"
+  "study":{
+    "remembered":"Je m'en souvenais",
+    "forgotten":"J'avais oublié",
+    "flashcard_error":"La sauvegarde de l'étude à échouée"
   },
-  "subject": {
-    "title": "Vos matières",
-    "description": "Description",
-    "input": {
-      "title_modal_add": "Ajouter une matière",
-      "title_modal_edit": "Modifier une matière",
-      "title_modal_delete": "Supprimer une matière",
-      "modal_delete": "Voulez-vous vraiment supprimer la matière ",
-      "title_input": "Nom de la matière",
-      "title_input_collection": "Nom de la collection"
+  "subject":{
+    "title":"Vos matières",
+    "description":"Description",
+    "input":{
+      "title_modal_add":"Ajouter une matière",
+      "title_modal_edit":"Modifier une matière",
+      "title_modal_delete":"Supprimer une matière",
+      "modal_delete":"Voulez-vous vraiment supprimer la matière ",
+      "title_input":"Nom de la matière",
+      "title_input_collection":"Nom de la collection"
     },
-    "error": {
-      "title_input_required": "Le nom de la matière est requis",
-      "title_input_required_collections": "Le nom de la matière est requis",
+    "error":{
+      "title_input_required":"Le nom de la matière est requis",
+      "title_input_required_collections":"Le nom de la matière est requis",
       "create": {
         "success": "Matière créée avec succès",
         "error": "Erreur lors de la création de la matière"
@@ -143,13 +143,13 @@
     },
     "collections": {
       "title": "Vos collections pour cette matière",
-      "input": {
-        "title_modal_add": "Ajouter une collection",
-        "title_modal_edit": "Modifier une collection",
-        "title_modal_delete": "Supprimer une collection",
-        "modal_delete": "Voulez-vous vraiment supprimer la collection ",
-        "title_modal": "Modifier une matière",
-        "title_input": "Nom de la matière"
+      "input":{
+        "title_modal_add":"Ajouter une collection",
+        "title_modal_edit":"Modifier une collection",
+        "title_modal_delete":"Supprimer une collection",
+        "modal_delete":"Voulez-vous vraiment supprimer la collection ",
+        "title_modal":"Modifier une matière",
+        "title_input":"Nom de la collection"
       },
       "error": {
         "create": {
@@ -167,86 +167,68 @@
       }
     }
   },
-  "explore": {
-    "title": "Explorez",
-    "find": "Rechercher",
-    "bottom_sheet": {
-      "copy": "Copier",
-      "add": "Ajouter",
-      "copy_made": "Copie effectuée",
-      "copy_made_description": "Collection copiée! Vous pouvez maintenant la réviser",
-      "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
-      "add_to_existing_subject": "Ajouter à une matière existante",
-      "create_new_subject": "Créer une nouvelle matière",
-      "select_subject": "Sélectionner la matière",
-      "add_subject": "Nouvelle matière",
-      "subject_name": "Nom de la matière",
-      "author": "Créée par",
-      "error_while_retrieving_subjects": "Erreur lors de la récupération des matières :",
-      "error_while_copying_the_collection": "Erreur lors de la copie de la collection :"
+    "explore":{
+      "title": "Explorez",
+      "find": "Rechercher",
+      "bottom_sheet":{
+        "copy": "Copier",
+        "add": "Ajouter",
+        "copy_made": "Copie effectuée",
+        "copy_made_description":"Collection copiée! Vous pouvez maintenant la réviser",
+        "choose": "Souhaitez-vous l’ajouter à une matière déjà existante ou en créer une nouvelle ?",
+        "add_to_existing_subject": "Ajouter à une matière existante",
+        "create_new_subject": "Créer une nouvelle matière",
+        "select_subject":"Sélectionner la matière",
+        "add_subject": "Nouvelle matière",
+        "subject_name": "Nom de la matière",
+        "author": "Créée par",
+        "error_while_retrieving_subjects": "Erreur lors de la récupération des matières :",
+        "error_while_copying_the_collection": "Erreur lors de la copie de la collection :"
+      }
+    }, 
+    "add_collection_by_ai":{
+        "add_file": "Ajouter un fichier",
+        "button": "Générer des cartes",
+        "success": "Collection générée par IA avec succès"
+    },
+    "add_collection_by_myself":{
+        "collection_name_required": "Le nom de la collection est requis.",
+        "success": "Succès",
+        "collection_and_flashcards_created": "Collection et flashcards créées avec succès !",
+        "error": "Erreur",
+        "something_went_wrong": "Quelque chose s'est mal passé.",
+        "collection_name": "Nom de la collection",
+        "new_card": "Nouvelle carte",
+        "save_collection": "Enregistrer la collection"
+    },
+    "bottom_sheet_add_flashcard":{
+        "face": "Face",
+        "back": "Endos",
+        "face_required": "La face est requise.",
+        "back_required": "L'endos est requis.",
+        "edit_card": "Modifier la carte",
+        "add_card": "Ajouter la carte"
+    },
+    "new_collection_choose_options":{
+      "choose_how_to_generate": "Comment voulez-vous générer vos cartes?",
+      "by_myself": "Par moi-même",
+      "from_document": "À partir d'un document"
+    },
+    "flashcards": {
+      "title": "Cartes mémoire",
+      "loading": "Chargement en cours...",
+      "error": "Impossible de charger les flashcards. Veuillez réessayer.",
+      "retry": "Réessayer",
+      "empty": "Aucune flashcard disponible.",
+      "study": "Étudier",
+      "delete_confirmation": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer cette flashcard ?",
+        "cancel": "Annuler",
+        "delete": "Supprimer"
+      },
+      "delete_success": "La flashcard a été supprimée avec succès.",
+      "delete_error": "La suppression de la flashcard a échouée.",
+      "deleting": "Suppression en cours..."
     }
-  },
-  "add_collection_by_myself": {
-    "collection_name_required": "Le nom de la collection est requis.",
-    "success": "Succès",
-    "collection_and_flashcards_created": "Collection et flashcards créées avec succès !",
-    "error": "Erreur",
-    "something_went_wrong": "Quelque chose s'est mal passé.",
-    "collection_name": "Nom de la collection",
-    "new_card": "Nouvelle carte",
-    "save_collection": "Enregistrer la collection"
-  },
-  "bottom_sheet_add_flashcard": {
-    "face": "Face",
-    "back": "Endos",
-    "face_required": "La face est requise.",
-    "back_required": "L'endos est requis.",
-    "edit_card": "Modifier la carte",
-    "add_card": "Ajouter la carte"
-  },
-  "new_collection_choose_options": {
-    "choose_how_to_generate": "Comment voulez-vous générer vos cartes?",
-    "by_myself": "Par moi-même",
-    "from_document": "À partir d'un document"
-  },
-  "flashcards": {
-    "title": "Cartes mémoire",
-    "loading": "Chargement en cours...",
-    "error": "Impossible de charger les flashcards. Veuillez réessayer.",
-    "retry": "Réessayer",
-    "empty": "Aucune flashcard disponible.",
-    "study": "Étudier",
-    "delete_confirmation": {
-      "title": "Confirmer la suppression",
-      "message": "Êtes-vous sûr de vouloir supprimer cette flashcard ?",
-      "cancel": "Annuler",
-      "delete": "Supprimer"
-    },
-    "delete_success": "La flashcard a été supprimée avec succès.",
-    "delete_error": "La suppression de la flashcard a échouée.",
-    "deleting": "Suppression en cours..."
-  },
-  "onboarding": {
-    "page_one": {
-      "title": "Apprenez plus vite, retenez plus longtemps !",
-      "subtitle": "Optimisez votre étude avec des flashcards intelligentes et une révision efficace.",
-      "next_button": "Suivant",
-      "login_text": "Déjà un utilisateur ?",
-      "login_link": "Connectez-vous!"
-    },
-    "page_two": {
-      "title": "Vos cours transformés en flashcards intelligentes.",
-      "subtitle": "Importez vos notes et laissez l’IA générer vos cartes de révision en quelques secondes.",
-      "next_button": "Suivant",
-      "login_text": "Déjà un utilisateur ?",
-      "login_link": "Connectez-vous!"
-    },
-    "page_three": {
-      "title": "Révisez au bon moment, réussissez plus facilement !",
-      "subtitle": "Suivez une planification basée sur la courbe de l’oubli pour une mémorisation durable.",
-      "finish_button": "Terminer",
-      "login_text": "Déjà un utilisateur ?",
-      "login_link": "Connectez-vous!"
-    }
-  }
-}
+  }    

@@ -1,5 +1,5 @@
 import { View,Platform, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CustomInput from '../../components/CustomInput'
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,6 @@ const Account = () => {
   const [isModalUpdatePwdVisible, setIsModalUpdatePwdVisible] = useState(false);
   const [isModalLanguageVisible, setIsModalLanguageVisible] = useState(false);
 
-  const [user, setUser] = useState({});
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -48,7 +47,6 @@ const Account = () => {
     setFirstname(user.firstname);
     setLastname(user.lastname);
     setEmail(user.email);
-    setUser(user);
   }
 
   const onChangeText = (value, setInput) => {
@@ -60,13 +58,7 @@ const Account = () => {
 
   const openUpdateAlert = () => {
     if (validateForm()) {
-      if(email != user.email || firstname != user.firstname || lastname != user.lastname)
-        setIsModalUpdateVisible(true);
-      else
-        Toast.show({
-          type: 'error',
-          text1: t('account.no_update')
-        });
+      setIsModalUpdateVisible(true);
     }
   }
 

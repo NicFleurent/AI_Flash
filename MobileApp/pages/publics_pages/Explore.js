@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator } from "react-native";
+import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator } from "react-native"; // Ajoutez ActivityIndicator ici
 import CardCollection from "../../components/publics_pages_components/CardCollection";
 import CustomInput from "../../components/CustomInput";
 import { useWindowDimensions } from "react-native";
@@ -40,6 +40,25 @@ const Explore = () => {
 
     setPublicCollections();
   }, []);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const setPublicCollections = async () => {
+  //       setIsLoading(true); 
+  //       try {
+  //         const result = await getPublicCollections();
+  //         setCollections(result);
+  //       } catch (error) {
+  //         console.error(error.message);
+  //       } finally {
+  //         setIsLoading(false); 
+  //       }
+  //     };
+  
+  //     setPublicCollections();
+      
+  //   }, [])
+  // );
 
   const filteredCollections = useMemo(() => {
     if (!search) return collections; 
@@ -140,7 +159,7 @@ const Explore = () => {
       <View style={styles.container}>
         {isLoading && (
           <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="#1DB954" />
+            <ActivityIndicator size="large" color="#0000ff" />
           </View>
         )}
 
