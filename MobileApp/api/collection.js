@@ -77,13 +77,13 @@ export const createCollection = async (subject_id, collection_name) => {
   }
 };
 
-export const updateCollection = async (collection_id, collection_name) => {
+export const updateCollection = async (collection_id, collection_name, collection_isPublic) => {
   const user = await getLocalUser()
   const token = user?.token
   try {
     const response = await fetch(`${baseUrl}updateCollection`, {
       method: 'POST',
-      body: JSON.stringify({ collection_id: collection_id, collection_name: collection_name }),
+      body: JSON.stringify({ collection_id: collection_id, collection_name: collection_name, collection_isPublic: collection_isPublic }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -188,28 +188,29 @@ export const copyCollection = async (collection_id, subject_id, user_id) => {
   }
 };
 
-export const toggleCollectionVisibility = async (collection_id) => {
-  const user = await getLocalUser();
-  const token = user?.token;
+// export const toggleCollectionVisibility = async (collection_id) => {
+//   const user = await getLocalUser();
+//   const token = user?.token;
 
-  try {
-    const response = await fetch(`${baseUrl}collections/${collection_id}/toggle-visibility`, {
-      method: 'PUT',
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
+//   try {
+//     console.log("IN TOGGLE VISIBILITY API REACT NATIVE")
+//     const response = await fetch(`${baseUrl}collections/${collection_id}/toggle-visibility`, {
+//       method: 'PUT',
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`,
+//       },
+//     });
 
-    const data = await response.json();
-
-    if (response.status === 200) {
-      return data;
-    } else {
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+//     const data = await response.json();
+//     if (response.status === 200) {
+//       return data;
+//     } else {
+//       throw new Error(data.message);
+//     }
+//   } catch (error) {
+//     console.log(error.message)
+//     throw new Error(error.message);
+//   }
+// };

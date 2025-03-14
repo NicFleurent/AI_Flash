@@ -29,6 +29,10 @@ const Flashcards = ({ route }) => {
         );
     };
 
+    const handleAddFlashCard = (card) => {
+        //setFlashCards([...flashCards, card]);
+    };
+
     const openBottomSheet = useCallback(() => {
         addFlashcardRef.current?.expand();
     }, []);
@@ -163,6 +167,7 @@ const Flashcards = ({ route }) => {
                 <View style={styles.overlay}>
                     <AddFlashCardBottomSheet
                         ref={addFlashcardRef}
+                        onAddFlashCard={handleAddFlashCard}
                         isRemoteAddFlashcard = {true}
                         collectionId={item.id}
                     />

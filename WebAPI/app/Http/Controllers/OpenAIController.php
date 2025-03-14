@@ -11,9 +11,7 @@ class OpenAIController extends Controller
     public function getAIflashcards($question)
     {
         try {
-            Log::debug('OPENAI CONTROLLER - ' . $question);
             $key = env('OPENAI_API_KEY');
-
             $client = new Client();
 
             $payload = [
@@ -37,24 +35,15 @@ class OpenAIController extends Controller
             ]);
 
             $responseBody = json_decode($response->getBody()->getContents(), true);
-            Log::debug("Body " . $responseBody['choices'][0]['message']['content']);
 
             $content = $responseBody['choices'][0]['message']['content'];
-            $content = preg_replace('/^```python|\n?```$/', '', $content);
-            Log::debug("Content " . $content);
+            $content = preg_replace('/^```(?:python|json)?\s?/m', '', $content);
+            $content = preg_replace('/```$/m', '', $content);
 
             return $content;
-
-            // return response()->json([
-            //     'message' => 'Question recuuuu et voici réponse',
-            //     'answer' => $content
-            // ]);
         } catch (\Throwable $e) {
             Log::debug("Error - " . $e->getMessage());
             return 'erreur';
-            // return response()->json([
-            //     'message' => 'Erreur - ' . $e->getMessage()
-            // ], 500);
         }
     }
 }

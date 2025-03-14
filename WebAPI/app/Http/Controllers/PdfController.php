@@ -21,8 +21,6 @@ class PdfController extends Controller
             $pdf = $parser->parseFile($pdfFile->getPathname());
             $text = $pdf->getText();
 
-            Log::debug('PDF CONTROLLER text- '. $text);
-
             $response = $open->getAIflashcards($text);
 
             return response()->json([

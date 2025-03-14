@@ -24,7 +24,7 @@ export const sendPdf = async (file) => {
       });
   
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       return result;
     } catch (error) {
       console.error("Erreur lors de l'envoi du fichier :", error);
