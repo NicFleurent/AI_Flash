@@ -20,12 +20,14 @@
         <div class="main-container">
             <label for="email">Adresse courriel:</label>
             <input type="text" class="form-control" id="email" name="email" required>
+            @if($errors->has('email'))
+                <div class="alert-custom">{{ $errors->first('email') }}</div>
+            @endif
 
             <label for="password">Mot de passe:</label>
             <input type="password" class="form-control" id="password" name="password" required>
-
-            @if($errors->has('email'))
-                <div class="alert-custom">{{ $errors->first('email') }}</div>
+            @if($errors->has('password'))
+                <div class="alert-custom">{{ $errors->first('password') }}</div>
             @endif
 
             <button type="submit" class="button">Se connecter</button>
