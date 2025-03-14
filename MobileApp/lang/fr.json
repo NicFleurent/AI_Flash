@@ -125,7 +125,6 @@
       "title_input": "Nom de la matière",
       "title_input_collection": "Nom de la collection"
     },
-    },
     "error": {
       "title_input_required": "Le nom de la matière est requis",
       "title_input_required_collections": "Le nom de la matière est requis",
