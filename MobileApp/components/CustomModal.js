@@ -23,6 +23,7 @@ const CustomModal = ({
   isCancel,
   onPressCancel,
   modalTitle,
+  inputTitle,
   deleteMessage,
   isPublic,
   setIsPublic
@@ -59,7 +60,7 @@ const CustomModal = ({
                 )) ||
 
                   <CustomInput
-                    label={t("subject.input.title_input")}
+                    label={inputTitle}
                     value={input}
                     onChangeText={setInput}
                     isPassword={false}

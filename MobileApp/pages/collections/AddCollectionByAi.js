@@ -99,7 +99,7 @@ const AddCollectionByAi = ({ route }) => {
                 const parseAnswer = JSON.parse(response.answer)
 
                 const objectkeys = Object.entries(parseAnswer).map(([key, value]) => ({
-                    id: Date.now(),
+                    id: `${Date.now()}-${Math.random()}`,
                     front_face: key,
                     back_face: value,
                     last_revision_date: dateDuJour,
@@ -107,7 +107,7 @@ const AddCollectionByAi = ({ route }) => {
                     forgetting_curve_stage: 0
                 }));
 
-                console.log("Object entries " +  objectkeys)
+                console.log("Object entries ",  objectkeys)
                 setFlashCards(objectkeys)
             }
 
@@ -117,6 +117,7 @@ const AddCollectionByAi = ({ route }) => {
             console.error("Erreur lors de l'envoi du fichier :", error);
         } finally {
             setIsLoading(false);
+            console.log(flashCards)
         }
     };
 
@@ -127,6 +128,7 @@ const AddCollectionByAi = ({ route }) => {
     };
 
     const handleDeleteFlashCard = (id) => {
+        console.log(id)
         Alert.alert(
             t('flashcards.delete_confirmation.title'),
             t('flashcards.delete_confirmation.message'),
@@ -185,7 +187,7 @@ const AddCollectionByAi = ({ route }) => {
                 title={item.front_face}
                 description={item.back_face}
                 isEditable={true}
-                handleDelete={() => handleDeleteFlashCard(index)}
+                handleDelete={() => handleDeleteFlashCard(item.id)}
                 handleEdit={() => openBottomSheet(item)}
             />
         )
