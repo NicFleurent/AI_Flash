@@ -179,13 +179,13 @@ const AddCollectionByAi = ({ route }) => {
         }
     };
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item, index }) => {
         return (
             <FLashCard
                 title={item.front_face}
                 description={item.back_face}
                 isEditable={true}
-                handleDelete={() => handleDeleteFlashCard(item.id)}
+                handleDelete={() => handleDeleteFlashCard(index)}
                 handleEdit={() => openBottomSheet(item)}
             />
         )
@@ -220,7 +220,7 @@ const AddCollectionByAi = ({ route }) => {
                         <FlatList
                             style={styles.flatList}
                             renderItem={renderItem}
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item, index) => index}
                             data={flashCards}
                             numColumns={1}
                             contentContainerStyle={styles.flatListContent}
