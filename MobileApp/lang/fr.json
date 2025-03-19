@@ -73,7 +73,8 @@
     "error_update": "La modification a échouée",
     "successful_update_password": "Le mot de passe a été mis à jour",
     "successful_delete": "Le compte a été supprimé",
-    "error_delete": "La suppression a échouée"
+    "error_delete": "La suppression a échouée",
+    "too_many_attempts": "Trop d'essais effectué"
   },
   "account": {
     "title": "Votre compte",
