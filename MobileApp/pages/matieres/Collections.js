@@ -205,7 +205,6 @@ const Collections = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView> */}
       <View>
         <Text style={styles.titre}>{t("subject.collections.title")}</Text>
 
@@ -256,7 +255,6 @@ const Collections = ({ route }) => {
           color="#1DB954"
         />
       )}
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

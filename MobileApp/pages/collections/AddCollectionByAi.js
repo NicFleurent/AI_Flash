@@ -34,7 +34,6 @@ const AddCollectionByAi = ({ route }) => {
     const [flashCards, setFlashCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [erreurs, setErreurs] = useState({});
-    const [change, setChange] = useState(false)
 
     const pickFile = async () => {
         try {
@@ -107,7 +106,6 @@ const AddCollectionByAi = ({ route }) => {
                     forgetting_curve_stage: 0
                 }));
 
-                console.log("Object entries ",  objectkeys)
                 setFlashCards(objectkeys)
             }
 
@@ -117,7 +115,6 @@ const AddCollectionByAi = ({ route }) => {
             console.error("Erreur lors de l'envoi du fichier :", error);
         } finally {
             setIsLoading(false);
-            console.log(flashCards)
         }
     };
 
@@ -128,7 +125,6 @@ const AddCollectionByAi = ({ route }) => {
     };
 
     const handleDeleteFlashCard = (id) => {
-        console.log(id)
         Alert.alert(
             t('flashcards.delete_confirmation.title'),
             t('flashcards.delete_confirmation.message'),
@@ -155,7 +151,6 @@ const AddCollectionByAi = ({ route }) => {
 
     const openBottomSheet = useCallback((card) => {
         setEditingCard(card);
-        console.log(editingCard)
         addFlashcardRef.current?.expand();
     }, []);
 
