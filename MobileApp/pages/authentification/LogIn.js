@@ -43,14 +43,20 @@ const LogIn = () => {
 
       } catch (error) {
         const errorMessage = error.message
-        if(errorMessage == "Too Many Attempts."){
-          errorMessage = t("auth.too_many_attempts");
+        if(errorMessage === "Too Many Attempts."){
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('auth.too_many_attempts'),
+          });
         }
-        Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: t(errorMessage),
-        });
+        else{
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t(errorMessage),
+          });
+        }
       }
       finally{
         setIsLoading(false)
