@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, StyleSheet, FlatList, TouchableOpacity, Button, useWindowDimensions } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Button, useWindowDimensions } from "react-native";
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
@@ -145,15 +145,19 @@ const Subjects = () => {
     }
 
     useEffect(() => {
-        try {
-            setIsLoading(true)
-            getUserSubjects()
-            setInput("")
-        } catch (error) {
-            console.log("Erreru - ", error)
-        } finally {
-            setIsLoading(false);
-        }
+        const fetchCollections = async () => {
+            setIsLoading(true);  
+            try {
+              const response = await getUserSubjects();
+              setInput("")
+            } catch (error) {
+              console.log("Error: ", error);
+            } finally {
+              setIsLoading(false);  
+            }
+          };
+        
+          fetchCollections();
     }, [])
 
     useEffect(() => {
@@ -207,6 +211,7 @@ const Subjects = () => {
                 onPressCreate={create}
                 onPressEdit={edit}
                 onPressDelete={drop}
+                inputTitle={t("subject.input.title_input")}
                 modalTitle={t("subject.input.title_modal_" + type_modal)}
                 deleteMessage={t("subject.input.modal_delete")}
             />

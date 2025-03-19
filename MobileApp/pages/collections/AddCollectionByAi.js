@@ -34,7 +34,6 @@ const AddCollectionByAi = ({ route }) => {
     const [flashCards, setFlashCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [erreurs, setErreurs] = useState({});
-    const [change, setChange] = useState(false)
 
     const pickFile = async () => {
         try {
@@ -99,7 +98,7 @@ const AddCollectionByAi = ({ route }) => {
                 const parseAnswer = JSON.parse(response.answer)
 
                 const objectkeys = Object.entries(parseAnswer).map(([key, value]) => ({
-                    id: Date.now(),
+                    id: `${Date.now()}-${Math.random()}`,
                     front_face: key,
                     back_face: value,
                     last_revision_date: dateDuJour,
@@ -107,7 +106,6 @@ const AddCollectionByAi = ({ route }) => {
                     forgetting_curve_stage: 0
                 }));
 
-                console.log("Object entries " +  objectkeys)
                 setFlashCards(objectkeys)
             }
 
@@ -153,7 +151,6 @@ const AddCollectionByAi = ({ route }) => {
 
     const openBottomSheet = useCallback((card) => {
         setEditingCard(card);
-        console.log(editingCard)
         addFlashcardRef.current?.expand();
     }, []);
 
@@ -179,7 +176,7 @@ const AddCollectionByAi = ({ route }) => {
         }
     };
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item, index }) => {
         return (
             <FLashCard
                 title={item.front_face}
@@ -220,7 +217,7 @@ const AddCollectionByAi = ({ route }) => {
                         <FlatList
                             style={styles.flatList}
                             renderItem={renderItem}
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item, index) => index}
                             data={flashCards}
                             numColumns={1}
                             contentContainerStyle={styles.flatListContent}

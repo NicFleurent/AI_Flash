@@ -155,14 +155,18 @@ const Collections = ({ route }) => {
   };
 
   useEffect(() => {
-    try {
-      setIsLoading(true)
-      getUserCollections();
-    } catch (error) {
-      console.log("Erreru - ", error)
-    } finally {
-      setIsLoading(false);
-    }
+    const fetchCollections = async () => {
+      setIsLoading(true);  
+      try {
+        const response = await getUserCollections();
+      } catch (error) {
+        console.log("Error: ", error);
+      } finally {
+        setIsLoading(false);  
+      }
+    };
+  
+    fetchCollections();
   }, []);
 
   useEffect(() => {
@@ -193,7 +197,7 @@ const Collections = ({ route }) => {
         isPublic={true}
         isEditable={true}
         numberFlashcard={item.flashcards_count}
-        onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item, setChangeNewCollections: setChangeNewCollections } })}
+        onArrowPress={() => navigation.navigate("FlashcardsShow", { screen: "Flashcards", params: { item: item } })}
         onPenPress={() => [setTypeModal("edit"), setVisible(true), setInput(item.name), setCollectionId(item.id), setIsPublic(item.is_public)]}
       />
     );
@@ -201,7 +205,6 @@ const Collections = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView> */}
       <View>
         <Text style={styles.titre}>{t("subject.collections.title")}</Text>
 
@@ -229,6 +232,7 @@ const Collections = ({ route }) => {
           onPressEdit={edit}
           onPressDelete={drop}
           modalTitle={t("subject.collections.input.title_modal_" + type_modal)}
+          inputTitle={t("subject.collections.input.title_input")}
           deleteMessage={t("subject.collections.input.modal_delete")}
         />
 
@@ -251,7 +255,6 @@ const Collections = ({ route }) => {
           color="#1DB954"
         />
       )}
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
