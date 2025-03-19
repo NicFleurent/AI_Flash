@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 const NewCollectionChooseOptions = ({ route }) => {
   const navigation = useNavigation();
   const { item } = route.params || {};
-  const { setChangeNewCollections } = route.params || {};
   const { t } = useTranslation();
 
   return (
@@ -26,7 +25,7 @@ const NewCollectionChooseOptions = ({ route }) => {
         type="green-full"
         label={t("new_collection_choose_options.from_document")}
         onPress={() => {
-          navigation.navigate("AddCollectionByAi", { item: item, setChangeNewCollections: setChangeNewCollections });
+          navigation.navigate("AddCollectionByAi", { item: item });
         }}
       />
     </View>

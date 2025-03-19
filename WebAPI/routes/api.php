@@ -8,13 +8,14 @@ use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\PdfController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+RateLimiter::for('global', function (Request $request) {
+  return Limit::perMinute(5)->by($request->ip());
+});
 
-
-Route::post('login', [UsersController::class, 'login'])->name('login');
+Route::middleware('throttle:global')->post('login', [UsersController::class, 'login'])->name('login');
 Route::post('register', [UsersController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -2,14 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminUserController;
+use Illuminate\Http\Request;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+RateLimiter::for('global', function (Request $request) {
+  return Limit::perMinute(5)->by($request->ip());
+});
 
 Route::get('/', [AdminUserController::class, 'login']);
 Route::get('/login', [AdminUserController::class, 'login'])->name('login');
-Route::post('/connexion', [AdminUserController::class, 'connexion'])->name('connexion');
+Route::middleware('throttle:global')->post('/connexion', [AdminUserController::class, 'connexion'])->name('connexion');
 
 Route::middleware(['auth:admin'])->group(function () {
     Route::post('/logout', [AdminUserController::class, 'logout'])->name('logout');
