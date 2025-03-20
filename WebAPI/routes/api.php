@@ -15,6 +15,10 @@ RateLimiter::for('global', function (Request $request) {
   return Limit::perMinute(5)->by($request->ip());
 });
 
+RateLimiter::for('create_collections_limits', function ($request) {
+  return Limit::perMinute(5)->by($request->ip());
+});
+
 Route::middleware('throttle:global')->post('login', [UsersController::class, 'login'])->name('login');
 Route::post('register', [UsersController::class, 'register']);
 
@@ -46,12 +50,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::get('collections/today', [CollectionController::class, 'getTodayCollections'])->name('getTodayCollections');
   Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
-  Route::post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
+  Route::middleware('throttle:create_collections_limits')->post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
   Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
   Route::put('/collections/{collection}/toggle-visibility', [CollectionController::class, 'toggleCollectionVisibility'])->name('toggleCollectionVisibility');
   Route::post('/collections/copy', [CollectionController::class, 'copyCollection'])->name('copyCollection');
   Route::get('/collections/public', [CollectionController::class, 'getPublicCollections'])->name('getPublicCollections');
   Route::post('getAIflashcards', [OpenAIController::class, 'getAIflashcards'])->name('getAIflashcards');
-
 });
