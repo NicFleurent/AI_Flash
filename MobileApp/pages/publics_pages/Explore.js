@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator } from "react-native"; // Ajoutez ActivityIndicator ici
+import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator, RefreshControl } from "react-native"; // Ajoutez ActivityIndicator ici
 import CardCollection from "../../components/publics_pages_components/CardCollection";
 import CustomInput from "../../components/CustomInput";
 import { useWindowDimensions } from "react-native";
@@ -26,10 +26,29 @@ const Explore = () => {
   const createSubjectRef = useRef(null);
   const [collections, setCollections] = useState([]);
   const [selectItem, setSelectItem] = useState({});
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const updateExploreState = useSelector((state) => state.updateExplore.value);
   const dispatch = useDispatch();
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    const setPublicCollections = async () => {
+      setIsLoading(true); 
+      try {
+        const result = await getPublicCollections();
+        setCollections(result);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    setPublicCollections();
+    setRefreshing(false);
+    return true;
+  };
 
   useEffect(() => {
     const setPublicCollections = async () => {
@@ -48,18 +67,18 @@ const Explore = () => {
 
   useEffect(()=>{
     const setPublicCollections = async () => {
-        setIsLoading(true); 
-        try {
-          const result = await getPublicCollections();
-          setCollections(result);
-        } catch (error) {
-          console.error(error.message);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+      setIsLoading(true); 
+      try {
+        const result = await getPublicCollections();
+        setCollections(result);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      setPublicCollections();
+    setPublicCollections();
 
       dispatch(updateExplore(false));
   }, [updateExploreState]);
@@ -183,6 +202,12 @@ const Explore = () => {
           data={formattedData}
           numColumns={2}
           contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}
+              colors={["#1DB954"]}
+              tintColor="#1DB954"
+            />
+          }
         />
 
         <View style={styles.overlay}>

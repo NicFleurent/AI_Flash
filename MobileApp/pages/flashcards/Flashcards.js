@@ -8,6 +8,8 @@ import EditDeleteCardRemoteBottomSheet from '../../components/collections_compon
 import { useTranslation } from 'react-i18next';
 import AddFlashCardBottomSheet from '../../components/collections_components/bottoms_sheets/AddFlashCardBottomSheet';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setValueC } from '../../stores/sliceChangeCollections';
 
 const Flashcards = ({ route }) => {
     const navigation = useNavigation();
@@ -20,6 +22,7 @@ const Flashcards = ({ route }) => {
     const [error, setError] = useState(null);
     const [selectItem, setSelectItem] = useState({});
     const addFlashcardRef = useRef(null);
+    const dispatch = useDispatch();
 
     const handleEditFlashCard = (updatedCard) => {
         setFlashcards((prevFlashcards) =>
@@ -38,16 +41,22 @@ const Flashcards = ({ route }) => {
     }, []);
 
     const handleDeleteFlashCard = async (id) => {
-        setIsDeleting(true);
         Alert.alert(
             t("flashcards.delete_confirmation.title"),
             t("flashcards.delete_confirmation.message"),
             [
-                { text: t("button.cancel"), style: "cancel" },
+                { 
+                    text: t("button.cancel"), 
+                    style: "cancel", 
+                    onPress: () => {
+                        setIsDeleting(false);
+                    }
+                },
                 {
                     text: t("button.delete"),
                     onPress: async () => {
                         try {
+                            setIsDeleting(true);
                             await deleteFlashcard(id);
                             setFlashcards((prevFlashcards) =>
                                 prevFlashcards.filter((card) => card.id !== id)
@@ -58,6 +67,7 @@ const Flashcards = ({ route }) => {
                             Alert.alert(t("ERROR"), t("flashcards.delete_error"));
                         } finally {
                             setIsDeleting(false);
+                            dispatch(setValueC(true));
                         }
                     },
                 },

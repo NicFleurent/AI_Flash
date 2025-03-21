@@ -19,7 +19,7 @@ import { setValueC } from '../../stores/sliceChangeCollections';
 
 const AddCollectionByAi = ({ route }) => {
     const { t } = useTranslation()
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const { item } = route.params || {};
     const { setChangeNewCollections } = route.params || {};
     const navigation = useNavigation();
