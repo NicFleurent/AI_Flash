@@ -39,9 +39,12 @@ const Subjects = () => {
 
     const validateForm = () => {
         let tempErrors = [];
+        const regex = /^[\p{L}0-9\s\-_'/]+$/u;
 
         if (input === "")
             tempErrors.errorInput = t('subject.error.title_input_required');
+        else if (!regex.test(input))
+            tempErrors.errorInput = t('subject.error.title_input_invalid');
 
         setError(tempErrors);
         setIsError(!(Object.keys(tempErrors).length === 0))
@@ -76,12 +79,23 @@ const Subjects = () => {
                 setVisible(false)
             } catch (error) {
                 console.log('Error: ' + error)
+                setVisible(false)
+                setInput("")
 
-                Toast.show({
-                    type: 'error',
-                    text1: t('ERROR'),
-                    text2: t(error.message),
-                });
+                if (error.message === 'subject.error.rate_limit') {
+                    console.log("rate limit in edit: " + error)
+                    Toast.show({
+                        type: 'error',
+                        text1: t(error.message + ".text_un"),
+                        text2: t(error.message + ".text_deux"),
+                    });
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t(error.message)
+                    });
+                }
             }
         }
         else
@@ -105,13 +119,23 @@ const Subjects = () => {
                 setInput("")
                 setVisible(false)
             } catch (error) {
-                console.log('Error: ' + error)
+                console.log('Error 429 in edit: ', error)
+                setVisible(false)
 
-                Toast.show({
-                    type: 'error',
-                    text1: t('ERROR'),
-                    text2: t(error.message)
-                });
+                if (error.message === 'subject.error.rate_limit') {
+                    console.log("rate limit in edit: " + error)
+                    Toast.show({
+                        type: 'error',
+                        text1: t(error.message + ".text_un"),
+                        text2: t(error.message + ".text_deux"),
+                    });
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t(error.message)
+                    });
+                }
             }
         }
         else
@@ -135,33 +159,43 @@ const Subjects = () => {
             setVisible(false)
         } catch (error) {
             console.log('Error: ' + error)
+            setVisible(false)
 
-            Toast.show({
-                type: 'error',
-                text1: t('ERROR'),
-                text2: t(error.message)
-            });
+            if (error.message === 'subject.error.rate_limit') {
+                console.log("rate limit in edit: " + error)
+                Toast.show({
+                    type: 'error',
+                    text1: t(error.message + ".text_un"),
+                    text2: t(error.message + ".text_deux"),
+                });
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: t('ERROR'),
+                    text2: t(error.message)
+                });
+            }
         }
     }
 
     useEffect(() => {
         const fetchCollections = async () => {
-            setIsLoading(true);  
+            setIsLoading(true);
             try {
-              const response = await getUserSubjects();
-              setInput("")
+                const response = await getUserSubjects();
+                setInput("")
             } catch (error) {
-              console.log("Error: ", error);
+                console.log("Error: ", error);
             } finally {
-              setIsLoading(false);  
+                setIsLoading(false);
             }
-          };
-        
-          fetchCollections();
+        };
+
+        fetchCollections();
     }, [])
 
     useEffect(() => {
-        if (subjectChange){
+        if (subjectChange) {
             try {
                 setIsLoading(true)
                 getUserSubjects()

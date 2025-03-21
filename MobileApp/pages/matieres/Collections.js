@@ -29,7 +29,7 @@ const Collections = ({ route }) => {
   const [selectItem, setSelectItem] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const collectionsChange = useSelector((state) => state.changeCollectionsSlice.value)
-  
+
   const onChangeText = (value, setInput) => {
     setInput(value);
 
@@ -39,9 +39,12 @@ const Collections = ({ route }) => {
 
   const validateForm = () => {
     let tempErrors = [];
+    const regex = /^[\p{L}0-9\s\-_'/]+$/u;
 
     if (input === "")
       tempErrors.errorInput = t('subject.error.title_input_required_collections');
+    else if (!regex.test(input))
+      tempErrors.errorInput = t('subject.error.title_input_invalid_collections');
 
     setError(tempErrors);
     setIsError(!(Object.keys(tempErrors).length === 0))
@@ -54,7 +57,15 @@ const Collections = ({ route }) => {
       const response = await getCollections(item.id);
       setCollections(response);
     } catch (error) {
-      console.log(error);
+      console.log("Erreur collections: ", error);
+      if (error.message.includes('subject.error.rate_limit')) {
+        console.log("rate limit in edit: " + error)
+        Toast.show({
+          type: 'error',
+          text1: t(error.message + ".text_un"),
+          text2: t(error.message + ".text_deux"),
+        });
+      }
     }
   };
 
@@ -77,12 +88,23 @@ const Collections = ({ route }) => {
         dispatch(setValueS(true))
       } catch (error) {
         console.log('Error: ' + error)
+        setVisible(false)
+        setInput("")
 
-        Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: t(error.message)
-        });
+        if (error.message === 'subject.error.rate_limit') {
+          console.log("rate limit in edit: " + error)
+          Toast.show({
+            type: 'error',
+            text1: t(error.message + ".text_un"),
+            text2: t(error.message + ".text_deux"),
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t(error.message)
+          });
+        }
       }
     }
     else
@@ -110,11 +132,23 @@ const Collections = ({ route }) => {
       } catch (error) {
         console.log('Error: ' + error)
 
-        Toast.show({
-          type: 'error',
-          text1: t('ERROR'),
-          text2: t(error.message)
-        });
+        console.log('Error: ' + error)
+        setVisible(false)
+
+        if (error.message === 'subject.error.rate_limit') {
+          console.log("rate limit in edit: " + error)
+          Toast.show({
+            type: 'error',
+            text1: t(error.message + ".text_un"),
+            text2: t(error.message + ".text_deux"),
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t(error.message)
+          });
+        }
       }
     }
     else
@@ -142,11 +176,23 @@ const Collections = ({ route }) => {
     } catch (error) {
       console.log('Error: ' + error)
 
-      Toast.show({
-        type: 'error',
-        text1: t('ERROR'),
-        text2: t(error.message)
-      });
+      console.log('Error: ' + error)
+      setVisible(false)
+
+      if (error.message === 'subject.error.rate_limit') {
+        console.log("rate limit in edit: " + error)
+        Toast.show({
+          type: 'error',
+          text1: t(error.message + ".text_un"),
+          text2: t(error.message + ".text_deux"),
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t(error.message)
+        });
+      }
     }
   }
 
@@ -156,32 +202,32 @@ const Collections = ({ route }) => {
 
   useEffect(() => {
     const fetchCollections = async () => {
-      setIsLoading(true);  
+      setIsLoading(true);
       try {
         const response = await getUserCollections();
       } catch (error) {
-        console.log("Error: ", error);
+        console.log("Error: useeffect", error);
       } finally {
-        setIsLoading(false);  
+        setIsLoading(false);
       }
     };
-  
+
     fetchCollections();
   }, []);
 
   useEffect(() => {
     if (collectionsChange) {
       try {
-          setIsLoading(true);
-          Toast.show({
-            type: 'success',
-            text1: t('SUCCESS'),
-            text2: t('add_collection_by_ai.success'),
-          });
-          
-          getUserCollections();
-          dispatch(setValueC(false))
-          dispatch(setValueS(true))
+        setIsLoading(true);
+        Toast.show({
+          type: 'success',
+          text1: t('SUCCESS'),
+          text2: t('add_collection_by_ai.success'),
+        });
+
+        getUserCollections();
+        dispatch(setValueC(false))
+        dispatch(setValueS(true))
       } catch (error) {
         console.log("Erreru - ", error)
       } finally {

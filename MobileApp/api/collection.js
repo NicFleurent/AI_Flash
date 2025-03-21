@@ -18,6 +18,8 @@ export const getCollections = async (subject_id) => {
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -69,6 +71,8 @@ export const createCollection = async (subject_id, collection_name) => {
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -95,6 +99,8 @@ export const updateCollection = async (collection_id, collection_name, collectio
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -121,6 +127,8 @@ export const deleteCollection = async (collection_id) => {
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -187,30 +195,3 @@ export const copyCollection = async (collection_id, subject_id, user_id) => {
     throw new Error(error.message);
   }
 };
-
-// export const toggleCollectionVisibility = async (collection_id) => {
-//   const user = await getLocalUser();
-//   const token = user?.token;
-
-//   try {
-//     console.log("IN TOGGLE VISIBILITY API REACT NATIVE")
-//     const response = await fetch(`${baseUrl}collections/${collection_id}/toggle-visibility`, {
-//       method: 'PUT',
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`,
-//       },
-//     });
-
-//     const data = await response.json();
-//     if (response.status === 200) {
-//       return data;
-//     } else {
-//       throw new Error(data.message);
-//     }
-//   } catch (error) {
-//     console.log(error.message)
-//     throw new Error(error.message);
-//   }
-// };
