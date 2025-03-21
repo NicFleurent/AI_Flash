@@ -212,10 +212,27 @@ const Account = () => {
   const validatePassword = () => {
     let tempErrors = [];
 
+    const numberRegex = /\d/;
+    const letterRegex = /[a-zA-Z]/;
+    const majNimRegex = /(?=.*[a-z])(?=.*[A-Z])/;
+    const specialCaracterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
     if (password === "")
       tempErrors.errorPassword = t('input.error.password_required');
-    if (newPassword === "")
-      tempErrors.errorNewPassword = t('input.error.password_required');
+
+    if(newPassword === "")
+      tempErrors.errorNewPassword  = t('input.error.password_required');
+    else if(newPassword.length < 7)
+      tempErrors.errorNewPassword  = t('auth.register_error_password_min');
+    else if (!letterRegex.test(newPassword))
+      tempErrors.errorNewPassword  = t('auth.register_error_password_letters');
+    else if (!majNimRegex.test(newPassword))
+      tempErrors.errorNewPassword  = t('auth.register_error_password_mixed');
+    else if (!numberRegex.test(newPassword))
+      tempErrors.errorNewPassword  = t('auth.register_error_password_numbers');
+    else if (!specialCaracterRegex.test(newPassword))
+      tempErrors.errorNewPassword  = t('auth.register_error_password_symbols');
+
     if (newPassword != passwordConfirmation)
       tempErrors.errorPasswordConfirm = t('input.error.passwordConfirm_required');
 
