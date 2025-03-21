@@ -113,6 +113,7 @@ const Collections = ({ route }) => {
 
   const edit = async () => {
     if (validateForm()) {
+      setIsLoading(true);
       try {
         const response = await updateCollection(collection_id, input, isPublic);
 
@@ -149,6 +150,8 @@ const Collections = ({ route }) => {
             text2: t(error.message)
           });
         }
+      } finally {
+        setIsLoading(false);
       }
     }
     else
@@ -156,6 +159,7 @@ const Collections = ({ route }) => {
   }
 
   const drop = async () => {
+    setIsLoading(true);
     try {
       const response = await deleteCollection(collection_id);
 
@@ -193,6 +197,8 @@ const Collections = ({ route }) => {
           text2: t(error.message)
         });
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 

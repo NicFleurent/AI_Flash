@@ -63,6 +63,8 @@ const Subjects = () => {
 
     const create = async () => {
         if (validateForm()) {
+            setIsLoading(true);
+
             try {
                 const response = await createSubject(input);
                 if (response && response.message) {
@@ -96,6 +98,8 @@ const Subjects = () => {
                         text2: t(error.message)
                     });
                 }
+            } finally {
+                setIsLoading(false);
             }
         }
         else
@@ -104,6 +108,8 @@ const Subjects = () => {
 
     const edit = async () => {
         if (validateForm()) {
+            setIsLoading(true);
+
             try {
                 const response = await updateSubject(id, input);
                 if (response && response.message) {
@@ -136,6 +142,8 @@ const Subjects = () => {
                         text2: t(error.message)
                     });
                 }
+            } finally {
+                setIsLoading(false);
             }
         }
         else
@@ -143,6 +151,7 @@ const Subjects = () => {
     }
 
     const drop = async () => {
+        setIsLoading(true);
         try {
             const response = await deleteSubject(id);
             if (response && response.message) {
@@ -175,6 +184,8 @@ const Subjects = () => {
                     text2: t(error.message)
                 });
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
