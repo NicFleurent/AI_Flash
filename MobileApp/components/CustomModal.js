@@ -43,7 +43,7 @@ const CustomModal = ({
                   <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
                     {modalTitle}
                   </Text>
-                  <TouchableOpacity onPress={() => [setVisible(false), setInput(""), setError([])]}>
+                  <TouchableOpacity onPress={() => [setVisible(false), isCancel ? onPressCancel() : setInput(""), !isCancel && setError([])]}>
                     <FontAwesomeIcon icon={faX} size={20} color="green"/>
                   </TouchableOpacity>
                 </View>
