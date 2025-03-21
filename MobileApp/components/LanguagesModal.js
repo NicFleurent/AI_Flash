@@ -58,7 +58,7 @@ const LanguagesModal = ({
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder="Veuillez choisir une option"
+              placeholder={t('language_modal.placeholder')}
               value={language}
               onChange={setLanguage}
             />

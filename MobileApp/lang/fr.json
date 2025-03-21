@@ -96,7 +96,8 @@
   },
   "language_modal": {
     "title": "Langues",
-    "warning": "Attention, changer la langue redémarrera l'application"
+    "warning": "Attention, changer la langue redémarrera l'application",
+    "placeholder": "Veuillez choisir une option"
   },
   "home": {
     "title": "Accueil",
