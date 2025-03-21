@@ -16,13 +16,14 @@ use Illuminate\Http\Response;
 RateLimiter::for('global', function (Request $request) {
   return Limit::perMinute(5)->by($request->ip());
 });
-
 RateLimiter::for('collection', function (Request $request) {
     return Limit::perMinute(5)->by($request->ip())->response(function (Request $request) {
     return response()->json([
         'message' => "subject.error.rate_limit"
     ], 429);
 });
+RateLimiter::for('create_collections_limits', function ($request) {
+  return Limit::perMinute(5)->by($request->ip());
 });
 
 Route::middleware('throttle:global')->post('login', [UsersController::class, 'login'])->name('login');
@@ -58,9 +59,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::middleware('throttle:collection')->post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
   Route::middleware('throttle:collection')->post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
   Route::middleware('throttle:collection')->post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
+  Route::get('getUserCollections', [CollectionController::class, 'getUserCollections'])->name('getUserCollections');
+  Route::middleware('throttle:create_collections_limits')->post('createCollection', [CollectionController::class, 'createCollection'])->name('createCollection');
+  Route::post('updateCollection', [CollectionController::class, 'updateCollection'])->name('updateCollection');
+  Route::post('deleteCollection', [CollectionController::class, 'deleteCollection'])->name('deleteCollection');
   Route::put('/collections/{collection}/toggle-visibility', [CollectionController::class, 'toggleCollectionVisibility'])->name('toggleCollectionVisibility');
   Route::post('/collections/copy', [CollectionController::class, 'copyCollection'])->name('copyCollection');
   Route::get('/collections/public', [CollectionController::class, 'getPublicCollections'])->name('getPublicCollections');
   Route::post('getAIflashcards', [OpenAIController::class, 'getAIflashcards'])->name('getAIflashcards');
-
 });

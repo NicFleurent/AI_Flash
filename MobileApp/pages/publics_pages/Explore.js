@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 import { getPublicCollections } from "../../api/collection";
 import { saveToStorage } from "../../api/secureStore";
 import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { updateExplore } from "../../stores/sliceUpdateExplore";
 
 const Explore = () => {
   const [search, onChangeSearch] = useState("");
@@ -24,7 +26,10 @@ const Explore = () => {
   const createSubjectRef = useRef(null);
   const [collections, setCollections] = useState([]);
   const [selectItem, setSelectItem] = useState({});
-  const [isLoading, setIsLoading] = useState(true); // Ajoutez un état pour le chargement
+  const [isLoading, setIsLoading] = useState(true); 
+
+  const updateExploreState = useSelector((state) => state.updateExplore.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const setPublicCollections = async () => {
@@ -41,24 +46,23 @@ const Explore = () => {
     setPublicCollections();
   }, []);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const setPublicCollections = async () => {
-  //       setIsLoading(true); 
-  //       try {
-  //         const result = await getPublicCollections();
-  //         setCollections(result);
-  //       } catch (error) {
-  //         console.error(error.message);
-  //       } finally {
-  //         setIsLoading(false); 
-  //       }
-  //     };
-  
-  //     setPublicCollections();
-      
-  //   }, [])
-  // );
+  useEffect(()=>{
+    const setPublicCollections = async () => {
+        setIsLoading(true); 
+        try {
+          const result = await getPublicCollections();
+          setCollections(result);
+        } catch (error) {
+          console.error(error.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      setPublicCollections();
+
+      dispatch(updateExplore(false));
+  }, [updateExploreState]);
 
   const filteredCollections = useMemo(() => {
     if (!search) return collections; 
@@ -159,7 +163,7 @@ const Explore = () => {
       <View style={styles.container}>
         {isLoading && (
           <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#1DB954" />
           </View>
         )}
 
