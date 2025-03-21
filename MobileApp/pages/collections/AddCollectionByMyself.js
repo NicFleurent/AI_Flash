@@ -10,6 +10,9 @@ import { createFlashcard } from '../../api/flashcard';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { updateExplore } from '../../stores/sliceUpdateExplore';
+import { setValueC } from '../../stores/sliceChangeCollections';
 
 const AddCollectionByMyself = ({ route }) => {
     const { width, height } = useWindowDimensions();
@@ -21,6 +24,7 @@ const AddCollectionByMyself = ({ route }) => {
     const [editingCard, setEditingCard] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const navigation = useNavigation();
 
     const validerFormulaire = () => {
@@ -87,8 +91,9 @@ const AddCollectionByMyself = ({ route }) => {
                     await createFlashcard({ ...flashcard, collection_id: collectionId });
                 }
 
-                navigation.navigate("Subjects");
+                navigation.navigate("Menu", { screen: "Subjects" });
             }
+            dispatch(setValueC(true));
         } catch (error) {
             console.log('Error: ' + error);
         } finally {

@@ -11,6 +11,7 @@ import { getCollections, createCollection, updateCollection, deleteCollection } 
 import { useDispatch, useSelector } from "react-redux";
 import { setValueC } from "../../stores/sliceChangeCollections";
 import { setValueS } from "../../stores/sliceChangeSubject";
+import { updateExplore } from "../../stores/sliceUpdateExplore";
 
 const Collections = ({ route }) => {
   const navigation = useNavigation();
@@ -116,7 +117,7 @@ const Collections = ({ route }) => {
       setIsLoading(true);
       try {
         const response = await updateCollection(collection_id, input, isPublic);
-
+        
         if (response && response.message) {
           Toast.show({
             type: 'success',
@@ -130,6 +131,7 @@ const Collections = ({ route }) => {
         setInput("")
         setCollectionId(null)
         setVisible(false)
+        dispatch(updateExplore(true));
       } catch (error) {
         console.log('Error: ' + error)
 
@@ -173,10 +175,11 @@ const Collections = ({ route }) => {
         getUserCollections();
       }
 
-      setInput("")
-      setVisible(false)
-      setCollectionId(null)
-      dispatch(setValueS(true))
+      setInput("");
+      setVisible(false);
+      setCollectionId(null);
+      dispatch(setValueS(true));
+      dispatch(updateExplore(true));
     } catch (error) {
       console.log('Error: ' + error)
 
