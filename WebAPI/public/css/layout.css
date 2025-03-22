@@ -1,7 +1,7 @@
 html, body {
     width: 100%;
     min-height: 100vh;
-    background-image: linear-gradient(to right, #1DB954 0%, black 15%, black 85%, #1DB954 100%);
+    background-color: black;
 }
 
 .PageName {
@@ -61,4 +61,9 @@ input{
 
 .button:hover, #logout-form a:hover {
     padding: 20px 30px 20px 30px;
+}
+
+.alert-custom{
+    color:red;
+    text-align:left;
 }
