@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStaticNavigation } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import Intro from "./pages/authentification/Intro";
 import LogIn from "./pages/authentification/LogIn";
 import SignIn from "./pages/authentification/SignIn";
@@ -247,6 +247,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <Navigation />
+      <StatusBar StatusBarStyle="light-content"/>
     </Provider>
   );
 }
