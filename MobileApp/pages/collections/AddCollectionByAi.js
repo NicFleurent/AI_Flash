@@ -16,12 +16,12 @@ import { createFlashcard } from '../../api/flashcard';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setValueC } from '../../stores/sliceChangeCollections';
+import { setNeedsRefresh } from '../../stores/sliceTodayFlashcards';
 
 const AddCollectionByAi = ({ route }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch();
     const { item } = route.params || {};
-    const { setChangeNewCollections } = route.params || {};
     const navigation = useNavigation();
 
     const { width, height } = useWindowDimensions();
@@ -38,16 +38,41 @@ const AddCollectionByAi = ({ route }) => {
     const pickFile = async () => {
         try {
             const result = await DocumentPicker.getDocumentAsync({
-                type: "application/pdf",
+                // type: "application/pdf",
                 copyToCacheDirectory: true,
             });
 
             if (!result.canceled) {
-                setFile(result);
-                console.log("Fichier sélectionné :", result);
+                // console.log(result.assets[0].mimeType)
+                // setFile(result);
+                // console.log("Fichier sélectionné :", result);
+                if (result.assets[0].mimeType === "application/pdf") {
+                    if (result.assets[0].size && result.assets[0].size <= 15 * 1024 * 1024) {
+                        setFile(result);
+                        console.log("Fichier sélectionné :", result);
+                    } else {
+                        setFile(null);
+                        console.error("Erreur : Le fichier est trop grand. La taille maximale est de 15 Mo.");
+                        Toast.show({
+                            type: 'error',
+                            text1: t('ERROR'),
+                            text2: t('add_collection_by_ai.wrong_size'), 
+                        });
+                    }
+                } else {
+                    setFile(null);
+                    console.error("Erreur : Le fichier sélectionné n'est pas un PDF.");
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.wrong_file'), 
+                    });
+                }
             } else {
                 console.log("Sélection annulée");
             }
+
+            
         } catch (error) {
             console.error("Erreur lors de la sélection du fichier :", error);
         }
@@ -63,7 +88,13 @@ const AddCollectionByAi = ({ route }) => {
 
     const validerFormulaire = () => {
         const nouvellesErreurs = {};
-        if (!collectionName.trim()) nouvellesErreurs.collectionName = t('add_collection_by_myself.collection_name_required');
+        const regex = /^[\p{L}0-9\s\-_'/]+$/u;
+
+        if (!collectionName.trim()) 
+            nouvellesErreurs.collectionName = t('add_collection_by_myself.collection_name_required');
+        else if (!regex.test(collectionName))
+            nouvellesErreurs.collectionName = t('subject.error.title_input_invalid');
+
         setErreurs(nouvellesErreurs);
         return Object.keys(nouvellesErreurs).length === 0;
     };
@@ -83,6 +114,10 @@ const AddCollectionByAi = ({ route }) => {
     const handleGenerateCards = async () => {
         if (!file) {
             console.log("Aucun fichier sélectionné");
+            Toast.show({
+                type: 'info',
+                text1: t('add_collection_by_ai.no_file'), 
+            });
             return;
         }
 
@@ -168,6 +203,7 @@ const AddCollectionByAi = ({ route }) => {
                 }
             }
             dispatch(setValueC(true))
+            dispatch(setNeedsRefresh(true))
             navigation.popTo("Collections", { item });
         } catch (error) {
             console.log('Error: ' + error);

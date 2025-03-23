@@ -110,7 +110,7 @@
     },
     "error": {
       "title_input_required": "Subject name is required",
-      "title_input_required_collections": "Subject name is required"
+      "title_input_required_collections": "Collection name is required"
     },
     "collections": {
       "title": "Your collections for this subject",

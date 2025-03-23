@@ -23,8 +23,6 @@ export const getSubjects = async () => {
       throw new Error(data.message);
 
   } catch (error) {
-    console.log('In get user subjects -- ERROROROROOROROR')
-
     throw new Error(error.message);
   }
 };
@@ -47,6 +45,8 @@ export const createSubject = async (subject_name) => {
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -70,9 +70,10 @@ export const updateSubject = async (subject_id, subject_name) => {
     });
     
     const data = await response.json();
-    
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
@@ -99,6 +100,8 @@ export const deleteSubject = async (subject_id) => {
     
     if(response.status === 200)
       return data;
+    else if (response.status === 429)
+      throw new Error(data.message)
     else
       throw new Error(data.message);
 
