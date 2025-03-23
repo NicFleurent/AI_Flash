@@ -56,42 +56,42 @@
     "register": "S'inscrire",
     "logout": "Déconnexion",
     "deleteAccount": "Supprimer le compte",
-    "changePassword": "Modifier mot de passe",
+    "changePassword": "Modifier le mot de passe",
     "invalid_credentials": "Le courriel ou le mot de passe n'est pas valide",
-    "login_error": "La connexion à échouée",
-    "register_error": "L'inscription à échouée",
+    "login_error": "La connexion a échoué",
+    "register_error": "L'inscription a échoué",
     "register_error_email_taken": "Cette adresse courriel est déjà prise",
     "register_error_password_min": "Le mot de passe doit contenir au moins 7 caractères",
     "register_error_password_letters": "Le mot de passe doit contenir au moins une lettre",
     "register_error_password_mixed": "Le mot de passe doit avoir des majuscules et minuscules",
     "register_error_password_numbers": "Le mot de passe doit contenir au moins un chiffre",
     "register_error_password_symbols": "Le mot de passe doit avoir un caractère spécial",
-    "error_signup": "La création de compte à échouée",
+    "error_signup": "La création de compte a échoué",
     "successful_logout": "Déconnection réussie",
-    "error_logout": "La déconnexion à échouée",
+    "error_logout": "La déconnexion a échoué",
     "successful_update": "Le compte a été mis à jour",
-    "error_update": "La modification a échouée",
+    "error_update": "La modification a échoué",
     "successful_update_password": "Le mot de passe a été mis à jour",
     "successful_delete": "Le compte a été supprimé",
-    "error_delete": "La suppression a échouée",
-    "too_many_attempts": "Trop d'essais effectué"
+    "error_delete": "La suppression a échoué",
+    "too_many_attempts": "Trop d'essais effectués"
   },
   "account": {
     "title": "Votre compte",
     "logout_confirm": "Voulez-vous vraiment vous déconnecter?",
     "logout_success": "Déconnection réussie",
-    "logout_error": "La déconnection a échouée",
+    "logout_error": "La déconnexion a échoué",
     "update": "Enregistrer",
     "update_confirm": "Voulez-vous enregistrer ces nouvelles informations?",
     "update_success": "Le compte a été mis à jour",
-    "update_error": "La modification a échouée",
-    "no_update": "Aucune modification",
+    "update_error": "La modification a échoué",
+    "no_update":"Aucune modification",
     "delete_confirm": "Voulez-vous vraiment supprimer votre compte?",
     "languages": "Langues",
     "delete_success": "Le compte a été supprimé",
     "delete_error": "Le compte n'a pas pu être supprimé",
     "updatePassword_success": "Votre mot de passe a été modifié",
-    "updatePassword_error": "La modification de mot de passe a échouée",
+    "updatePassword_error": "La modification de mot de passe a échoué",
     "updatePassword_wrongPassword_error": "Le mot de passe n'est pas valide"
   },
   "language_modal": {
@@ -115,7 +115,7 @@
   "study": {
     "remembered": "Je m'en souvenais",
     "forgotten": "J'avais oublié",
-    "flashcard_error": "La sauvegarde de l'étude à échouée"
+    "flashcard_error": "La sauvegarde de l'étude a échoué"
   },
   "subject": {
     "title": "Vos matières",
@@ -240,7 +240,7 @@
       "delete": "Supprimer"
     },
     "delete_success": "La flashcard a été supprimée avec succès.",
-    "delete_error": "La suppression de la flashcard a échouée.",
+    "delete_error": "La suppression de la flashcard a échoué.",
     "deleting": "Suppression en cours..."
   }
 }

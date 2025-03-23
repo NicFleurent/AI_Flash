@@ -5,6 +5,9 @@
   "SUCCESS": "Success",
   "COLLECTIONS": "Collections",
   "FLASHCARDS": "Flashcards",
+  "switch": {
+    "public": "Public"
+  },
   "button": {
     "goBack": "Back",
     "next": "Next",
@@ -19,15 +22,15 @@
   "input": {
     "firstname": "First name",
     "lastname": "Last name",
-    "email": "Email address",
+    "email": "Email",
     "password": "Password",
     "newPassword": "New password",
     "passwordConfirm": "Confirm password",
     "error": {
       "firstname_required": "First name is required",
       "lastname_required": "Last name is required",
-      "email_required": "Email address is required",
-      "email_invalid": "Invalid email address",
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email",
       "password_required": "Password is required",
       "passwordConfirm_required": "Passwords do not match"
     }
@@ -48,41 +51,53 @@
   },
   "auth": {
     "connection": "Connection",
-    "login": "Log in",
-    "signin": "Sign in",
+    "login": "Login",
+    "signin": "Sign up",
     "register": "Register",
-    "logout": "Log out",
+    "logout": "Logout",
     "deleteAccount": "Delete account",
     "changePassword": "Change password",
     "invalid_credentials": "Invalid email or password",
+    "login_error": "Login failed",
+    "register_error": "Registration failed",
+    "register_error_email_taken": "This email is already taken",
+    "register_error_password_min": "Password must be at least 7 characters long",
+    "register_error_password_letters": "Password must contain at least one letter",
+    "register_error_password_mixed": "Password must have uppercase and lowercase letters",
+    "register_error_password_numbers": "Password must contain at least one number",
+    "register_error_password_symbols": "Password must have a special character",
     "error_signup": "Account creation failed",
-    "successful_logout": "Successfully logged out",
-    "error_logout": "Log out failed",
-    "successful_update": "Account updated successfully",
+    "successful_logout": "Logout successful",
+    "error_logout": "Logout failed",
+    "successful_update": "Account updated",
     "error_update": "Update failed",
-    "successful_update_password": "Password updated successfully",
-    "successful_delete": "Account deleted successfully",
-    "error_delete": "Deletion failed"
+    "successful_update_password": "Password updated",
+    "successful_delete": "Account deleted",
+    "error_delete": "Account deletion failed",
+    "too_many_attempts": "Too many attempts"
   },
   "account": {
     "title": "Your account",
     "logout_confirm": "Are you sure you want to log out?",
-    "logout_success": "Successfully logged out",
-    "logout_error": "Log out failed",
+    "logout_success": "Logout successful",
+    "logout_error": "Logout failed",
     "update": "Save",
-    "update_confirm": "Do you want to save these new details?",
-    "update_success": "Account updated successfully",
+    "update_confirm": "Do you want to save these new informations?",
+    "update_success": "Account updated",
     "update_error": "Update failed",
+    "no_update": "No changes",
     "delete_confirm": "Are you sure you want to delete your account?",
     "languages": "Languages",
-    "delete_success": "Account deleted successfully",
-    "delete_error": "Failed to delete account",
+    "delete_success": "Account deleted",
+    "delete_error": "Account could not be deleted",
     "updatePassword_success": "Your password has been changed",
-    "updatePassword_error": "Password update failed"
+    "updatePassword_error": "Password update failed",
+    "updatePassword_wrongPassword_error": "Invalid password"
   },
   "language_modal": {
     "title": "Languages",
-    "warning": "Warning, changing the language will restart the application"
+    "warning": "Warning, changing the language will restart the application",
+    "placeholder": "Please choose an option"
   },
   "home": {
     "title": "Home",
@@ -92,34 +107,66 @@
     "flash_study": "Quick study",
     "no_card_to_study": "No cards to study",
     "detailed_studies": "Detailed studies",
-    "no_studies_today": "No studies to do today"
+    "no_studies_today": "No studies to do today",
+    "today_collection_failed": "Error displaying collections",
+    "today_card_count_failed": "Error displaying total flashcards",
+    "today_card_failed": "Error displaying flashcards"
   },
   "study": {
     "remembered": "I remembered",
-    "forgotten": "I forgot"
+    "forgotten": "I forgot",
+    "flashcard_error": "Study save failed"
   },
   "subject": {
     "title": "Your subjects",
     "description": "Description",
     "input": {
       "title_modal_add": "Add a subject",
-      "title_modal_edit": "Edit a subject",
-      "title_modal_delete": "Delete a subject",
+      "title_modal_edit": "Edit subject",
+      "title_modal_delete": "Delete subject",
       "modal_delete": "Are you sure you want to delete the subject ",
-      "title_input": "Subject name"
+      "title_input": "Subject name",
+      "title_input_collection": "Collection name"
     },
     "error": {
       "title_input_required": "Subject name is required",
-      "title_input_required_collections": "Collection name is required"
+      "title_input_required_collections": "Collection name is required",
+      "create": {
+        "success": "Subject successfully created",
+        "error": "Error creating subject"
+      },
+      "update": {
+        "success": "Subject successfully updated",
+        "error": "Error updating subject"
+      },
+      "delete": {
+        "success": "Subject successfully deleted",
+        "error": "Error deleting subject"
+      }
     },
     "collections": {
       "title": "Your collections for this subject",
       "input": {
         "title_modal_add": "Add a collection",
-        "title_modal_edit": "Edit a collection",
-        "title_modal_delete": "Delete a collection",
+        "title_modal_edit": "Edit collection",
+        "title_modal_delete": "Delete collection",
         "modal_delete": "Are you sure you want to delete the collection ",
+        "title_modal": "Edit subject",
         "title_input": "Collection name"
+      },
+      "error": {
+        "create": {
+          "success": "Collection successfully created",
+          "error": "Error creating collection"
+        },
+        "update": {
+          "success": "Collection successfully updated",
+          "error": "Error updating collection"
+        },
+        "delete": {
+          "success": "Collection successfully deleted",
+          "error": "Error deleting collection"
+        }
       }
     }
   },
@@ -137,12 +184,57 @@
       "select_subject": "Select subject",
       "add_subject": "New subject",
       "subject_name": "Subject name",
-      "author": "Created by"
+      "author": "Created by",
+      "error_while_retrieving_subjects": "Error retrieving subjects:",
+      "error_while_copying_the_collection": "Error copying the collection:"
     }
   },
-  "add_collection_by_ai":{
+  "add_collection_by_ai": {
     "add_file": "Add a file",
-    "button": "Generatae flashcards",
-    "success": "Collection generated by AI complete"
+    "button": "Generate cards",
+    "success": "AI-generated collection successfully created",
+    "wrong_file": "The selected file is not a PDF.",
+    "wrong_size": "The file is too large. Max = 20MB.",
+    "no_file": "No file selected."
+  },
+  "add_collection_by_myself": {
+    "collection_name_required": "Collection name is required.",
+    "success": "Success",
+    "collection_and_flashcards_created": "Collection and flashcards successfully created!",
+    "error": "Error",
+    "something_went_wrong": "Something went wrong.",
+    "collection_name": "Collection name",
+    "new_card": "New card",
+    "save_collection": "Save collection"
+  },
+  "bottom_sheet_add_flashcard": {
+    "face": "Front",
+    "back": "Back",
+    "face_required": "Front is required.",
+    "back_required": "Back is required.",
+    "edit_card": "Edit card",
+    "add_card": "Add card"
+  },
+  "new_collection_choose_options": {
+    "choose_how_to_generate": "How do you want to generate your cards?",
+    "by_myself": "By myself",
+    "from_document": "From a document"
+  },
+  "flashcards": {
+    "title": "Flashcards",
+    "loading": "Loading...",
+    "error": "Unable to load flashcards. Please try again.",
+    "retry": "Retry",
+    "empty": "No flashcards available.",
+    "study": "Study",
+    "delete_confirmation": {
+      "title": "Confirm deletion",
+      "message": "Are you sure you want to delete this flashcard?",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "delete_success": "Flashcard successfully deleted.",
+    "delete_error": "Flashcard deletion failed.",
+    "deleting": "Deleting..."
   }
 }
