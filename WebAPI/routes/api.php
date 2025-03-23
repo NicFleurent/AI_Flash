@@ -23,6 +23,7 @@ RateLimiter::for('collection', function (Request $request) {
     ], 429);
   });
 });
+
 RateLimiter::for('create_collections_limits', function ($request) {
   return Limit::perMinute(5)->by($request->ip());
 });
