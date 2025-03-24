@@ -154,6 +154,7 @@ const Collections = ({ route }) => {
         }
       } finally {
         setIsLoading(false);
+        setInput("")
       }
     }
     else
@@ -202,6 +203,7 @@ const Collections = ({ route }) => {
       }
     } finally {
       setIsLoading(false);
+      setInput("");
     }
   }
 
