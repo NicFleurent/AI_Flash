@@ -100,6 +100,7 @@ const Subjects = () => {
                 }
             } finally {
                 setIsLoading(false);
+                setInput("")
             }
         }
         else
@@ -144,6 +145,7 @@ const Subjects = () => {
                 }
             } finally {
                 setIsLoading(false);
+                setInput("")
             }
         }
         else
@@ -185,6 +187,7 @@ const Subjects = () => {
                 });
             }
         } finally {
+            setInput("")
             setIsLoading(false);
         }
     }
