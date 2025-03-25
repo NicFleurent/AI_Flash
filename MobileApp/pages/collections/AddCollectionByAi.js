@@ -14,7 +14,7 @@ import Toast from 'react-native-toast-message';
 import { createCollection } from '../../api/collection';
 import { createFlashcard } from '../../api/flashcard';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setValueC } from '../../stores/sliceChangeCollections';
 import { setNeedsRefresh } from '../../stores/sliceTodayFlashcards';
 
@@ -33,19 +33,16 @@ const AddCollectionByAi = ({ route }) => {
     const [visibleBtn, setVisibleBtn] = useState(true)
     const [flashCards, setFlashCards] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const isTablet = useSelector((state) => state.screen.isTablet);
     const [erreurs, setErreurs] = useState({});
 
     const pickFile = async () => {
         try {
             const result = await DocumentPicker.getDocumentAsync({
-                // type: "application/pdf",
                 copyToCacheDirectory: true,
             });
 
             if (!result.canceled) {
-                // console.log(result.assets[0].mimeType)
-                // setFile(result);
-                // console.log("Fichier sélectionné :", result);
                 if (result.assets[0].mimeType === "application/pdf") {
                     if (result.assets[0].size && result.assets[0].size <= 15 * 1024 * 1024) {
                         setFile(result);
@@ -148,6 +145,19 @@ const AddCollectionByAi = ({ route }) => {
             setVisibleBtn(false)
         } catch (error) {
             console.error("Erreur lors de l'envoi du fichier :", error);
+            if (error.message.includes("Network request failed")) {
+                Toast.show({
+                    type: 'error',
+                    text1: t('ERROR'),
+                    text2: t('add_collection_by_ai.error.network'), 
+                });
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: t('ERROR'),
+                    text2: t('add_collection_by_ai.error.unknown'),
+                });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -255,7 +265,7 @@ const AddCollectionByAi = ({ route }) => {
                             renderItem={renderItem}
                             keyExtractor={(item, index) => index}
                             data={flashCards}
-                            numColumns={1}
+                            numColumns={isTablet ? 2 : 1}
                             contentContainerStyle={styles.flatListContent}
                         />
                     </>
@@ -363,7 +373,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     flatList: {
-        marginTop: 10,
+        marginVertical: 10,
     },
     overlay: {
         position: 'absolute',

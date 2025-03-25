@@ -201,7 +201,11 @@
     "success": "Collection générée par IA avec succès",
     "wrong_file": "Le fichier sélectionné n'est pas un PDF.",
     "wrong_size": "Le fichier est trop lourd. Max = 20M.",
-    "no_file": "Aucun fichier sélectionné."
+    "no_file": "Aucun fichier sélectionné.",
+    "error": {
+      "network": "Erreur réseau, veuillez réessayer plus tard.",
+      "unknown": "Une erreur inconnue s'est produite. Veuillez réessayer plus tard."
+    }
   },
   "add_collection_by_myself": {
     "collection_name_required": "Le nom de la collection est requis.",

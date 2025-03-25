@@ -195,7 +195,11 @@
     "success": "AI-generated collection successfully created",
     "wrong_file": "The selected file is not a PDF.",
     "wrong_size": "The file is too large. Max = 20MB.",
-    "no_file": "No file selected."
+    "no_file": "No file selected.",
+    "error": {
+      "network": "Network error. Please try again later.",
+      "unknown": "An unknown error occurred. Please try again later."
+    }
   },
   "add_collection_by_myself": {
     "collection_name_required": "Collection name is required.",
