@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback, useRef, useEffect } from "react"
 import { StatusBar, StyleSheet, FlatList, View, Platform, ActivityIndicator, RefreshControl } from "react-native"; // Ajoutez ActivityIndicator ici
 import CardCollection from "../../components/publics_pages_components/CardCollection";
 import CustomInput from "../../components/CustomInput";
-import { useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ListFlashcardBottomSheet from "../../components/publics_pages_components/bottom_sheets/ListFlashcardBottomSheet";
 import ChooseCreateSubjectBottomSheet from "../../components/publics_pages_components/bottom_sheets/ChooseCreateSubjectBottomSheet";
@@ -24,6 +23,7 @@ const Explore = () => {
   const chooseCreateSubjectRef = useRef(null);
   const chooseSubjectRef = useRef(null);
   const createSubjectRef = useRef(null);
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [collections, setCollections] = useState([]);
   const [selectItem, setSelectItem] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -200,7 +200,7 @@ const Explore = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           data={formattedData}
-          numColumns={2}
+          numColumns={isTablet ? 3 : 2}
           contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}

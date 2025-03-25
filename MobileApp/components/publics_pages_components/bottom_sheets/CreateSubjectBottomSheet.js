@@ -9,6 +9,9 @@ import styles from "./style/ModalStyle";
 import { createSubject } from "../../../api/subject";
 import { copyCollection } from "../../../api/collection";
 import { getFromStorage, getLocalUser } from "../../../api/secureStore";
+import { useDispatch } from "react-redux";
+import { setValueC } from "../../../stores/sliceChangeCollections";
+import { setValueS } from "../../../stores/sliceChangeSubject";
 
 const useKeyboardListener = (setSnapPoints) => {
   useEffect(() => {
@@ -34,6 +37,7 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
   const [snapPoints, setSnapPoints] = useState(["50%"]);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   useKeyboardListener(setSnapPoints);
 
@@ -57,12 +61,13 @@ const CreateSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
       const { collection_id } = JSON.parse(collectionIdData);
 
       await copyCollection(collection_id, response.data.id, user.id);
-
       ref.current?.close();
       onOpenConfirmModal();
     } catch (error) {
       console.error("Erreur lors de la création de la matière :", error);
     } finally {
+      dispatch(setValueC(true));
+      dispatch(setValueS(true));
       setIsLoading(false);
     }
   };

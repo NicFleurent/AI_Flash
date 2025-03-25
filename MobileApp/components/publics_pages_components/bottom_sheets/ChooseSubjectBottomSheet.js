@@ -9,6 +9,9 @@ import { getSubjects } from "../../../api/subject";
 import { getFromStorage, getLocalUser } from "../../../api/secureStore";
 import { copyCollection } from "../../../api/collection";
 import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
+import { setValueC } from "../../../stores/sliceChangeCollections";
+import { setValueS } from "../../../stores/sliceChangeSubject";
 
 const useSubjects = () => {
   const [subjects, setSubjects] = useState([]);
@@ -42,6 +45,7 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [isCopying, setIsCopying] = useState(false);
   const { subjects, isLoading: isSubjectsLoading } = useSubjects();
+  const dispatch = useDispatch();
 
   const handleCopyCollection = useCallback(async () => {
     if (!selectedSubject) return;
@@ -63,6 +67,8 @@ const ChooseSubjectBottomSheet = forwardRef(({ onOpenConfirmModal }, ref) => {
                 text2: "Erreur lors de la copie de la collection : " +error,
               });
     } finally {
+      dispatch(setValueC(true));
+      dispatch(setValueS(true));
       setIsCopying(false);
     }
   }, [selectedSubject, ref, onOpenConfirmModal]);

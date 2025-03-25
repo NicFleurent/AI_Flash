@@ -216,7 +216,7 @@ const Subjects = () => {
                 setInput("")
                 dispatch(setValueS(false))
             } catch (error) {
-                console.log("Erreru - ", error)
+                console.log("Erreur - ", error)
             } finally {
                 setIsLoading(false);
             }
