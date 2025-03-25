@@ -25,12 +25,14 @@ const Home = ({route}) => {
   const [totalCount, setTotalCount] = useState(0)
   const [collections, setCollections] = useState([])
   const [isLoading, setIsLoading] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
+  const setUser = async () => {
+    const user = await getLocalUser();
+    setFirstname(user.firstname)
+  }
+  
   useEffect(()=>{
-    const setUser = async () => {
-      const user = await getLocalUser();
-      setFirstname(user.firstname)
-    }
     setIsLoading(true);
     setUser();
     getCollections();
@@ -41,6 +43,10 @@ const Home = ({route}) => {
     if(needsRefresh){
       const refreshData = async () => {
         await onRefresh();
+        await setUser();
+        navigation.setOptions({
+          title:`${t('home.hello')} ${firstname}`
+        })
         dispatch(setNeedsRefresh(false));
       };
       refreshData();

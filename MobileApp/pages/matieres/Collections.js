@@ -27,7 +27,7 @@ const Collections = ({ route }) => {
   const [type_modal, setTypeModal] = useState("")
   const [error, setError] = useState([]);
   const [isError, setIsError] = useState(false);
-  const [selectItem, setSelectItem] = useState({});
+  const isTablet = useSelector((state) => state.screen.isTablet);
   const [isLoading, setIsLoading] = useState(false);
   const collectionsChange = useSelector((state) => state.changeCollectionsSlice.value)
 
@@ -66,6 +66,18 @@ const Collections = ({ route }) => {
           text1: t(error.message + ".text_un"),
           text2: t(error.message + ".text_deux"),
         });
+      } else if (error.message.includes("Network request failed")) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('add_collection_by_ai.error.network'),
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('add_collection_by_ai.error.unknown'),
+        });
       }
     }
   };
@@ -75,7 +87,7 @@ const Collections = ({ route }) => {
       setIsLoading(true);
       try {
         const response = await updateCollection(collection_id, input, isPublic);
-        
+
         if (response && response.message) {
           Toast.show({
             type: 'success',
@@ -102,6 +114,12 @@ const Collections = ({ route }) => {
             type: 'error',
             text1: t(error.message + ".text_un"),
             text2: t(error.message + ".text_deux"),
+          });
+        } else if (error.message.includes("Network request failed")) {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('add_collection_by_ai.error.network'),
           });
         } else {
           Toast.show({
@@ -152,6 +170,12 @@ const Collections = ({ route }) => {
           text1: t(error.message + ".text_un"),
           text2: t(error.message + ".text_deux"),
         });
+      } else if (error.message.includes("Network request failed")) {
+        Toast.show({
+          type: 'error',
+          text1: t('ERROR'),
+          text2: t('add_collection_by_ai.error.network'),
+        });
       } else {
         Toast.show({
           type: 'error',
@@ -165,10 +189,6 @@ const Collections = ({ route }) => {
     }
   }
 
-  const handleItemPress = (item) => {
-    setSelectItem(item);
-  };
-
   useEffect(() => {
     const fetchCollections = async () => {
       setIsLoading(true);
@@ -176,6 +196,19 @@ const Collections = ({ route }) => {
         const response = await getUserCollections();
       } catch (error) {
         console.log("Error: useeffect", error);
+        if (error.message.includes("Network request failed")) {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('add_collection_by_ai.error.network'),
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('add_collection_by_ai.error.unknown'),
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -199,6 +232,19 @@ const Collections = ({ route }) => {
         dispatch(setValueS(true))
       } catch (error) {
         console.log("Erreru - ", error)
+        if (error.message.includes("Network request failed")) {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('add_collection_by_ai.error.network'),
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: t('ERROR'),
+            text2: t('add_collection_by_ai.error.unknown'),
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -228,7 +274,7 @@ const Collections = ({ route }) => {
           renderItem={renderItem}
           keyExtractor={(item, index) => item.id}
           data={collections}
-          numColumns={2}
+          numColumns={isTablet ? 3 : 2}
           contentContainerStyle={styles.flatListContent}
         />
 
@@ -279,11 +325,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
     flex: 1,
-  },
-  containerSecond: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    justifyContent: 'space-between'
+    paddingBottom: 70,
+    height: '100%'
   },
   titre: {
     fontSize: 20,
@@ -294,13 +337,13 @@ const styles = StyleSheet.create({
   fontIcon: {
     color: "green",
     marginTop: 10,
-
   },
   flatListContent: {
     paddingHorizontal: 10,
   },
   flatList: {
-    marginTop: 10,
+    marginVertical: 10,
+    height: '100%',
   },
   floatingInput: {
     borderWidth: 1,
@@ -308,10 +351,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 60,
-    position: 'absolute',
-    top: 570,
-    right: 20,
     height: 60,
+    position: 'absolute',
+    bottom: '5%',
+    right: '1%',
     backgroundColor: 'green',
     borderRadius: 100,
   },
