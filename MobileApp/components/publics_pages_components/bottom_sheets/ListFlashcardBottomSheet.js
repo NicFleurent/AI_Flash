@@ -10,10 +10,12 @@ import FLashCard from "../FlashCard";
 import CustomButton from "../../CustomButton";
 import styles from "./style/ModalStyle";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet, name, author, data }, ref) => {
   const { width, height } = useWindowDimensions();
   const {t} = useTranslation();
+  const isTablet = useSelector((state) => state.screen.isTablet);
 
   const renderItemModal = ({ item }) => (
     <FLashCard
@@ -48,11 +50,12 @@ const ListFlashcardBottomSheet = forwardRef(({ onOpenOtherSheet, name, author, d
             data={data}
           />
           <CustomButton
-            type="green-full"
-            label={t('explore.bottom_sheet.copy')}
-            additionnalStyle={{ marginBottom: 40, marginTop: 30 }}
-            onPress={onOpenOtherSheet}
-          />
+              type="green-full"
+              label={t('explore.bottom_sheet.copy')}
+              additionnalStyle={{ marginBottom: 40, marginTop: 30 }}
+              onPress={onOpenOtherSheet}
+            />
+          
         </View>
       </BottomSheetView>
     </BottomSheet>

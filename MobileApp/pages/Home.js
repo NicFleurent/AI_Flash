@@ -101,7 +101,7 @@ const Home = ({route}) => {
   }
 
   const formattedData = useMemo(() => {
-      const numColumns = 2;
+    const numColumns = isTablet ? 3 :2;
       const numberOfFullRows = Math.floor(collections.length / numColumns);
       let numberOfElementsLastRow = collections.length - numberOfFullRows * numColumns;
       const dataCopy = [...collections];

@@ -70,48 +70,6 @@ const Collections = ({ route }) => {
     }
   };
 
-  const create = async () => {
-    if (validateForm()) {
-      try {
-        const response = await createCollection(item.id, input);
-
-        if (response && response.message) {
-          Toast.show({
-            type: 'success',
-            text1: t('SUCCESS'),
-            text2: t(response.message)
-          });
-          getUserCollections();
-        }
-
-        setInput("")
-        setVisible(false)
-        dispatch(setValueS(true))
-      } catch (error) {
-        console.log('Error: ' + error)
-        setVisible(false)
-        setInput("")
-
-        if (error.message === 'subject.error.rate_limit') {
-          console.log("rate limit in edit: " + error)
-          Toast.show({
-            type: 'error',
-            text1: t(error.message + ".text_un"),
-            text2: t(error.message + ".text_deux"),
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: t('ERROR'),
-            text2: t(error.message)
-          });
-        }
-      }
-    }
-    else
-      setIsError(true)
-  }
-
   const edit = async () => {
     if (validateForm()) {
       setIsLoading(true);
@@ -285,7 +243,6 @@ const Collections = ({ route }) => {
           setError={setError}
           type_modal={type_modal}
           setTypeModal={setTypeModal}
-          onPressCreate={create}
           onPressEdit={edit}
           onPressDelete={drop}
           modalTitle={t("subject.collections.input.title_modal_" + type_modal)}

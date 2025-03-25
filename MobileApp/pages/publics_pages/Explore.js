@@ -138,7 +138,7 @@ const Explore = () => {
   }, [closeModal]);
 
   const formattedData = useMemo(() => {
-    const numColumns = 2;
+    const numColumns = isTablet ? 3 :2;
     const numberOfFullRows = Math.floor(filteredCollections.length / numColumns);
     let numberOfElementsLastRow = filteredCollections.length - numberOfFullRows * numColumns;
     const dataCopy = [...filteredCollections];
