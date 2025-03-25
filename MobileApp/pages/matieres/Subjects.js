@@ -249,20 +249,7 @@ const Subjects = () => {
                 setInput("")
                 dispatch(setValueS(false))
             } catch (error) {
-                console.log("Erreru - ", error)
-                if (error.message.includes("Network request failed")) {
-                    Toast.show({
-                        type: 'error',
-                        text1: t('ERROR'),
-                        text2: t('add_collection_by_ai.error.network'), 
-                    });
-                } else {
-                    Toast.show({
-                        type: 'error',
-                        text1: t('ERROR'),
-                        text2: t('add_collection_by_ai.error.unknown'),
-                    });
-                }
+                console.log("Erreur - ", error)
             } finally {
                 setIsLoading(false);
             }
