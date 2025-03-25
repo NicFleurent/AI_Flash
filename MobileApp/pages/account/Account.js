@@ -9,13 +9,15 @@ import { faArrowRightFromBracket, faLanguage, faPenToSquare, faUserXmark } from 
 import { getLocalUser } from '../../api/secureStore';
 import { deleteUser, logout, updateUser, updateUserPassword } from '../../api/user';
 import Toast from 'react-native-toast-message';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AlertModal from '../../components/AlertModal';
 import CustomModal from '../../components/CustomModal';
 import LanguagesModal from '../../components/LanguagesModal';
+import { setNeedsRefresh } from '../../stores/sliceTodayFlashcards';
 
 const Account = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const isTablet = useSelector((state) => state.screen.isTablet);
 
@@ -83,6 +85,7 @@ const Account = () => {
         });
       }
 
+      dispatch(setNeedsRefresh(true));
     } catch (error) {
       Toast.show({
         type: 'error',
