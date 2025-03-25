@@ -246,5 +246,28 @@
     "delete_success": "La flashcard a été supprimée avec succès.",
     "delete_error": "La suppression de la flashcard a échoué.",
     "deleting": "Suppression en cours..."
+  },
+  "onboarding": {
+    "page_one": {
+      "title": "Apprenez plus vite, retenez plus longtemps !",
+      "subtitle": "Optimisez votre étude avec des flashcards intelligentes et une révision efficace.",
+      "next_button": "Suivant",
+      "login_text": "Déjà un utilisateur ?",
+      "login_link": "Connectez-vous!"
+    },
+    "page_two": {
+      "title": "Vos cours transformés en flashcards intelligentes.",
+      "subtitle": "Importez vos notes et laissez l’IA générer vos cartes de révision en quelques secondes.",
+      "next_button": "Suivant",
+      "login_text": "Déjà un utilisateur ?",
+      "login_link": "Connectez-vous!"
+    },
+    "page_three": {
+      "title": "Révisez au bon moment, réussissez plus facilement !",
+      "subtitle": "Suivez une planification basée sur la courbe de l’oubli pour une mémorisation durable.",
+      "finish_button": "Terminer",
+      "login_text": "Déjà un utilisateur ?",
+      "login_link": "Connectez-vous!"
+    }
   }
 }
