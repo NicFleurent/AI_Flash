@@ -40,7 +40,7 @@ const Home = ({route}) => {
   useEffect(()=>{
     if(needsRefresh){
       const refreshData = async () => {
-        await onRefresh();  // Attend que le refresh soit terminé
+        await onRefresh();
         dispatch(setNeedsRefresh(false));
       };
       refreshData();

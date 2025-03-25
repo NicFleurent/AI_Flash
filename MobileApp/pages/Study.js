@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../components/CustomButton';
 import FlipCard from '../components/flip_card/FlipCard';
