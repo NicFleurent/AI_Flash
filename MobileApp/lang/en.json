@@ -240,5 +240,28 @@
     "delete_success": "Flashcard successfully deleted.",
     "delete_error": "Flashcard deletion failed.",
     "deleting": "Deleting..."
+  },
+  "onboarding": {
+    "page_one": {
+      "title": "Learn faster, remember longer!",
+      "subtitle": "Optimize your study with smart flashcards and effective review.",
+      "next_button": "Next",
+      "login_text": "Already a user?",
+      "login_link": "Log in!"
+    },
+    "page_two": {
+      "title": "Your notes transformed into smart flashcards.",
+      "subtitle": "Import your notes and let AI generate your review cards in seconds.",
+      "next_button": "Next",
+      "login_text": "Already a user?",
+      "login_link": "Log in!"
+    },
+    "page_three": {
+      "title": "Review at the right time, succeed more easily!",
+      "subtitle": "Follow a schedule based on the forgetting curve for long-term retention.",
+      "finish_button": "Finish",
+      "login_text": "Already a user?",
+      "login_link": "Log in!"
+    }
   }
 }
