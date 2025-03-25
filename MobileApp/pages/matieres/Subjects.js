@@ -28,6 +28,8 @@ const Subjects = () => {
     const [error, setError] = useState([]);
     const [isError, setIsError] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
+    const isTablet = useSelector((state) => state.screen.isTablet);
+
     const subjectChange = useSelector((state) => state.changeSubjectSlice.value)
 
     const onChangeText = (value, setInput) => {
@@ -91,6 +93,12 @@ const Subjects = () => {
                         text1: t(error.message + ".text_un"),
                         text2: t(error.message + ".text_deux"),
                     });
+                } else if (error.message.includes("Network request failed")) {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.network'),
+                    });
                 } else {
                     Toast.show({
                         type: 'error',
@@ -136,6 +144,12 @@ const Subjects = () => {
                         text1: t(error.message + ".text_un"),
                         text2: t(error.message + ".text_deux"),
                     });
+                } else if (error.message.includes("Network request failed")) {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.network'),
+                    });
                 } else {
                     Toast.show({
                         type: 'error',
@@ -179,6 +193,12 @@ const Subjects = () => {
                     text1: t(error.message + ".text_un"),
                     text2: t(error.message + ".text_deux"),
                 });
+            } else if (error.message.includes("Network request failed")) {
+                Toast.show({
+                    type: 'error',
+                    text1: t('ERROR'),
+                    text2: t('add_collection_by_ai.error.network'),
+                });
             } else {
                 Toast.show({
                     type: 'error',
@@ -200,6 +220,19 @@ const Subjects = () => {
                 setInput("")
             } catch (error) {
                 console.log("Error: ", error);
+                if (error.message.includes("Network request failed")) {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.network'), 
+                    });
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.unknown'),
+                    });
+                } 
             } finally {
                 setIsLoading(false);
             }
@@ -217,6 +250,19 @@ const Subjects = () => {
                 dispatch(setValueS(false))
             } catch (error) {
                 console.log("Erreru - ", error)
+                if (error.message.includes("Network request failed")) {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.network'), 
+                    });
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: t('ERROR'),
+                        text2: t('add_collection_by_ai.error.unknown'),
+                    });
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -243,7 +289,7 @@ const Subjects = () => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 data={subjects}
-                numColumns={2}
+                numColumns={isTablet ? 3 : 2}
                 contentContainerStyle={styles.flatListContent}
             />
 
@@ -290,9 +336,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
         flex: 1,
-    },
-    containerSecond: {
-        paddingHorizontal: 10,
+        paddingBottom: 70,
     },
     titre: {
         fontSize: 48,
@@ -304,7 +348,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     flatList: {
-        marginTop: 10,
+        marginVertical: 10,
     },
     floatingInput: {
         borderWidth: 1,
@@ -314,8 +358,8 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         position: 'absolute',
-        bottom: 50,
-        right: 20,
+        bottom: '5%',
+        right: '1%',
         backgroundColor: 'green',
         borderRadius: 100,
     },
