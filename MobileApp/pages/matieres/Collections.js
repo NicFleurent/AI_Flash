@@ -265,7 +265,7 @@ const Collections = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, isTablet && styles.containerTablet]}>
       <View>
         <Text style={styles.titre}>{t("subject.collections.title")}</Text>
 
@@ -325,9 +325,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
     flex: 1,
-    paddingBottom: 70,
     height: '100%'
   },
+  containerTablet:{
+    paddingBottom:60
+  }, 
   titre: {
     fontSize: 20,
     color: "white",

@@ -1,7 +1,24 @@
 import React, { useEffect } from 'react';
-import { Image, Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Image, Text, View, StyleSheet, SafeAreaView, useWindowDimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { defineScreen } from '../stores/sliceScreen';
 
 const SplashScreen = () => {
+  const dispatch = useDispatch();
+  const {height, width} = useWindowDimensions();
+
+  useEffect(()=>{
+    setScreen(height, width);
+  }, [height, width])
+
+  const setScreen = (height, width)=>{
+    const screen = {
+      height:height,
+      width:width
+    }
+
+    dispatch(defineScreen(screen));
+  }
 
   return (
     <SafeAreaView style={styles.container}>

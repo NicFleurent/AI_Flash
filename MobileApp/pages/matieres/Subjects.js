@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Button, useWindowDimensions } from "react-native";
+import { View, SafeAreaView, StatusBar, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Button, useWindowDimensions } from "react-native";
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
@@ -270,7 +270,8 @@ const Subjects = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, isTablet && styles.containerTablet]}>
+              <View>
             <FlatList
                 style={styles.flatList}
                 renderItem={renderItem}
@@ -305,6 +306,7 @@ const Subjects = () => {
             </TouchableOpacity>
 
             <Toast position='top' bottomOffset={20} />
+                  </View>
 
             {isLoading && (
                 <ActivityIndicator
@@ -323,8 +325,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000000",
         flex: 1,
-        paddingBottom: 70,
     },
+    containerTablet:{
+      paddingBottom:1
+    }, 
     titre: {
         fontSize: 48,
         color: "white",
@@ -335,7 +339,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     flatList: {
-        marginVertical: 10,
+        height: '100%',
     },
     floatingInput: {
         borderWidth: 1,
