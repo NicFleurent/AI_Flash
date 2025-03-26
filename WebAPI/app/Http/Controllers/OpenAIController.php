@@ -17,7 +17,7 @@ class OpenAIController extends Controller
             $payload = [
                 'model' => 'gpt-4o',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Extract key concepts, principles, and important definitions from the provided text and present them as a dictionary. Each key should be a concept or principle, and the corresponding value should be a concise definition or description. Do not include examples or extra details. The output should be in the same language as the input text. Provide a minimum of 50 concepts, and you can give more.'],
+                    ['role' => 'system', 'content' => 'Extract key concepts, principles, and important definitions from the provided text and present them as a dictionary. Each key should be a concept or principle, and the corresponding value should be a concise definition or description. Do not include examples or extra details. The output should be in the same language as the input text and in a dictionary format. Provide a minimum of 50 concepts, and you can give more.'],
                     ['role' => 'user', 'content' => $question],
                 ],
                 'max_tokens' => 8192
