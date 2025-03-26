@@ -265,7 +265,7 @@ const AddCollectionByAi = ({ route }) => {
                             renderItem={renderItem}
                             keyExtractor={(item, index) => index}
                             data={flashCards}
-                            numColumns={isTablet ? 2 : 1}
+                            numColumns={1}
                             contentContainerStyle={styles.flatListContent}
                         />
                     </>
